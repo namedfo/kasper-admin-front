@@ -1,0 +1,52 @@
+.service_editing {
+    background-color: white;
+    border-radius: 15px;
+
+    padding: 25px;
+
+    width: auto;
+
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(34, 60, 80, 0.08);
+    -moz-box-shadow: 0px 0px 2px 0px rgba(34, 60, 80, 0.08);
+    box-shadow: 0px 0px 2px 0px rgba(34, 60, 80, 0.08);
+}
+
+/* ONE */
+
+.service_editing_one_title {
+    font-size: 28px;
+}
+
+.service_editing_one_btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    background-color: #298ace;
+    border-radius: 12px;
+
+    padding: 8px 16px;
+    margin-top: 15px;
+
+    color: white;
+    font-weight: 700;
+
+    -webkit-box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.2);
+}
+.service_editing_one_btn:hover {
+    background-color: #3A90C1;
+    box-shadow: none;
+
+    transition: .5s;
+}
+
+/* TWO */
+
+.service_editing_two_title {
+    padding: 50px 0 0 0;
+
+    font-size: 28px;
+}
+

@@ -1,0 +1,51 @@
+.services_item {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 8px;
+}
+
+/* SHORT  INFO*/
+
+.services_item_short_info {
+    display: flex;
+}
+
+.services_item_short_info_code {
+    width: 90px;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.services_item_short_info_name {
+    border: none;
+    outline: none;
+
+    width: 100%;
+
+    color: #3C8DBC;
+    cursor: pointer;
+
+    background: none;
+
+    font-weight: 600;
+    font-size: 18px;
+
+    display: flex;
+    text-align: left;
+}
+.services_item_short_info_code_name:hover {
+    color: #3280ad;
+
+    transition: .5s;
+}
+
+
+
+/* FULL  INFO */
+
+.services_item_full_info {
+
+}

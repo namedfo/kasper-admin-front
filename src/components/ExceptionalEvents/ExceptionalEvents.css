@@ -1,0 +1,45 @@
+.exceptional_events {
+    background-color: white;
+    border-radius: 15px;
+
+    padding: 15px 20px;
+
+    -webkit-box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.08);
+    -moz-box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.08);
+    box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.08);
+}
+
+/* HEADER */
+
+.exceptional_events_header {
+    display: flex;
+    align-items: center;
+}
+
+.exceptional_events_header_title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/* CONTENT */
+
+.exceptional_events_content_title {
+    display: flex;
+
+    width: 100%;
+}
+
+.exceptional_events_content_title_mis {
+    width: 60%;
+}
+.exceptional_events_content_title_kasper {
+    width: 40%;
+}
+/* .exceptional_events_content_title_access {
+    width: 20%;
+} */
+
+.exceptional_events_content {
+    padding: 30px 0 0 0;
+}

@@ -1,0 +1,10 @@
+.page_container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    height: calc(100% - 50px);
+    width: calc(100% - 270px);
+    
+    padding: 30px;
+}

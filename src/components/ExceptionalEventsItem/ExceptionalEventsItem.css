@@ -1,0 +1,46 @@
+.exceptional_events_item {
+    display: flex;
+
+    width: 100%;
+
+    padding: 6px 12px;
+}
+
+
+/* MIS */
+.exceptional_events_item_mis {
+    width: 60%;
+
+    padding: 0 10px;
+
+    display: flex;
+    align-items: center;
+}
+
+.exceptional_events_item_form {
+    width: 40%;
+    display: flex;
+}
+
+/* KASPER */
+.exceptional_events_item_kasper {
+    width: 80%;
+
+    padding: 0 10px;
+}
+.exceptional_events_item_kasper_input {
+    width: 100%;
+    padding: 5px 10px;
+
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+
+/* ACCESS */
+.exceptional_events_item_access {
+    width: 20%;
+
+    padding: 0 10px;
+}
