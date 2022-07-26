@@ -18,7 +18,7 @@ const Sidebar = () => {
             </div>
             <div className='sidebar_content'>
                 {showPage.map(el => {
-                    if (!el.isShowSidebar) return  
+                    if (!el.isShow) return  
                     return (
                         <Link
                             key={el.path}
