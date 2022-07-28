@@ -38,17 +38,17 @@ const FeedbackManagement = ({ defaultData }) => {
                 </h4>
             </div>
             <div className='feedback_management_content'>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Дата</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                            <th>Действия</th>
+                <table className='feedback_management_table'>
+                    <thead className='feedback_management_thead'>
+                        <tr className='feedback_management_tr'>
+                            <th className='feedback_management_th'>ID</th>
+                            <th className='feedback_management_th'>Дата</th>
+                            <th className='feedback_management_th'>ФИО</th>
+                            <th className='feedback_management_th'>Телефон</th>
+                            <th className='feedback_management_th'>Действия</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='feedback_management_tbody'>
                         {data.map(el => {
                             
                             function padTo2Digits(num) {
@@ -58,12 +58,12 @@ const FeedbackManagement = ({ defaultData }) => {
                             const date = new Date(el.created_at)
                             const newDate = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`
                             return (
-                                <tr key={el.entry_id}>
-                                    <td>{el.entry_id}</td>
-                                    <td>{newDate}</td>
-                                    <td>{el.patient_name}</td>
-                                    <td>{el.phone}</td>
-                                    <td className='feedback_management_content_table_actions'>
+                                <tr className='feedback_management_tr' key={el.entry_id}>
+                                    <td className='feedback_management_td'>{el.entry_id}</td>
+                                    <td className='feedback_management_td'>{newDate}</td>
+                                    <td className='feedback_management_td'>{el.patient_name}</td>
+                                    <td className='feedback_management_td'>{el.phone}</td>
+                                    <td className='feedback_management_td feedback_management_content_table_actions'>
                                         <button
                                             onClick={() => onHandleCloseAppeal(el.entry_id)}
                                             className={`feedback_management_content_table_close ${!el.is_active && 'feedback_management_content_table_close_disabled'}`}

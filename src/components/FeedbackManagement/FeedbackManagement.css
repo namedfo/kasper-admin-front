@@ -30,22 +30,22 @@
 }
 
 
-table {
+.feedback_management_table {
     /* border: 1px solid lightgray; */
 
     width: 100%;
 }
 
-tbody {
+.feedback_management_tbody {
     /* border-bottom: 1px solid lightgray; */
 }
 
-th, td {
+.feedback_management_th, .feedback_management_td {
     border-bottom: 1px solid lightgray;
     border-right: 1px solid lightgray;
     padding: 4px 6px;
 }
-td {
+.feedback_management_td {
     padding: 4px 6px;
 }
 

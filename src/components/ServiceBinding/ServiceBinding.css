@@ -1,0 +1,140 @@
+.service_binding {
+    background-color: white;
+    border-radius: 15px;
+
+    padding: 15px 20px;
+
+    -webkit-box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.08);
+    -moz-box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.08);
+    box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.08);
+}
+
+/* HEADER */
+
+
+.service_binding_header {
+    display: flex;
+    align-items: center;
+}
+
+.service_binding_header_title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.service_binding_content_doctors_btn_update {
+    margin-left: 20px;
+    padding: 0 10px;
+
+    border: 1px solid #E8E8E8;
+    background: none;
+
+    font-size: 16px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.service_binding_content_doctors_btn_update:hover {
+    background-color: #F3F3F3;
+
+    transition: .5s;
+}
+
+/* CONTENT */
+
+.service_binding_content_doctors {
+    padding: 20px 0 0 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.service_binding_content_doctors_title {
+    font-weight: 500;
+    font-size: 18px;
+
+    margin-bottom: 4px;
+}
+
+.service_binding_content_divider {
+    width: 100%;
+    height: 1px;
+
+    background-color: #E8E8E8;
+
+    margin: 20px 0;
+}
+
+.service_binding_content_wrapper_info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.service_binding_content_info {
+    display: flex;
+}
+
+.service_binding_content_info_el {
+    margin-left: 6px;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.service_binding_content_info_btn_save {
+    margin-left: 20px;
+    padding: 7px 10px;
+
+    border: 1px solid #E8E8E8;
+    background: none;
+
+    font-size: 16px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.service_binding_content_info_btn_save:hover {
+    background-color: #F3F3F3;
+
+    transition: .5s;
+}
+
+
+/* TABLE */
+
+.service_binding_content_wrapper_table {
+    padding-top: 10px;
+
+    overflow-x: scroll;
+}
+
+.service_binding_table {
+	table-layout: fixed;
+}
+
+.service_binding_table,.service_binding_th,.service_binding_td {
+    border-collapse:collapse;
+}
+
+.service_binding_thead {
+    background-color: #eeeeee;
+}
+.service_binding_th {
+
+    min-width: 200px;
+}
+
+
+
+
+
+
+.service_binding_td_one {
+    color: #3C8DBC;
+    font-size: 16px;
+}

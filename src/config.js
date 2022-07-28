@@ -11,7 +11,8 @@ const getIsShowPage = {
     'PFeedbackManagement': true,
     'PServices': true,
     'PServiceEditing': true,
-    'PExceptionalEvents': true
+    'PExceptionalEvents': true,
+    'PServiceBinding': true
 }
 
 const config = {

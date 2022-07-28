@@ -21,7 +21,7 @@ const ServicesItem = ({ code, id, name }) => {
                 setDetailInfo(r.data)
             })
         }
-    }, [isDetailInfo])
+    }, [isDetailInfo, id])
 
     return (
         <div className="services_item">

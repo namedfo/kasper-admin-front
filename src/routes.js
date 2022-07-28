@@ -4,10 +4,13 @@ const routes = {
     post: '/post/',
     edit_services: "/edit-services-copy.json",
     service: '/service1.json',
-    service_download: "/services.csv",
+    export_download: "/services.csv",
     exceptional_events: '/exceptional-events.json',
     set_tags: '/post/',
-    import_services: '/post/'
+    import_services: '/post/',
+
+    doctors_all: '/doctors-all.json',
+    doctor: '/schedule-info.json'
 }
 
 
