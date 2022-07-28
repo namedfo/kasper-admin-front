@@ -16,7 +16,7 @@ const FeedbackManagement = ({ defaultData }) => {
 
 
     const onHandleCloseAppeal = id => {
-        config.api_host.post(routes.post, {
+        config.api_host.post(routes.feedback_post, {
             entry_id: id
         }).then(r => {
             if (r.status === 200) {

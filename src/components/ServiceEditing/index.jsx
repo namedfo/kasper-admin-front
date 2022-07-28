@@ -21,11 +21,10 @@ const ServiceEditing = () => {
             file: ''
         },
         onSubmit: values => {
-            // config.post(routes.post, JSON.stringify(values, null, 2)).then(r => {
-            //     if (r.status === 200) {
-            //         setDetailInfo(false)
-            //     }
-            // })
+            config.post(routes.import_services, JSON.stringify(values.file, null, 2)).then(r => {
+                if (r.status === 200) {
+                }
+            })
         },
     });
 

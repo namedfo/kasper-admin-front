@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 //
 import { useFormik } from 'formik';
 //
 import Switch from "react-switch";
+//
+import _debounce from 'lodash/debounce';
 //
 import routes from '../../routes';
 import config from '../../config';
@@ -16,22 +18,28 @@ const ExceptionalEventsItem = ({ name, tags, type }) => {
     const [isSave, setIsSave] = useState(false)
 
 
+    const handleDebounceFn = (value) => {
+        const newValue = value.split(',').map(e => e.trim())
+        config.api_host.post(routes.set_tags, {
+            tags: newValue
+        }).then(r => {
+            if (r.status === 200) {
+                setIsSave(true)
+            }
+        })
+    }
+    const debounceFn = useCallback(_debounce(handleDebounceFn, 1000), [])
+
+    
+
+
     const formik = useFormik({
         initialValues: {
             tags: defaultData.tags ? defaultData.tags.join(', ') : '',
             type: defaultData.type
         },
         onSubmit: values => {
-            const timer = setTimeout(() => {
-                config.api_host.post(routes.post, {
-                    tags: values.tags.trim().split(',')
-                }).then(r => {
-                    if (r.status === 200) {
-                        setIsSave(true)
-                    }
-                })
-            }, 300);
-            return () => clearTimeout(timer);
+            debounceFn(values.tags)
         },
     });
 
@@ -57,7 +65,6 @@ const ExceptionalEventsItem = ({ name, tags, type }) => {
             <form onSubmit={formik.handleSubmit} className='exceptional_events_item_form'>
                 <div className="exceptional_events_item_kasper">
                     <input
-                        disabled={defaultData.type === 0}
                         id="tags"
                         name="tags"
                         value={formik.values.tags}
