@@ -8,7 +8,14 @@ import config from './config'
 
 
 const showPage =  [
-    { name: 'PMain', component: <PMain />, path: '/', title: 'Главная', isShowSidebar: false, isShow: config.getIsShowPage.PMain },
+    { 
+        name: 'PMain', 
+        component: <PMain />, 
+        path: '/', 
+        title: 'Главная', 
+        isShowSidebar: false, 
+        isShow: config.getIsShowPage.PMain 
+    },
 
     { name: 'PFeedbackManagement', component: <PFeedbackManagement />, path: '/feedback-management', title: 'Управление обращениями граждан', isShow: config.getIsShowPage.PFeedbackManagement },
 

@@ -81,7 +81,7 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                 <div className="services_item_detail_input_name">
                     <span>real_name</span>
                 </div>
-                <textarea
+                <input
                     className="services_item_detail_input_input"
                     id="real_name"
                     name="real_name"
