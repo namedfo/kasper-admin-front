@@ -28,6 +28,7 @@
 
     border: 1px solid #E8E8E8;
     background: none;
+    outline: none;
 
     font-size: 16px;
 
@@ -90,6 +91,7 @@
 
     border: 1px solid #E8E8E8;
     background: none;
+    outline: none;
 
     font-size: 16px;
 
@@ -110,31 +112,17 @@
 .service_binding_content_wrapper_table {
     padding-top: 10px;
 
-    overflow-x: scroll;
-}
-
-.service_binding_table {
-	table-layout: fixed;
-}
-
-.service_binding_table,.service_binding_th,.service_binding_td {
-    border-collapse:collapse;
-}
-
-.service_binding_thead {
-    background-color: #eeeeee;
-}
-.service_binding_th {
-
-    min-width: 200px;
+    overflow-x: auto;
 }
 
 
+.service_binding_content_wrapper_table::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
 
+.service_binding_content_wrapper_table::-webkit-scrollbar-thumb {
+    border-radius: 10px;
 
-
-
-.service_binding_td_one {
-    color: #3C8DBC;
-    font-size: 16px;
+    background-color: gray;
 }

@@ -4,6 +4,7 @@ import Select from 'react-select';
 //
 import config from '../../config'
 import routes from '../../routes'
+import ServiceBindingTable from '../ServiceBindingTable';
 //
 import './ServiceBinding.css'
 
@@ -21,17 +22,20 @@ const ServiceBinding = ({ defaultData }) => {
         label: el.name
     }))
 
+    const getSelectedDoctor = id => {
+        config.api_host.get(`${routes.doctor}?id=${id}`).then(r => setSelectedDoctor(r.data))
+    }
+
 
 
     const onHandleSelectedOption = selected => {
         setSelectedOption(selected)
 
-        console.log(selected)
+        getSelectedDoctor(selected.value)
+    }
 
-        config.api_host.get(`${routes.doctor}?id=${selected.value}`).then(r => {
-            console.log(r)
-            setSelectedDoctor(r.data)
-        })
+    const onUpdateSelectedDoctor = () => {
+        getSelectedDoctor(selectedDoctor.value)
     }
 
 
@@ -60,7 +64,10 @@ const ServiceBinding = ({ defaultData }) => {
                                 options={data}
                             />
                         </div>
-                        <button className='service_binding_content_doctors_btn_update'>
+                        <button
+                            onClick={onUpdateSelectedDoctor}
+                            className='service_binding_content_doctors_btn_update'
+                        >
                             Обновить
                         </button>
                     </div>
@@ -139,49 +146,56 @@ const ServiceBinding = ({ defaultData }) => {
                     </button>
                 </div>
                 <div className='service_binding_content_wrapper_table'>
-                    <table className='service_binding_table'>
+                    {selectedDoctor 
+                        ? <ServiceBindingTable selectedDoctor={selectedDoctor} />
+                        : (
+                            <span>
+                                Select doctor
+                            </span>    
+                        )
+                    }
+                    {/* <table className='service_binding_table'>
                         <thead className='service_binding_thead'>
                             <tr>
-                                <th className='service_binding_th'>
-                                    ID
+                                <th className='service_binding_wrapper_th'>
+                                    <div className='service_binding_th'>
+                                        <span>Услуги</span>
+                                    </div>
                                 </th>
-                                <th className='service_binding_th'>
-                                    ID
-                                </th> 
-                                <th className='service_binding_th'>
-                                    ID
-                                </th> 
-                                <th className='service_binding_th'>
-                                    ID
+                                <th className='service_binding_wrapper_th'>
+                                    <div className='service_binding_th'>
+                                        <span>Для всех</span>
+                                        <div className='service_binding_th_inputs_v1'>
+                                            <input className='service_binding_th_input' type="number" />
+                                            <span>-</span>
+                                            <input className='service_binding_th_input' type="number" />
+                                        </div>
+                                    </div>
                                 </th>
-                                <th className='service_binding_th'>
-                                    ID
-                                </th>
-                                <th className='service_binding_th'>
-                                
-                                </th>
-                                <th className='service_binding_th'>
-                                    ID
-                                </th>
-                                <th className='service_binding_th'>
-                                    ID
-                                </th>
-                                <th className='service_binding_th'>
-                                    ID
-                                </th>
-                                <th className='service_binding_th'>
-                                    ID
-                                </th>
+                                {selectedDoctor.schedules.map(el => (
+                                    <th key={el.schedule_id} className='service_binding_wrapper_th'>
+                                        <div className='service_binding_th'>
+                                            <span>{el.place_name}</span>
+                                            <div className='service_binding_th_inputs_v1'>
+                                                <input className='service_binding_th_input' type="number" />
+                                                <span>-</span>
+                                                <input className='service_binding_th_input' type="number" />
+                                            </div>
+                                        </div>
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody className='service_binding_tbody'>
-                            <tr className='service_binding_tr'>
-                                <td className='service_binding_td service_binding_td_one'>
-                                    1
-                                </td>
-                            </tr>
+                            {selectedDoctor.services.map(el => (
+                                <tr className='service_binding_tr'>
+                                    <td className='service_binding_td service_binding_td_one'>
+                                        {el.real_name}
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
-                    </table>
+                    </table> */}
                 </div>
             </div>
         </div>
