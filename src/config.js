@@ -9,8 +9,8 @@ const api_host = axios.create({
 const getIsShowPage = {
     'PMain': true,
     'PFeedbackManagement': true,
-    'PServices': true,
-    'PServiceEditing': true,
+    'PServicesEditing': true,
+    'PServiceEditingBulk': true,
     'PExceptionalEvents': true,
     'PServiceBinding': true
 }

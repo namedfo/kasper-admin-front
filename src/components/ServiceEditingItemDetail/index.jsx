@@ -1,4 +1,3 @@
-
 import { useFormik } from "formik";
 import { useState } from "react";
 //
@@ -7,10 +6,10 @@ import { BsQuestion } from 'react-icons/bs'
 import config from "../../config";
 import routes from "../../routes";
 //
-import './ServicesItemDetail.css'
+import './ServiceEditingItemDetail.css'
 
 
-const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
+const ServiceEditingItemDetail = ({ setDetailInfo, detailInfo }) => {
 
     const [isPopover, setIsPopover] = useState(false)
 
@@ -18,7 +17,7 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
     const formik = useFormik({
         initialValues: { ...detailInfo },
         onSubmit: values => {
-            config.api_host.post(routes.post, JSON.stringify(values, null, 2)).then(r => {
+            config.api_host.post(routes.service_edit, JSON.stringify(values, null, 2)).then(r => {
                 if (r.status === 200) {
                     setDetailInfo(false)
                 }
@@ -29,14 +28,14 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
     return (
         <form
             onSubmit={formik.handleSubmit}
-            className='services_item_detail'
+            className='service_editing_item_detail'
         >
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>id</span>
                 </div>
                 <input
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="id"
                     name="id"
                     type="number"
@@ -47,12 +46,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>group_id</span>
                 </div>
                 <input
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="group_id"
                     name="group_id"
                     type="number"
@@ -62,12 +61,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>code</span>
                 </div>
                 <input
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="code"
                     name="code"
                     type="text"
@@ -77,12 +76,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>real_name</span>
                 </div>
                 <input
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="real_name"
                     name="real_name"
                     disabled={true}
@@ -93,12 +92,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>name</span>
                 </div>
                 <textarea
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="name"
                     name="name"
                     type="text"
@@ -108,12 +107,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>description</span>
                     <div style={{ position: 'relative' }}>
                         {isPopover && (
-                            <div className="services_item_detail_input_popover">
+                            <div className="service_editing_item_detail_input_popover">
                                 <p>{`{{Код Услуги}}`} - Ссылка на услугу</p>
                                 <p>[[http://yandex.ru|яндекс]] - Ссылка</p>
                                 <p>__Текст__ - <i>Наклонный текст</i></p>
@@ -124,13 +123,13 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                         )}
                         <span 
                             onMouseLeave={() => setIsPopover(false)}
-                            onMouseEnter={() => setIsPopover(true)} className="services_item_detail_input_popover_start">
+                            onMouseEnter={() => setIsPopover(true)} className="service_editing_item_detail_input_popover_start">
                             <BsQuestion size={24} />
                         </span>
                     </div>
                 </div>
                 <textarea
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="description"
                     name="description"
                     type="text"
@@ -140,12 +139,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>contrain</span>
                 </div>
                 <textarea
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="contrain"
                     name="contrain"
                     type="text"
@@ -155,12 +154,12 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                     rows="4"
                 />
             </div>
-            <div className='services_item_detail_input'>
-                <div className="services_item_detail_input_name">
+            <div className='service_editing_item_detail_input'>
+                <div className="service_editing_item_detail_input_name">
                     <span>synonym</span>
                 </div>
                 <textarea
-                    className="services_item_detail_input_input"
+                    className="service_editing_item_detail_input_input"
                     id="synonym"
                     name="synonym"
                     type="text"
@@ -171,7 +170,7 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
                 />
             </div>
             <input
-                className="services_item_detail_input_save"
+                className="service_editing_item_detail_input_save"
                 type="submit"
                 value='Save All'
             />
@@ -179,4 +178,4 @@ const ServicesItemDetail = ({ setDetailInfo, detailInfo }) => {
     )
 }
 
-export default ServicesItemDetail
+export default ServiceEditingItemDetail

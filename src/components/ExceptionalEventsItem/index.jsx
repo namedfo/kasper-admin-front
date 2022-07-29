@@ -12,7 +12,7 @@ import config from '../../config';
 import './ExceptionalEventsItem.css'
 
 
-const ExceptionalEventsItem = ({ name, tags, type }) => {
+const ExceptionalEventsItem = ({ id, name, tags, type }) => {
     const [defaultData, setDefaultData] = useState({ name, tags, type })
 
     const [isSave, setIsSave] = useState(false)
@@ -47,9 +47,9 @@ const ExceptionalEventsItem = ({ name, tags, type }) => {
 
         const newType = checked && 1 || !checked && 0
 
-        config.api_host.post(routes.post, {
+        config.api_host.post(routes.set_type, {
+            event_id: id,
             type: newType
-        
         }).then(r => {
             if (r.status === 200) {
                 setDefaultData(prev => ({ ...prev, type: newType }))

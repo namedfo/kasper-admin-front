@@ -1,10 +1,10 @@
-.services_item_detail {
+.service_editing_item_detail {
     width: 100%;
 
     padding: 20px;
 }
 
-.services_item_detail_input {
+.service_editing_item_detail_input {
     width: 100%;
 
     display: flex;
@@ -13,7 +13,7 @@
     
 }
 
-.services_item_detail_input_name {
+.service_editing_item_detail_input_name {
     width: 40%;
 
     display: flex;
@@ -22,7 +22,7 @@
     padding-right: 12px;
 }
 
-.services_item_detail_input_input {
+.service_editing_item_detail_input_input {
     width: 100%;
 
     padding: 10px;
@@ -34,7 +34,7 @@
     border: 1px solid #C1C1C1;
 }
 
-.services_item_detail_input_popover {
+.service_editing_item_detail_input_popover {
     position: absolute;
     top: -130px;
     left: 30px;
@@ -52,12 +52,12 @@
     -moz-box-shadow: 0px -1px 10px 2px rgba(34, 60, 80, 0.2);
     box-shadow: 0px -1px 10px 2px rgba(34, 60, 80, 0.2);
 }
-.services_item_detail_input_popover_start:hover {
+.service_editing_item_detail_input_popover_start:hover {
     color: white;
     background-color: gray;
 }
 
-.services_item_detail_input_popover_start {
+.service_editing_item_detail_input_popover_start {
     border: 1px solid gray;
 
     color: gray;
@@ -73,7 +73,7 @@
 
 /* SAVE ALL */
 
-.services_item_detail_input_save {
+.service_editing_item_detail_input_save {
     width: 100%;
 
     border: none;
@@ -90,7 +90,7 @@
     font-size: 16px;
     font-weight: 700;
 }
-.services_item_detail_input_save:hover {
+.service_editing_item_detail_input_save:hover {
     transition: .5s;
 
     background-color: #08894D;

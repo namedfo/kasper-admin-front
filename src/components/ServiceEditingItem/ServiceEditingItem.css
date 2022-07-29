@@ -1,4 +1,4 @@
-.services_item {
+.service_editing_item {
     display: flex;
     flex-direction: column;
 
@@ -7,11 +7,11 @@
 
 /* SHORT  INFO*/
 
-.services_item_short_info {
+.service_editing_item_short_info {
     display: flex;
 }
 
-.services_item_short_info_code {
+.service_editing_item_short_info_code {
     width: 90px;
 
     font-size: 18px;
@@ -19,7 +19,7 @@
 }
 
 
-.services_item_short_info_name {
+.service_editing_item_short_info_name {
     border: none;
     outline: none;
 
@@ -36,7 +36,7 @@
     display: flex;
     text-align: left;
 }
-.services_item_short_info_code_name:hover {
+.service_editing_item_short_info_name:hover {
     color: #3280ad;
 
     transition: .5s;

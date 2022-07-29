@@ -1,9 +1,9 @@
 import PExceptionalEvents from "./pages/PExceptionalEvents";
 import PFeedbackManagement from "./pages/PFeedbackManagement";
 import PMain from "./pages/PMain";
-import PServiceEditing from "./pages/PServiceEditing";
-import PServices from "./pages/PServices";
 import PServiceBinding from './pages/PServiceBinding'
+import PServicesEditing from "./pages/PServicesEditing";
+import PServiceEditingBulk from "./pages/PServiceEditingBulk";
 //
 import config from './config'
 
@@ -19,9 +19,9 @@ const showPage =  [
 
     { name: 'PFeedbackManagement', component: <PFeedbackManagement />, path: '/feedback-management', title: 'Управление обращениями граждан', isShow: config.getIsShowPage.PFeedbackManagement },
 
-    { name: 'PServices', component: <PServices />, path: '/services', title: 'Редактирование услуг', isShow: config.getIsShowPage.PServices },
+    { name: 'PServicesEditing', component: <PServicesEditing />, path: '/services-editing', title: 'Редактирование услуг', isShow: config.getIsShowPage.PServicesEditing },
     
-    { name: 'PServiceEditing', component: <PServiceEditing /> , path: '/export-services', title: 'Массовое редактирование услуг', isShow: config.getIsShowPage.PServiceEditing },
+    { name: 'PServiceEditingBulk', component: <PServiceEditingBulk /> , path: '/export-services', title: 'Массовое редактирование услуг', isShow: config.getIsShowPage.PServiceEditingBulk },
 
     { name: 'PExceptionalEvents', component: <PExceptionalEvents />, path: '/exceptional-events', title: 'Настройки исключительных событий', isShow: config.getIsShowPage.PExceptionalEvents },
 

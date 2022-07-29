@@ -1,16 +1,16 @@
 //
 import { useEffect, useState } from 'react'
 //
-import ServicesItemDetail from '../ServicesItemDetail'
+import ServiceEditingItemDetail from '../ServiceEditingItemDetail'
 //
 import routes from '../../routes'
 import config from '../../config'
 //
-import './ServicesItem.css'
+import './ServiceEditingItem.css'
 
 
 
-const ServicesItem = ({ code, id, name }) => {
+const ServiceEditingItem = ({ code, id, name }) => {
 
     const [isDetailInfo, setIsDetailInfo] = useState(false)
     const [detailInfo, setDetailInfo] = useState(null)
@@ -24,23 +24,23 @@ const ServicesItem = ({ code, id, name }) => {
     }, [isDetailInfo, id])
 
     return (
-        <div className="services_item">
-            <div className='services_item_short_info'>
-                <span className='services_item_short_info_code'>
+        <div className="service_editing_item">
+            <div className='service_editing_item_short_info'>
+                <span className='service_editing_item_short_info_code'>
                     {code}
                 </span>
                 <button 
                     onClick={() => setIsDetailInfo(prev => !prev)}
-                    className='services_item_short_info_name'
+                    className='service_editing_item_short_info_name'
                 >
                     {name}
                 </button>
             </div>
             {isDetailInfo && detailInfo && (
-                <ServicesItemDetail setDetailInfo={setDetailInfo} detailInfo={detailInfo} />
+                <ServiceEditingItemDetail setDetailInfo={setDetailInfo} detailInfo={detailInfo} />
             )}
         </div>
     )
 }
 
-export default ServicesItem
+export default ServiceEditingItem

@@ -1,22 +1,22 @@
 // components
 import Navbar from '../../components/Navbar'
-import ServiceEditing from '../../components/ServiceEditing'
+import ServiceEditingBulk from '../../components/ServiceEditingBulk'
 import Sidebar from '../../components/Sidebar'
 import PageContainer from '../../Layouts/PageContainer'
 //
-import './PServiceEditing.css'
+import './PServiceEditingBulk.css'
 
 
-const PServiceEditing = () => {
+const PServiceEditingBulk = () => {
     return (
-        <div className='p_service_editing'>
+        <div className='p_service_editing_bulk'>
             <Navbar />
             <Sidebar />
             <PageContainer>
-                <ServiceEditing />
+                <ServiceEditingBulk />
             </PageContainer>
         </div>
     )
 }
 
-export default PServiceEditing
+export default PServiceEditingBulk
