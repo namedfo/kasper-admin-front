@@ -1,14 +1,64 @@
+import { useState } from 'react'
+//
+import { AiOutlineCloseCircle } from 'react-icons/ai'
+//
+import routes from '../../routes'
+import config from '../../config'
 //
 import './ServiceBindingTable.css'
 
 
 
 
-const ServiceBindingTable = ({ selectedDoctor }) => {
+const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
+    const [result, setResult] = useState(selectedDoctor && selectedDoctor.resultWithCells)
+    const [data, setData] = useState({
+        previousData: selectedDoctor && selectedDoctor.finalResult,
+        nextData: []
+    })
 
-    console.log(selectedDoctor)
 
+    const onChangeData = (service_id, schedule_id, value, type, cell) => {
+        console.log(cell)
+        setData(prev => {
 
+            const newNextData = prev.nextData.map(el => {
+                if (el) {
+
+                } else {
+                    
+                }
+            })
+
+            console.log(newNextData)
+
+            return {
+                ...prev,
+                previousData: {
+                    ...prev.previousData,
+                    [service_id]: {
+                        ...prev.previousData[service_id],
+                        cells: {
+                            ...prev.previousData[service_id].cells,
+                            [schedule_id]: {
+                                ...prev.previousData[service_id].cells[schedule_id],
+                                [type]: value
+                            }
+                        }
+                    }
+                },
+                nextData: newNextData
+            }
+        })
+    }
+
+    console.log(data)
+    const onHandleRemove = (schedule_id, service_id) => {
+        config.api_host.post(routes.service_by_schedule_remove, {
+            schedule_id: schedule_id,
+            service_id: service_id
+        }).then(r => r.status === 200 && onUpdateSelectedDoctor())
+    }
 
 
     return (
@@ -49,7 +99,7 @@ const ServiceBindingTable = ({ selectedDoctor }) => {
                 </tr>
             </thead>
             <tbody className='service_binding_table_tbody'>
-                {selectedDoctor && selectedDoctor.result && selectedDoctor.result.map(el => (
+                {result && result.map(el => (
                     <tr
                         className='service_binding_table_tr'
                         key={el.service_id}
@@ -66,7 +116,7 @@ const ServiceBindingTable = ({ selectedDoctor }) => {
 
                                 if (cell && !cell.active) return '#ffa2a2'
 
-                                if (cell && cell.active) return '#5ba75b'
+                                if (cell && index === 0) return '#90a7fc'
                             }
 
                             const getActiveCheckbox = () => {
@@ -74,31 +124,46 @@ const ServiceBindingTable = ({ selectedDoctor }) => {
 
                                 if (cell && cell.active && cell.priority === 2) return true
 
-                                if (cell && cell.active) return true
+                                if (cell && index === 0) return true
                             }
 
+                            const getRemove = () => {
+                                const btnRemove = <AiOutlineCloseCircle
+                                    size={20}
+                                    onClick={() => onHandleRemove(cell.schedule_id, cell.service_id)}
+                                    className="service_binding_table_td_with_cells_header_remove"
+                                />
+
+                                if (cell && cell.active && cell.priority === 1) return btnRemove
+
+                                if (cell && !cell.active) return btnRemove
+                            }
                             return (
                                 <td key={index} style={{ backgroundColor: getBgColor() }} className='service_binding_table_td_with_cells'>
                                     <div className='service_binding_table_td_with_cells_header'>
-                                        <input type="checkbox" checked={getActiveCheckbox()} />
+                                        {/* <input type="checkbox" checked={getActiveCheckbox()} /> */}
+                                        {getRemove()}
                                     </div>
                                     <div
                                         className='service_binding_table_td_with_cells_footer'
                                     >
                                         <input
-                                            value={cell?.duration}
+                                            onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'duration', cell)}
+                                            value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.duration}
                                             className='service_binding_table_td_input'
                                             type="number"
                                         />
                                         <span className='service_binding_table_td_divider'>|</span>
                                         <input
-                                            value={cell?.min_age}
+                                            onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'min_age', cell)}
+                                            value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.min_age}
                                             className='service_binding_table_td_input'
                                             type="number"
                                         />
                                         <span className='service_binding_table_td_divider'>-</span>
                                         <input
-                                            value={cell?.max_age}
+                                            onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'max_age', cell)}
+                                            value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.max_age}
                                             className='service_binding_table_td_input'
                                             type="number"
                                         />

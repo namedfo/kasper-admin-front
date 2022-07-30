@@ -14,12 +14,25 @@ const routes = {
     service_edit: '/post/',
 
 
+    // for Login
+    //      --- get ---
+    get_list: '/auth.json',
+    //      --- post ---
+    login: '/login.php',
+
 
     // for Bulk Editing Services
     //      --- get ---
     export_download: "/services.csv",
     //      --- post ---
     import_services: '/post/',
+
+
+
+    // for Service Binding
+    //      --- post ---
+    service_by_schedule_save: '/post/',
+    service_by_schedule_remove: '/post/',
 
 
 

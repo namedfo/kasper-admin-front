@@ -1,6 +1,10 @@
 import { Route, Routes } from "react-router";
 //
+import { ToastContainer } from 'react-toastify';
+//
 import showPage from "./showPage";
+//
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -15,6 +19,7 @@ function App() {
           )
         })}
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

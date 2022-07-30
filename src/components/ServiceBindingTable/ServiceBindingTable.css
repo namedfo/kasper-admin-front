@@ -66,6 +66,14 @@
     justify-content: space-between;
     align-items: center;
 }
+.service_binding_table_td_with_cells_header_remove {
+    color: gray;
+    cursor: pointer;
+}
+.service_binding_table_td_with_cells_header_remove:hover {
+    transition: .5s;
+    color: #232323
+}
 
 .service_binding_table_td_with_cells_footer {
     display: flex;

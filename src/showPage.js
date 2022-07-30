@@ -4,6 +4,7 @@ import PMain from "./pages/PMain";
 import PServiceBinding from './pages/PServiceBinding'
 import PServicesEditing from "./pages/PServicesEditing";
 import PServiceEditingBulk from "./pages/PServiceEditingBulk";
+import PLogin from "./pages/PLogin";
 //
 import config from './config'
 
@@ -31,6 +32,14 @@ const showPage =  [
         path: '/service-binding',
         title: 'Привязка услуг',
         isShow: config.getIsShowPage.PServiceBinding
+    },
+
+    {
+        name: 'PLogin',
+        component: <PLogin />,
+        path: '/login',
+        title: 'Войти',
+        isShow: config.getIsShowPage.PLogin
     }
 ]
 
