@@ -13,7 +13,7 @@ function App() {
     <div className="app">
       <Routes>
         {showPage.map(page => {
-          if (!page.isShow) return
+          if (!page.isShow || page.isShow === "false") return
           return (
             <Route key={page.path} path={page.path} element={ page.component } />
           )

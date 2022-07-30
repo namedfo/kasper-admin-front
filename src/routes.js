@@ -35,7 +35,6 @@ const routes = {
     service_by_schedule_remove: '/post/',
 
 
-
     // for Exception Event Settings
     //      --- get ----
     exceptional_events: '/exceptional-events.json',
@@ -43,8 +42,6 @@ const routes = {
     set_tags: '/post/',
     set_type: '/post/',
 
-    
-    
     // for Service Binding
     //      --- get ---
     doctors_all: '/doctors-all.json',
