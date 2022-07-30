@@ -28,6 +28,8 @@ const ServiceBinding = ({ defaultData }) => {
         config.api_host.get(`${routes.doctor}?id=${id}`).then(r => {
             let finalResult = {}
 
+            console.log(r)
+
             r.data.services.forEach(service => {
                 finalResult[service.service_id] = {
                     service_id: service.service_id,
@@ -51,21 +53,39 @@ const ServiceBinding = ({ defaultData }) => {
             }
 
 
+            const resultWithCells = resultInArray.map(e => {
+
+                let resultCells = []
+                for (let [key, value] of Object.entries(e.cells)) {
+                    resultCells = [...resultCells, value]
+                }
+
+                return {
+                    ...e,
+                    cells: resultCells
+                }
+            })
+
+            resultWithCells.map(e => {
+                r.data.default_schedules.forEach(i => {
+                    if (i.service_id === e.service_id) {
+                        return {
+                            cells: e.cells.unshift(i)
+                        }
+                    } else {
+                        return {
+                            ...e,
+                            cells: e.cells.unshift(null)
+                        }
+                    }
+                })
+            })
+            
+
             setSelectedDoctor({
                 services: r.data.services,
                 schedules: r.data.schedules,
-                result: resultInArray.map(e => {
-
-                    let resultCells = []
-                    for (let [key, value] of Object.entries(e.cells)) {
-                        resultCells = [...resultCells, value]
-                    }
-
-                    return {
-                        ...e,
-                        cells: resultCells
-                    }
-                })
+                result: resultWithCells
             })
 
         })
