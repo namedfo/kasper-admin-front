@@ -5,19 +5,11 @@ import './ServiceBindingTable.css'
 
 
 const ServiceBindingTable = ({ selectedDoctor }) => {
+
     console.log(selectedDoctor)
-    // const cells = selectedDoctor.schedules.map()
 
 
 
-    // const getSquares = () => {
-    //     return selectedDoctor.services.map(service => {
-    //         return selectedDoctor.schedules.find(schedule => {
-    //             if (schedule.schedule_id === service.schedule_id) return schedule
-    //         })
-    //     })
-    // }
-    // console.log(getSquares())
 
     return (
         <table className='service_binding_table'>
@@ -40,7 +32,7 @@ const ServiceBindingTable = ({ selectedDoctor }) => {
                             </div>
                         </div>
                     </th>
-                    {selectedDoctor.schedules.map(el => (
+                    {selectedDoctor && selectedDoctor.schedules && selectedDoctor.schedules.map(el => (
                         <th key={el.schedule_id} className='service_binding_table_th'>
                             <div className='service_binding_table_inner_th'>
                                 <span>{el.place_name}</span>
@@ -57,13 +49,13 @@ const ServiceBindingTable = ({ selectedDoctor }) => {
                 </tr>
             </thead>
             <tbody className='service_binding_table_tbody'>
-                {selectedDoctor.services.map(el => (
+                {selectedDoctor && selectedDoctor.result && selectedDoctor.result.map(el => (
                     <tr
                         className='service_binding_table_tr'
-                        key={`${el.service_id}_${el.schedule_id}`}
+                        key={el.service_id}
                     >
                         <td className='service_binding_table_td_first'>
-                            {el.real_name}
+                            {el.name}
                         </td>
                         <td className='service_binding_table_td_with_cells'>
                             <div className='service_binding_table_td_with_cells_header'>
@@ -88,20 +80,20 @@ const ServiceBindingTable = ({ selectedDoctor }) => {
                                 />
                             </div>
                         </td>
-                        {selectedDoctor.schedules.map(i => {
+                        {el.cells.map((cell, index) => {
+
                             const getBgColor = () => {
-                                if (i.schedule_id === el.schedule_id) {
-                                    if (el.active) {
-                                        return '#5ba75b'
-                                    } else {
-                                        return '#ffa2a2'
-                                    }
-                                }
+                                if (cell && cell.active && cell.priority === 1) return '#5ba75b'
+
+                                if (cell && cell.active && cell.priority === 2) return '#90a7fc'
+
+                                if (cell && !cell.active) return '#ffa2a2'
                             }
+
                             return (
-                                <td key={i.schedule_id} style={{backgroundColor: getBgColor()}} className='service_binding_table_td_with_cells'>
+                                <td key={index} style={{ backgroundColor: getBgColor() }} className='service_binding_table_td_with_cells'>
                                     <div className='service_binding_table_td_with_cells_header'>
-                                        <input checked={el.active && i.schedule_id === el.schedule_id} type="checkbox" />
+                                        <input type="checkbox" />
                                     </div>
                                     <div
                                         className='service_binding_table_td_with_cells_footer'

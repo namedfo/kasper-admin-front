@@ -1,3 +1,4 @@
+import { type } from '@testing-library/user-event/dist/type';
 import { useState } from 'react';
 //
 import Select from 'react-select';
@@ -23,7 +24,51 @@ const ServiceBinding = ({ defaultData }) => {
     }))
 
     const getSelectedDoctor = id => {
-        config.api_host.get(`${routes.doctor}?id=${id}`).then(r => setSelectedDoctor(r.data))
+        setSelectedDoctor({})
+        config.api_host.get(`${routes.doctor}?id=${id}`).then(r => {
+            let finalResult = {}
+
+            r.data.services.forEach(service => {
+                finalResult[service.service_id] = {
+                    service_id: service.service_id,
+                    name: service.name,
+                    cells: {}
+                }
+
+                r.data.schedules.forEach(schedule => {
+                    finalResult[service.service_id].cells[schedule.schedule_id] = null
+                })
+            })
+
+            r.data.services.forEach(service => {
+                finalResult[service.service_id].cells[service.schedule_id] = service
+            })
+
+
+            let resultInArray = []
+            for (let [key, value] of Object.entries(finalResult)) {
+                resultInArray = [...resultInArray, value]
+            }
+
+
+            setSelectedDoctor({
+                services: r.data.services,
+                schedules: r.data.schedules,
+                result: resultInArray.map(e => {
+
+                    let resultCells = []
+                    for (let [key, value] of Object.entries(e.cells)) {
+                        resultCells = [...resultCells, value]
+                    }
+
+                    return {
+                        ...e,
+                        cells: resultCells
+                    }
+                })
+            })
+
+        })
     }
 
 
@@ -146,12 +191,12 @@ const ServiceBinding = ({ defaultData }) => {
                     </button>
                 </div>
                 <div className='service_binding_content_wrapper_table'>
-                    {selectedDoctor 
+                    {selectedDoctor
                         ? <ServiceBindingTable selectedDoctor={selectedDoctor} />
                         : (
                             <span>
                                 Select doctor
-                            </span>    
+                            </span>
                         )
                     }
                     {/* <table className='service_binding_table'>
