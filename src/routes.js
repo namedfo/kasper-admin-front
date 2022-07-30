@@ -8,24 +8,19 @@ const routes = {
 
     // for Service Editing
     //      --- get ---
-    services: "/edit-services-copy.json",
-    service: '/service1.json',
-    //      --- post ---
-    service_edit: '/post/',
+    services: process.env.REACT_APP_ADMIN_SERVICES_URL,
+    service: process.env.REACT_APP_ADMIN_SERVICE_URL,
+    service_edit: process.env.REACT_APP_ADMIN_SERVICE_EDIT_URL,
 
 
     // for Login
-    //      --- get ---
-    get_list: '/auth.json',
-    //      --- post ---
-    login: '/login.php',
+    get_list: process.env.REACT_APP_LOGIN_LIST_URL,
+    login: process.env.REACT_APP_LOGIN_URL,
 
 
     // for Bulk Editing Services
-    //      --- get ---
-    export_download: "/services.csv",
-    //      --- post ---
-    import_services: '/post/',
+    export_download: process.env.REACT_APP_ADMIN_EXPORT_SERVICES_URL,
+    import_services: process.env.REACT_APP_ADMIN_IMPORT_SERVICES_URL,
 
 
 
@@ -37,15 +32,14 @@ const routes = {
 
     // for Exception Event Settings
     //      --- get ----
-    exceptional_events: '/exceptional-events.json',
-    //      --- post ---
-    set_tags: '/post/',
-    set_type: '/post/',
+    exceptional_events: process.env.REACT_APP_ADMIN_EV,
+    set_tags: process.env.REACT_APP_ADMIN_EV_SET_TAGS,
+    set_type: process.env.REACT_APP_ADMIN_EV_SET_TYPE,
 
     // for Service Binding
     //      --- get ---
-    doctors_all: '/doctors-all.json',
-    doctor: '/schedule-info.json'
+    doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
+    doctor: process.env.REACT_APP_ADMIN_DOCTOR_SERVICES_BINDINGS
 }
 
 

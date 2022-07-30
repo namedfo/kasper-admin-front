@@ -17,7 +17,7 @@ const ServiceEditingBulk = () => {
 
     const onDownloadCsv = () => {
         config.api_host.get(routes.export_download).then(r => {
-            fileDownload(r.data, 'test.csv')
+            fileDownload(r.data, 'services.csv')
         })
     }
 

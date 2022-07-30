@@ -29,16 +29,14 @@ const Login = ({ selects }) => {
             username: selected.value,
             password: password
         }).then(r => {
-            if (r.status === 200) {
+            if (r.data.status === true) {
 
             } else {
-                toast.error('401', {
+                toast.error(r.data.message, {
                     autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
+		    enableHtml: true,
                 });
             }
         })

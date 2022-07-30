@@ -26,7 +26,7 @@ const ServiceBinding = ({ defaultData }) => {
 
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
-        config.api_host.get(`${routes.doctor}?id=${id}`).then(r => {
+        config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
             let finalResult = {}
 
             r.data.services.forEach(service => {
