@@ -33,10 +33,8 @@ const Login = ({ selects }) => {
             password: password
         }).then(r => {
             if (r.data.status === true) {
-                localStorage.setItem('user', JSON.stringify({
-                    userData: r.data.data.user,
-                    token: r.data.token
-                }))
+                localStorage.setItem('token', r.data.token)
+                localStorage.setItem('userData', JSON.stringify({userData: r.data.data.user}))
                 navigate('/')
             } else {
                 toast.error(r.data.message, {
