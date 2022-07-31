@@ -1,5 +1,4 @@
-//
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 //
 import { useLocation } from 'react-router'
 // components
@@ -9,15 +8,21 @@ import ReceivingAppeal from '../../components/ReceivingAppeal'
 // layouts
 import PageContainer from '../../Layouts/PageContainer'
 //
+import config from '../../config'
+import routes from '../../routes'
+//
 import './PReceivingAppeal.css'
 
 
 const PReceivingAppeal = () => {
+    const [patient, setPatient] = useState(null)
 
     const location = useLocation()
 
     useEffect(() => {
-
+        config.api_host.get(routes.get_patient_info).then(r => {
+            setPatient(r.data)
+        })
     }, [])
 
 
@@ -27,7 +32,9 @@ const PReceivingAppeal = () => {
             <Navbar />
             <Sidebar />
             <PageContainer>
-                <ReceivingAppeal />
+                {patient && (
+                    <ReceivingAppeal patient={patient} />
+                )}
             </PageContainer>
         </div>
     )

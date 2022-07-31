@@ -10,8 +10,12 @@ import routes from '../../routes';
 import './ReceivingAppeal.css'
 
 
+const optionsGender = [
+    { value: 0, label: 'Мужчина' }, 
+    { value: 1, label: 'Женщина' }
+]
 
-const options = [
+const optionsPersonStatus = [
     { value: 1, label: 'Пенсионер' },
     { value: 2, label: 'Инвалид' },
     { value: 3, label: 'Семьи с детьми-инвалидами' },
@@ -22,9 +26,33 @@ const options = [
     { value: 8, label: 'Одинокая мать (отец)' }
 ]
 
-const ReceivingAppeal = () => {
+const ReceivingAppeal = ({ patient }) => {
+
+    const getGender = gender => {
+        if (gender === 1) {
+            return {
+                value: 1,
+                label: 'Женщина'
+            }
+        }
+        if (gender === 0) {
+            return {
+                value: 0,
+                label: 'Мужчина'
+            }
+        }
+    }
+
     const formik = useFormik({
-        initialValues: { },
+        initialValues: { 
+            full_name: patient.fio,
+            gender: getGender(patient.gender),
+            dob: patient.dob,
+            address: patient.addr,
+            phone: patient.phone,
+            person_status: '',
+            feedback: patient.comment
+         },
         onSubmit: values => {
             config.api_host.post(routes.patient_create, {
                 ...values,
@@ -75,13 +103,19 @@ const ReceivingAppeal = () => {
                         <span className='receiving_appeal_content_form_element_name'>
                             Пол заявителя
                         </span>
-                        <input
+                        <Select 
                             id="gender"
-                            value={formik.values.gender}
-                            onChange={formik.handleChange}
-                            placeholder='Пол'
-                            className='receiving_appeal_content_form_element_input'
+                            defaultValue={formik.values.gender}
+                            onChange={selectedOption =>
+                                formik.setFieldValue("gender", {
+                                    value: selectedOption.value,
+                                    label: selectedOption.label
+                                })
+                              }
+                            placeholder='Выберите пол' 
+                            className='receiving_appeal_content_form_element_select' 
                             type="text"
+                            options={optionsGender}
                         />
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
@@ -138,7 +172,7 @@ const ReceivingAppeal = () => {
                             placeholder='Выберите статус' 
                             className='receiving_appeal_content_form_element_select' 
                             type="text"
-                            options={options}
+                            options={optionsPersonStatus}
                         />
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
@@ -146,6 +180,7 @@ const ReceivingAppeal = () => {
                             Содержание обращения
                         </span>
                         <textarea 
+                            rows="10"
                             id="feedback"
                             value={formik.values.feedback}
                             onChange={formik.handleChange}
