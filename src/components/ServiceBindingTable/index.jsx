@@ -19,7 +19,6 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
 
 
     const onChangeData = (service_id, schedule_id, value, type, cell) => {
-        console.log(cell)
         setData(prev => {
 
             const newNextData = prev.nextData.map(el => {
@@ -29,8 +28,6 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
                     
                 }
             })
-
-            console.log(newNextData)
 
             return {
                 ...prev,
@@ -52,7 +49,6 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
         })
     }
 
-    console.log(data)
     const onHandleRemove = (schedule_id, service_id) => {
         config.api_host.post(routes.service_by_schedule_remove, {
             schedule_id: schedule_id,

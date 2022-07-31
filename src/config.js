@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 
+const { token } = JSON.parse(window.localStorage.getItem('user'))
 
 const api_host = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
     headers: {
         // for test
-        Authorization: 'Bearer ' + window.localStorage.getItem('token')
+        Authorization: 'Bearer ' + token
     }
 });
 

@@ -8,6 +8,7 @@ import config from '../../config'
 import routes from '../../routes';
 //
 import './Login.css'
+import { useNavigate } from 'react-router';
 
 
 
@@ -16,6 +17,8 @@ const Login = ({ selects }) => {
     const [password, setPassword] = useState('')
 
     const [isDisabledBtn, setIsDisabledBtn] = useState(true)
+
+    const navigate = useNavigate()
 
 
     const options = selects.map(select => ({
@@ -30,13 +33,17 @@ const Login = ({ selects }) => {
             password: password
         }).then(r => {
             if (r.data.status === true) {
-
+                localStorage.setItem('user', JSON.stringify({
+                    userData: r.data.data.user,
+                    token: r.data.token
+                }))
+                navigate('/')
             } else {
                 toast.error(r.data.message, {
                     autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
-		    enableHtml: true,
+                    enableHtml: true,
                 });
             }
         })
