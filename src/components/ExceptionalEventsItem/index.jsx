@@ -21,6 +21,7 @@ const ExceptionalEventsItem = ({ id, name, tags, type }) => {
     const handleDebounceFn = (value) => {
         const newValue = value.split(',').map(e => e.trim())
         config.api_host.post(routes.set_tags, {
+            event_id: id,
             tags: newValue
         }).then(r => {
             if (r.status === 200) {

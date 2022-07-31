@@ -115,15 +115,16 @@ const ServiceBinding = ({ defaultData }) => {
             </div>
             <div className='service_binding_content'>
                 <div className='service_binding_content_doctors'>
-                    <span className='service_binding_content_doctors_title'>
+                    {/* <span className='service_binding_content_doctors_title'>
                         Заполнение услуг для врача: <b>{selectedOption?.label || '...'}</b>
-                    </span>
+                    </span> */}
                     <div style={{ display: 'flex', flexDirection: ' row' }}>
                         <div style={{ width: '100%' }}>
                             <Select
                                 styles={{
                                     width: '100%'
                                 }}
+                                placeholder="Выберите врача…"
                                 defaultValue={selectedOption}
                                 onChange={onHandleSelectedOption}
                                 options={data}
@@ -212,15 +213,10 @@ const ServiceBinding = ({ defaultData }) => {
                 </div>
                 <div className='service_binding_content_wrapper_table'>
                     {selectedDoctor && selectedDoctor.resultWithCells
-                        ? <ServiceBindingTable 
+                        && <ServiceBindingTable 
                             onUpdateSelectedDoctor={onUpdateSelectedDoctor} 
                             selectedDoctor={selectedDoctor}
                         />
-                        : (
-                            <span>
-                                Select doctor
-                            </span>
-                        )
                     }
                 </div>
             </div>
