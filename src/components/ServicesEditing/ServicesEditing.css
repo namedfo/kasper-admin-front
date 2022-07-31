@@ -1,4 +1,4 @@
-.services {
+.services_editing {
     background-color: white;
     border-radius: 15px;
 
@@ -11,18 +11,18 @@
 
 /* HEADER */
 
-.services_header {
+.services_editing_header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.services_header_title {
+.services_editing_header_title {
     font-size: 24px;
     font-weight: 700;
 }
 
-.services_header_search {
+.services_editing_header_search {
     border-radius: 8px;
 
     border: 1px solid gray;
@@ -30,14 +30,14 @@
 
     padding: 5px 10px;
 }
-.services_header_search:focus {
+.services_editing_header_search:focus {
     border: 1px solid blueviolet;
 }
 
 
 /* CONTENT */
 
-.services_content {
+.services_editing_content {
     display: flex;
     flex-direction: column;
 

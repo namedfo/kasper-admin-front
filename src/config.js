@@ -1,22 +1,32 @@
 import axios from 'axios';
 
 
-
+const { token } = window.localStorage.getItem('token')
 const api_host = axios.create({
-    baseURL: 'https://yurganov.com/kasper'
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    headers: {
+        // for test
+        Authorization: 'Bearer ' + window.localStorage.getItem('token')
+    }
 });
 
 const getIsShowPage = {
-    'PMain': true,
-    'PFeedbackManagement': true,
-    'PServices': true,
-    'PServiceEditing': true,
-    'PExceptionalEvents': true
+    PMain: process.env.REACT_APP_SHOW_MAIN ?? true,
+    PFeedbackManagement: process.env.REACT_APP_SHOW_FEEDBACK ?? false,
+    PServicesEditing: process.env.REACT_APP_SHOW_SERVICE_EDIT ?? true,
+    PServiceEditingBulk: process.env.REACT_APP_SHOW_SERVICE_EDIT_BULK ?? true,
+    PExceptionalEvents: process.env.REACT_APP_SHOW_EXCEPTIONAL_EVENTS ?? true,
+    PServiceBinding: process.env.REACT_APP_SHOW_SERVICE_BINDING ?? true,
+    PLogin: process.env.REACT_APP_SHOW_LOGIN ?? true,
+    PReceivingAppeal: process.env.REACT_APP_SHOW_RECEAVING_APPEAL ?? true
 }
+
+const logo_login = process.env.REACT_APP_LOGO_SRC
 
 const config = {
     api_host,
-    getIsShowPage
+    getIsShowPage,
+    logo_login
 } 
 
 export default config;

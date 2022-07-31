@@ -1,10 +1,13 @@
 import PExceptionalEvents from "./pages/PExceptionalEvents";
 import PFeedbackManagement from "./pages/PFeedbackManagement";
 import PMain from "./pages/PMain";
-import PServiceEditing from "./pages/PServiceEditing";
-import PServices from "./pages/PServices";
+import PServiceBinding from './pages/PServiceBinding'
+import PServicesEditing from "./pages/PServicesEditing";
+import PServiceEditingBulk from "./pages/PServiceEditingBulk";
+import PLogin from "./pages/PLogin";
 //
 import config from './config'
+import PReceivingAppeal from "./pages/PReceivingAppeal";
 
 
 const showPage =  [
@@ -13,44 +16,39 @@ const showPage =  [
         component: <PMain />, 
         path: '/', 
         title: 'Главная', 
-        isShowSidebar: false, 
         isShow: config.getIsShowPage.PMain 
     },
 
-    { 
-        name: 'PFeedbackManagement', 
-        component: <PFeedbackManagement />, 
-        path: '/feedback-management', 
-        title: 'Управление обращениями граждан', 
-        isShowSidebar: true, 
-        isShow: config.getIsShowPage.PFeedbackManagement 
-    },
+    { name: 'PFeedbackManagement', component: <PFeedbackManagement />, path: '/feedback-management', title: 'Управление обращениями граждан', isShow: config.getIsShowPage.PFeedbackManagement },
 
-    { 
-        name: 'PServices', 
-        component: <PServices />, 
-        path: '/services', 
-        title: 'Редактирование услуг', 
-        isShowSidebar: true, 
-        isShow: config.getIsShowPage.PServices 
-    },
+    { name: 'PServicesEditing', component: <PServicesEditing />, path: '/services-editing', title: 'Редактирование услуг', isShow: config.getIsShowPage.PServicesEditing },
     
-    { 
-        name: 'PServiceEditing', 
-        component: <PServiceEditing /> , 
-        path: '/export-services', 
-        title: 'Массовое редактирование услуг', 
-        isShowSidebar: true, 
-        isShow: config.getIsShowPage.PServiceEditing 
-    },
+    { name: 'PServiceEditingBulk', component: <PServiceEditingBulk /> , path: '/export-services', title: 'Массовое редактирование услуг', isShow: config.getIsShowPage.PServiceEditingBulk },
+
+    { name: 'PExceptionalEvents', component: <PExceptionalEvents />, path: '/exceptional-events', title: 'Настройки исключительных событий', isShow: config.getIsShowPage.PExceptionalEvents },
 
     { 
-        name: 'PExceptionalEvents', 
-        component: <PExceptionalEvents />, 
-        path: '/exceptional-events', 
-        title: 'Настройки исключительных событий', 
-        isShowSidebar: true, 
-        isShow: config.getIsShowPage.PExceptionalEvents 
+        name: 'PServiceBinding', 
+        component: <PServiceBinding />,
+        path: '/service-binding',
+        title: 'Привязка услуг',
+        isShow: config.getIsShowPage.PServiceBinding
+    },
+
+    {
+        name: 'PReceivingAppeal',
+        component: <PReceivingAppeal />,
+        path: '/receiving-appeal/:id',
+        title: 'Прием обращения',
+        isShow: config.getIsShowPage.PReceivingAppeal
+    },
+
+    {
+        name: 'PLogin',
+        component: <PLogin />,
+        path: '/login',
+        title: 'Войти',
+        isShow: config.getIsShowPage.PLogin
     }
 ]
 

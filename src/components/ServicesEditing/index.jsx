@@ -1,12 +1,12 @@
 import { useState } from 'react'
 //
-import ServicesItem from '../ServicesItem'
+import ServiceEditingItem from '../ServiceEditingItem'
 //
-import './Services.css'
+import './ServicesEditing.css'
 
 
 
-const Services = ({ defaultData }) => {
+const ServicesEditing = ({ defaultData }) => {
 
     const [filted, setFiltred] = useState('')
 
@@ -17,25 +17,25 @@ const Services = ({ defaultData }) => {
 
 
     return (
-        <div className="services">
-            <div className='services_header'>
-                <h4 className='services_header_title'>
+        <div className="services_editing">
+            <div className='services_editing_header'>
+                <h4 className='services_editing_header_title'>
                     Редактирование услуг
                 </h4>
                     <input
-                        className='services_header_search'
+                        className='services_editing_header_search'
                         value={filted} 
                         onChange={e => setFiltred(e.target.value)} 
                         placeholder='Search...' type="text" 
                     />
             </div>
-            <div className='services_content'>
+            <div className='services_editing_content'>
                 {filtredItems.map(item => (
-                    <ServicesItem key={item.id} {...item}  />
+                    <ServiceEditingItem key={item.id} {...item}  />
                 ))}
             </div>
         </div>
     )
 }
 
-export default Services
+export default ServicesEditing

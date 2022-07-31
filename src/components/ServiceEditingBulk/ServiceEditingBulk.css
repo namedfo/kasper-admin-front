@@ -1,4 +1,4 @@
-.service_editing {
+.service_editing_bulk {
     background-color: white;
     border-radius: 15px;
 
@@ -13,11 +13,11 @@
 
 /* ONE */
 
-.service_editing_one_title {
+.service_editing_bulk_one_title {
     font-size: 28px;
 }
 
-.service_editing_one_btn {
+.service_editing_bulk_one_btn {
     border: none;
     outline: none;
     cursor: pointer;
@@ -35,7 +35,7 @@
     -moz-box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.2);
     box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.2);
 }
-.service_editing_one_btn:hover {
+.service_editing_bulk_one_btn:hover {
     background-color: #3A90C1;
     box-shadow: none;
 
@@ -44,7 +44,7 @@
 
 /* TWO */
 
-.service_editing_two_title {
+.service_editing_bulk_two_title {
     padding: 50px 0 0 0;
 
     font-size: 28px;
