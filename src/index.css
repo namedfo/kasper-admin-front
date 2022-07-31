@@ -28,3 +28,8 @@ code {
 body, html, #root, .app {
   height: 100%;
 }
+
+textarea {
+
+  resize: none;
+}

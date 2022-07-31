@@ -47,8 +47,9 @@ const routes = {
 
     // for Receiving Appeal
     //      --- get ---
-    get_patient_info: '/patient.json'
+    get_patient_info: '/patient.json',
     //      --- post ---
+    patient_create: '/post/'
 }
 
 
