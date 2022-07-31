@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const { token } = JSON.parse(window.localStorage.getItem('user'))
+const { token } = window.localStorage.getItem('token')
 
 const api_host = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
