@@ -7,6 +7,7 @@ import PServiceEditingBulk from "./pages/PServiceEditingBulk";
 import PLogin from "./pages/PLogin";
 //
 import config from './config'
+import PReceivingAppeal from "./pages/PReceivingAppeal";
 
 
 const showPage =  [
@@ -32,6 +33,14 @@ const showPage =  [
         path: '/service-binding',
         title: 'Привязка услуг',
         isShow: config.getIsShowPage.PServiceBinding
+    },
+
+    {
+        name: 'PReceivingAppeal',
+        component: <PReceivingAppeal />,
+        path: '/receiving-appeal/:id',
+        title: 'Прием обращения',
+        isShow: config.getIsShowPage.PReceivingAppeal
     },
 
     {

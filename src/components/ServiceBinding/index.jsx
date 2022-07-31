@@ -27,32 +27,32 @@ const ServiceBinding = ({ defaultData }) => {
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
         config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
-            let finalResult = {}
+            let resultInObject = {}
 
             r.data.services.forEach(service => {
-                finalResult[service.service_id] = {
+                resultInObject[service.service_id] = {
                     service_id: service.service_id,
                     name: service.name,
                     cells: {}
                 }
 
                 r.data.schedules.forEach(schedule => {
-                    finalResult[service.service_id].cells[schedule.schedule_id] = null
+                    resultInObject[service.service_id].cells[schedule.schedule_id] = null
                 })
             })
 
             r.data.services.forEach(service => {
-                finalResult[service.service_id].cells[service.schedule_id] = service
+                resultInObject[service.service_id].cells[service.schedule_id] = service
             })
 
 
             let resultInArray = []
-            for (let [key, value] of Object.entries(finalResult)) {
+            for (let [key, value] of Object.entries(resultInObject)) {
                 resultInArray = [...resultInArray, value]
             }
 
 
-            const resultWithCells = resultInArray.map(e => {
+            const resultInArrayWithArrayCells = resultInArray.map(e => {
 
                 let resultCells = []
                 for (let [key, value] of Object.entries(e.cells)) {
@@ -65,7 +65,7 @@ const ServiceBinding = ({ defaultData }) => {
                 }
             })
 
-            resultWithCells.map(e => {
+            resultInArrayWithArrayCells.map(e => {
                 r.data.default_schedules.forEach(i => {
                     if (i.service_id === e.service_id) {
                         return {
@@ -84,8 +84,8 @@ const ServiceBinding = ({ defaultData }) => {
             setSelectedDoctor({
                 services: r.data.services,
                 schedules: r.data.schedules,
-                resultWithCells,
-                finalResult
+                resultInArrayWithArrayCells,
+                resultInObject
             })
 
         })
@@ -212,7 +212,7 @@ const ServiceBinding = ({ defaultData }) => {
                     </button>
                 </div>
                 <div className='service_binding_content_wrapper_table'>
-                    {selectedDoctor && selectedDoctor.resultWithCells
+                    {selectedDoctor && selectedDoctor.resultInArrayWithArrayCells
                         && <ServiceBindingTable 
                             onUpdateSelectedDoctor={onUpdateSelectedDoctor} 
                             selectedDoctor={selectedDoctor}
