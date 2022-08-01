@@ -35,7 +35,7 @@ const PReceivingFeedback = () => {
             <Sidebar />
             <PageContainer>
                 {patient && (
-                    <ReceivingFeedback patient={patient} />
+                    <ReceivingFeedback phone={params.phone} patient={patient} />
                 )}
             </PageContainer>
         </div>
