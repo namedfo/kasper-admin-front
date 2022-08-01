@@ -32,13 +32,15 @@ const ReceivingFeedback = ({ patient, phone }) => {
         if (gender === 0) {
             return {
                 value: 0,
-                label: 'Женщина'
+                label: 'Женщина',
+                short_label: 'Жен'
             }
         }
         if (gender === 1) {
             return {
                 value: 1,
-                label: 'Мужчина'
+                label: 'Мужчина',
+                short_label: 'Муж'
             }
         }
     }
@@ -47,7 +49,7 @@ const ReceivingFeedback = ({ patient, phone }) => {
         initialValues: {
             full_name: patient.fio,
             gender: getGender(patient.gender),
-            dob: patient.dob,
+            dob: 1564634913,
             address: patient.addr,
             phone: phone,
             person_status: '',
@@ -57,7 +59,7 @@ const ReceivingFeedback = ({ patient, phone }) => {
             config.api_host.post(routes.feedback_create, {
                 ...values,
                 person_status: values.person_status.label,
-                gender: values.gender.label
+                gender: values.gender.short_label
             }).then(r => {
                 if (r.status === 200) {
                     toast.success('Успешно', {
