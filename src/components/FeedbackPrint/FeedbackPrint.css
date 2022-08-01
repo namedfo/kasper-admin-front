@@ -40,7 +40,27 @@
 
     font-weight: 700;
 }
+.feedback_print_header_back {
+    border: 1px solid #298ACE;
+    background: none;
+    border-radius: 8px;
 
+    margin-right: 15px;
+    font-size: 18px;
+    color: white;
+
+    cursor: pointer;
+
+    padding: 0 10px;
+
+    color: #298ACE;
+}
+.feedback_print_header_back:hover {
+    transition: .5s;
+
+    background-color: #298ACE;
+    color: white;
+}
 /* CONTENT */
 .feedback_print_wrapper_content {
     padding: 40px 0 0 0 ;

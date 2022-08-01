@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 //
 import { BsPrinter } from 'react-icons/bs'
+import { useNavigate } from 'react-router';
 //
 import { useReactToPrint } from 'react-to-print';
 //
@@ -9,22 +10,23 @@ import './FeedbackPrint.css'
 
 
 const FeedbackPrint = ({ dataFeedbackPrint }) => {
-    console.log(dataFeedbackPrint)
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    const navigate = useNavigate()
 
     function padTo2Digits(num) {
         return num.toString().padStart(2, '0');
     }
 
     const date = new Date(dataFeedbackPrint.created_at * 1000)
-    const newDateCreated= `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()}`
+    const newDateCreated = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()}`
     const newTimeCreated = `${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`
 
-    const newDate= new Date(dataFeedbackPrint.dob * 1000)
-    const newDateBirth= `${padTo2Digits(newDate.getDate())}.${padTo2Digits(newDate.getMonth() + 1)}.${newDate.getFullYear()}`
+    const newDate = new Date(dataFeedbackPrint.dob * 1000)
+    const newDateBirth = `${padTo2Digits(newDate.getDate())}.${padTo2Digits(newDate.getMonth() + 1)}.${newDate.getFullYear()}`
     // const date = new Date(el.created_at * 1000)
     // const newDateBirth = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`
     // const newDateCreatedAt = ''
@@ -44,13 +46,21 @@ const FeedbackPrint = ({ dataFeedbackPrint }) => {
                 <h4 className='feedback_print_header_title'>
                     Регистрационная карта обращения
                 </h4>
-                <button
-                    className='feedback_print_header_print'
-                    onClick={handlePrint}
-                >
-                    <BsPrinter style={{ marginRight: '8px' }} />
-                    Распечатать
-                </button>
+                <div style={{ display: 'flex' }}>
+                    <button 
+                        className='feedback_print_header_back'
+                        onClick={() => navigate('/feedback-management')}
+                    >
+                        Назад
+                    </button>
+                    <button
+                        className='feedback_print_header_print'
+                        onClick={handlePrint}
+                    >
+                        <BsPrinter style={{ marginRight: '8px' }} />
+                        Распечатать
+                    </button>
+                </div>
             </div>
             <div className='feedback_print_wrapper_content'>
                 <div ref={componentRef}>
@@ -167,7 +177,7 @@ const FeedbackPrint = ({ dataFeedbackPrint }) => {
                                 Район:
                             </span>
                             <span className='feedback_print_content_element_value'>
-                                
+
                             </span>
                         </div>
                         <div className='feedback_print_content_element'>
