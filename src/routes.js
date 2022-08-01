@@ -2,7 +2,7 @@ const routes = {
 
     // for Feedback Management
     //      --- get ---
-    feedback_path: process.env.REACT_APP_ADMIN_GET_FEEDBACK,
+    feedback_path: process.env.REACT_APP_ADMIN_GET_FEEDBACKS,
     //      --- post ---
     feedback_post: process.env.REACT_APP_ADMIN_EDIT_FEEDBACK,
 
@@ -56,7 +56,7 @@ const routes = {
     
     // for Feedback Print
     //      --- get ---
-    get_feedback_print: process.env.REACT_APP_ADMIN_GET_FEEDBACK_PRINT,
+    get_feedback: process.env.REACT_APP_ADMIN_GET_FEEDBACK,
 }
 
 
