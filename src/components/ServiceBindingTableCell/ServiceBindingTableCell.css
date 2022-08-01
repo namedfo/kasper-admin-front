@@ -1,0 +1,47 @@
+.service_binding_table_cell {
+    padding: 10px;
+}
+
+/* HEADER */
+.service_binding_table_cell_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.service_binding_table_cell_header_btn_remove {
+    color: gray;
+    
+    cursor: pointer;
+}
+.service_binding_table_cell_header_btn_remove:hover {
+    transition: .5s;
+
+    color: #232323
+}
+
+
+
+/* CONTENT */
+.service_binding_table_cell_content {
+    display: flex;
+    align-items: center;
+
+    padding: 10px 0;
+}
+
+.service_binding_table_cell_content_input {
+    width: 35px;
+
+    outline: #3C8DBC;
+
+    font-size: 16px;
+}
+.service_binding_table_cell_content_input::-webkit-outer-spin-button,
+.service_binding_table_cell_content_input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.service_binding_table_cell_content_divider {
+    margin: 0 7px;
+}

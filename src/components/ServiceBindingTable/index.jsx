@@ -1,23 +1,40 @@
 import { useState } from 'react'
-//
-import { AiOutlineCloseCircle } from 'react-icons/ai'
-//
-import routes from '../../routes'
-import config from '../../config'
+// components
+import ServiceBindingTableRow from '../ServiceBindingTableRow'
 //
 import './ServiceBindingTable.css'
 
 
 
 
-const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
-    const [result, setResult] = useState(selectedDoctor && selectedDoctor.resultInArrayWithArrayCells)
+const ServiceBindingTable = ({ selectedDoctor, setChangedData }) => {
     const [data, setData] = useState({
-        previousData: selectedDoctor && selectedDoctor.resultInObject,
-        nextData: []
+        staticData: selectedDoctor && selectedDoctor.resultInArrayWithArrayCells,
+        schedules: selectedDoctor && selectedDoctor.schedules
     })
 
-    console.log(selectedDoctor)
+    // const onChangeData = (indexUpper, indexLower, type, value, cell) => {
+    //     console.log(data.previousData[indexUpper].cells[indexLower])
+    //     setData(prev => {
+    //         return {
+    //             ...prev,
+    //             previousData: [
+    //                 ...prev.previousData,
+    //                 prev.previousData[indexUpper] = {
+    //                     ...prev.previousData[indexUpper],
+    //                     cells: [
+    //                         ...prev.previousData[indexUpper].cells,
+    //                         prev.previousData[indexUpper].cells[indexLower] = {
+    //                             ...prev.previousData[indexUpper].cells[indexLower],
+    //                             [type]: value
+    //                         } 
+    //                     ]
+    //                 }
+    //             ]
+
+    //         }
+    //     })
+    // }
 
 
     // const onChangeData = (service_id, schedule_id, value, type, cell) => {
@@ -62,30 +79,29 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
     //     })
     // }
 
-    const onHandleRemove = (schedule_id, service_id) => {
-        config.api_host.post(routes.service_by_schedule_remove, {
-            schedule_id: schedule_id,
-            service_id: service_id
-        }).then(r => r.status === 200 && onUpdateSelectedDoctor())
-    }
+    // const onHandleRemove = (schedule_id, service_id) => {
+    //     config.api_host.post(routes.service_by_schedule_remove, {
+    //         schedule_id: schedule_id,
+    //         service_id: service_id
+    //     }).then(r => r.status === 200 && onUpdateSelectedDoctor())
+    // }
 
 
-    const onHandleSave = () => {
-        data.nextData.forEach(el => {
-            console.log(el)
-            config.api_host.post(routes.service_by_schedule_save, {
-                schedule_id: el.schedule_id,
-                service_id: el.service_id,
-                min_age: el.min_age,
-                max_age: el.max_age
-            })
-        })
-    }
+    // const onHandleSave = () => {
+    //     data.nextData.forEach(el => {
+    //         console.log(el)
+    //         config.api_host.post(routes.service_by_schedule_save, {
+    //             schedule_id: el.schedule_id,
+    //             service_id: el.service_id,
+    //             min_age: el.min_age,
+    //             max_age: el.max_age
+    //         })
+    //     })
+    // }
 
 
     return (
         <table className='service_binding_table'>
-            <button onClick={onHandleSave}>save</button>
             <thead className='service_binding_table_thead'>
                 <tr className='service_binding_table_tr'>
                     <th className='service_binding_table_th'>
@@ -105,7 +121,7 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
                             </div>
                         </div>
                     </th>
-                    {selectedDoctor && selectedDoctor.schedules && selectedDoctor.schedules.map(el => (
+                    {data && data.schedules && data.schedules.map(el => (
                         <th key={el.schedule_id} className='service_binding_table_th'>
                             <div className='service_binding_table_inner_th'>
                                 <span>{el.place_name}</span>
@@ -122,7 +138,14 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
                 </tr>
             </thead>
             <tbody className='service_binding_table_tbody'>
-                {result && result.map(el => (
+                {data && data.staticData && data.staticData.map((row, rowIndex) => (
+                    <ServiceBindingTableRow
+                        setChangedData={setChangedData}
+                        row={row}
+                        key={`${row.service_id}_${rowIndex}`}
+                    />
+                ))}
+                {/* {data && data.staticData && data.staticData.map((el, indexUpper) => (
                     <tr
                         className='service_binding_table_tr'
                         key={el.service_id}
@@ -130,7 +153,7 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
                         <td className='service_binding_table_td_first'>
                             {el.name}
                         </td>
-                        {el.cells.map((cell, index) => {
+                        {el.cells.map((cell, indexLower) => {
 
                             const getBgColor = () => {
                                 if (cell && cell.active && cell.priority === 1) return '#5ba75b'
@@ -139,7 +162,7 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
 
                                 if (cell && !cell.active) return '#ffa2a2'
 
-                                if (cell && index === 0) return '#90a7fc'
+                                if (cell && indexLower === 0) return '#90a7fc'
                             }
 
                             const getActiveCheckbox = () => {
@@ -147,7 +170,7 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
 
                                 if (cell && cell.active && cell.priority === 2) return true
 
-                                if (cell && index === 0) return true
+                                if (cell && indexLower === 0) return true
                             }
 
                             const getRemove = () => {
@@ -162,31 +185,37 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
                                 if (cell && !cell.active) return btnRemove
                             }
                             return (
-                                <td key={index} style={{ backgroundColor: getBgColor() }} className='service_binding_table_td_with_cells'>
+                                <td key={indexLower} style={{ backgroundColor: getBgColor() }} className='service_binding_table_td_with_cells'>
                                     <div className='service_binding_table_td_with_cells_header'>
-                                        {/* <input type="checkbox" checked={getActiveCheckbox()} /> */}
+                                        <input type="checkbox" checked={getActiveCheckbox()} />
                                         {getRemove()}
                                     </div>
                                     <div
                                         className='service_binding_table_td_with_cells_footer'
                                     >
                                         <input
-                                            // onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'duration', cell)}
-                                            // value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.duration}
+                                            value={cell ? cell.duration : ''}
+                                            onChange={e => onChangeData(indexUpper, indexLower, 'duration', e.target.value, cell)}
+                                            onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'duration', cell)}
+                                            value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.duration}
                                             className='service_binding_table_td_input'
                                             type="number"
                                         />
                                         <span className='service_binding_table_td_divider'>|</span>
                                         <input
-                                            // onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'min_age', cell)}
-                                            // value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.min_age}
+                                            value={cell ? cell.min_age : ''}
+                                            onChange={e => onChangeData(indexUpper, indexLower, 'min_age', e.target.value, cell)}
+                                            onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'min_age', cell)}
+                                            value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.min_age}
                                             className='service_binding_table_td_input'
                                             type="number"
                                         />
                                         <span className='service_binding_table_td_divider'>-</span>
                                         <input
-                                            // onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'max_age', cell)}
-                                            // value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.max_age}
+                                            value={cell ? cell.max_age : ''}
+                                            onChange={e => onChangeData(indexUpper, indexLower, 'max_age', e.target.value, cell)}
+                                            onChange={e => onChangeData(el.service_id, cell.schedule_id, e.target.value, 'max_age', cell)}
+                                            value={cell && data.previousData[el.service_id].cells[cell.schedule_id]?.max_age}
                                             className='service_binding_table_td_input'
                                             type="number"
                                         />
@@ -195,7 +224,7 @@ const ServiceBindingTable = ({ selectedDoctor, onUpdateSelectedDoctor }) => {
                             )
                         })}
                     </tr>
-                ))}
+                ))} */}
             </tbody>
         </table>
     )

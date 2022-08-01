@@ -18,6 +18,8 @@ const ServiceBinding = ({ defaultData }) => {
 
     const [selectedDoctor, setSelectedDoctor] = useState(null)
 
+    const [changedData, setChangedData] = useState([])
+
 
     const data = defaultData.map(el => ({
         value: el.id,
@@ -26,6 +28,7 @@ const ServiceBinding = ({ defaultData }) => {
 
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
+
         config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
             let resultInObject = {}
 
@@ -82,10 +85,8 @@ const ServiceBinding = ({ defaultData }) => {
             
 
             setSelectedDoctor({
-                services: r.data.services,
                 schedules: r.data.schedules,
-                resultInArrayWithArrayCells,
-                resultInObject
+                resultInArrayWithArrayCells
             })
 
         })
@@ -101,6 +102,11 @@ const ServiceBinding = ({ defaultData }) => {
 
     const onUpdateSelectedDoctor = () => {
         getSelectedDoctor(selectedDoctor.value)
+    }
+
+
+    const onHandleSaveChangedData= () => {
+        console.log(changedData)
     }
 
 
@@ -207,15 +213,18 @@ const ServiceBinding = ({ defaultData }) => {
                             Не настроено
                         </div>
                     </div>
-                    <button className='service_binding_content_info_btn_save'>
+                    <button 
+                        onClick={onHandleSaveChangedData}
+                        className='service_binding_content_info_btn_save'
+                    >
                         Сохранить
                     </button>
                 </div>
                 <div className='service_binding_content_wrapper_table'>
                     {selectedDoctor && selectedDoctor.resultInArrayWithArrayCells
-                        && <ServiceBindingTable 
-                            onUpdateSelectedDoctor={onUpdateSelectedDoctor} 
+                        && <ServiceBindingTable
                             selectedDoctor={selectedDoctor}
+                            setChangedData={setChangedData}
                         />
                     }
                 </div>
