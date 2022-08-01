@@ -17,11 +17,11 @@ const FeedbackManagement = ({ defaultData }) => {
 
     const onHandleCloseAppeal = id => {
         config.api_host.post(routes.feedback_post, {
-            entry_id: id
+            id: id
         }).then(r => {
             if (r.status === 200) {
                 setData(prev => prev.map(el => {
-                    if (el.entry_id === id) return { ...el, is_active: false }
+                    if (el.id === id) return { ...el, is_active: false }
 
                     return el
                 }))
@@ -58,14 +58,14 @@ const FeedbackManagement = ({ defaultData }) => {
                             const date = new Date(el.created_at)
                             const newDate = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`
                             return (
-                                <tr className='feedback_management_tr' key={el.entry_id}>
-                                    <td className='feedback_management_td'>{el.entry_id}</td>
+                                <tr className='feedback_management_tr' key={el.id}>
+                                    <td className='feedback_management_td'>{el.id}</td>
                                     <td className='feedback_management_td'>{newDate}</td>
-                                    <td className='feedback_management_td'>{el.patient_name}</td>
+                                    <td className='feedback_management_td'>{el.full_name}</td>
                                     <td className='feedback_management_td'>{el.phone}</td>
                                     <td className='feedback_management_td feedback_management_content_table_actions'>
                                         <button
-                                            onClick={() => onHandleCloseAppeal(el.entry_id)}
+                                            onClick={() => onHandleCloseAppeal(el.id)}
                                             className={`feedback_management_content_table_close ${!el.is_active && 'feedback_management_content_table_close_disabled'}`}
                                             disabled={!el.is_active}
                                         >

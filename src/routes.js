@@ -1,7 +1,9 @@
 const routes = {
 
     // for Feedback Management
+    //      --- get ---
     feedback_path: process.env.REACT_APP_ADMIN_GET_FEEDBACK,
+    //      --- post ---
     feedback_post: process.env.REACT_APP_ADMIN_EDIT_FEEDBACK,
 
 

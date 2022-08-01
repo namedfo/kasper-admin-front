@@ -4,6 +4,8 @@ import Select from 'react-select';
 //
 import { toast } from 'react-toastify';
 //
+import DatePicker from "react-datepicker";
+//
 import config from '../../config'
 import routes from '../../routes';
 //
@@ -27,6 +29,7 @@ const optionsPersonStatus = [
 ]
 
 const ReceivingFeedback = ({ patient, phone }) => {
+    console.log(patient)
 
     const getGender = gender => {
         if (gender === 0) {
@@ -49,7 +52,7 @@ const ReceivingFeedback = ({ patient, phone }) => {
         initialValues: {
             full_name: patient.fio,
             gender: getGender(patient.gender),
-            dob: 1564634913,
+            dob: new Date(patient.dob),
             address: patient.addr,
             phone: phone,
             person_status: '',
@@ -59,7 +62,8 @@ const ReceivingFeedback = ({ patient, phone }) => {
             config.api_host.post(routes.feedback_create, {
                 ...values,
                 person_status: values.person_status.label,
-                gender: values.gender.short_label
+                gender: values.gender.short_label,
+                dob: +new Date(values.dob)
             }).then(r => {
                 if (r.status === 200) {
                     toast.success('Успешно', {
@@ -125,13 +129,25 @@ const ReceivingFeedback = ({ patient, phone }) => {
                         <span className='receiving_appeal_content_form_element_name'>
                             Дата рождения заявителя
                         </span>
-                        <input
+                        {/* <input
                             id="dob"
                             value={formik.values.dob}
                             onChange={formik.handleChange}
                             placeholder='Дата рождения'
                             className='receiving_appeal_content_form_element_input' type="text"
+                        /> */}
+                       <div style={{ width: '60%' }}>
+                        <DatePicker 
+                            id="dob"
+                            placeholder='Дата рождения'
+                            selected={formik.values.dob}
+                            onChange={selectedOption => {
+                                console.log(selectedOption)
+                                formik.setFieldValue("dob", selectedOption)
+                            }}
+                            className='receiving_appeal_content_form_element_picker'
                         />
+                       </div>
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
                         <span className='receiving_appeal_content_form_element_name'>
