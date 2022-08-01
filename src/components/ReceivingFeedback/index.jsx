@@ -57,7 +57,7 @@ const ReceivingFeedback = ({ patient, phone }) => {
             config.api_host.post(routes.feedback_create, {
                 ...values,
                 person_status: values.person_status.label,
-                gender: values.gender.value
+                gender: values.gender.label
             }).then(r => {
                 if (r.status === 200) {
                     toast.success('Успешно', {
