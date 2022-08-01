@@ -17,7 +17,7 @@ const getIsShowPage = {
     PExceptionalEvents: process.env.REACT_APP_SHOW_EXCEPTIONAL_EVENTS ?? true,
     PServiceBinding: process.env.REACT_APP_SHOW_SERVICE_BINDING ?? true,
     PLogin: process.env.REACT_APP_SHOW_LOGIN ?? true,
-    PReceivingAppeal: process.env.REACT_APP_SHOW_RECEAVING_APPEAL ?? true
+    PReceivingFeedback: process.env.REACT_APP_SHOW_RECEAVING_FEEDBACK ?? true
 }
 
 const logo_login = process.env.REACT_APP_LOGO_SRC

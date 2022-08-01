@@ -7,11 +7,15 @@ import { toast } from 'react-toastify';
 import config from '../../config'
 import routes from '../../routes';
 //
-import './ReceivingAppeal.css'
+import './ReceivingFeedback.css'
 
 
+const optionsGender = [
+    { value: 1, label: 'Мужчина' },
+    { value: 0, label: 'Женщина' }
+]
 
-const options = [
+const optionsPersonStatus = [
     { value: 1, label: 'Пенсионер' },
     { value: 2, label: 'Инвалид' },
     { value: 3, label: 'Семьи с детьми-инвалидами' },
@@ -22,24 +26,51 @@ const options = [
     { value: 8, label: 'Одинокая мать (отец)' }
 ]
 
-const ReceivingAppeal = () => {
+const ReceivingFeedback = ({ patient, phone }) => {
+
+    const getGender = gender => {
+        if (gender === 0) {
+            return {
+                value: 0,
+                label: 'Женщина',
+                short_label: 'Ж'
+            }
+        }
+        if (gender === 1) {
+            return {
+                value: 1,
+                label: 'Мужчина',
+                short_label: 'М'
+            }
+        }
+    }
+
     const formik = useFormik({
-        initialValues: { },
+        initialValues: {
+            full_name: patient.fio,
+            gender: getGender(patient.gender),
+            dob: 1564634913,
+            address: patient.addr,
+            phone: phone,
+            person_status: '',
+            feedback: patient.comment
+        },
         onSubmit: values => {
-            config.api_host.post(routes.patient_create, {
+            config.api_host.post(routes.feedback_create, {
                 ...values,
-                person_status: values.person_status.label
+                person_status: values.person_status.label,
+                gender: values.gender.short_label
             }).then(r => {
                 if (r.status === 200) {
                     toast.success('Успешно', {
                         position: "top-right",
                         autoClose: 300,
-                        });
+                    });
                 } else {
                     toast.error('Ошибка', {
                         position: "top-right",
                         autoClose: 300,
-                        });
+                    });
                 }
             })
         },
@@ -75,13 +106,19 @@ const ReceivingAppeal = () => {
                         <span className='receiving_appeal_content_form_element_name'>
                             Пол заявителя
                         </span>
-                        <input
+                        <Select
                             id="gender"
-                            value={formik.values.gender}
-                            onChange={formik.handleChange}
-                            placeholder='Пол'
-                            className='receiving_appeal_content_form_element_input'
+                            defaultValue={formik.values.gender}
+                            onChange={selectedOption =>
+                                formik.setFieldValue("gender", {
+                                    value: selectedOption.value,
+                                    label: selectedOption.label
+                                })
+                            }
+                            placeholder='Выберите пол'
+                            className='receiving_appeal_content_form_element_select'
                             type="text"
+                            options={optionsGender}
                         />
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
@@ -100,33 +137,33 @@ const ReceivingAppeal = () => {
                         <span className='receiving_appeal_content_form_element_name'>
                             Адрес заявителя
                         </span>
-                        <input 
+                        <input
                             id="address"
                             value={formik.values.address}
                             onChange={formik.handleChange}
-                            placeholder='Адрес' 
-                            className='receiving_appeal_content_form_element_input' 
-                            type="text" 
+                            placeholder='Адрес'
+                            className='receiving_appeal_content_form_element_input'
+                            type="text"
                         />
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
                         <span className='receiving_appeal_content_form_element_name'>
                             Телефон (с которого звонит сейчас заявитель)
                         </span>
-                        <input 
+                        <input
                             id="phone"
                             value={formik.values.phone}
                             onChange={formik.handleChange}
-                            placeholder='Номер' 
-                            className='receiving_appeal_content_form_element_input' 
-                            type="text" 
+                            placeholder='Номер'
+                            className='receiving_appeal_content_form_element_input'
+                            type="text"
                         />
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
                         <span className='receiving_appeal_content_form_element_name'>
                             Социальный статус
                         </span>
-                        <Select 
+                        <Select
                             id="person_status"
                             defaultValue={formik.values.person_status}
                             onChange={selectedOption =>
@@ -134,18 +171,19 @@ const ReceivingAppeal = () => {
                                     value: selectedOption.value,
                                     label: selectedOption.label
                                 })
-                              }
-                            placeholder='Выберите статус' 
-                            className='receiving_appeal_content_form_element_select' 
+                            }
+                            placeholder='Выберите статус'
+                            className='receiving_appeal_content_form_element_select'
                             type="text"
-                            options={options}
+                            options={optionsPersonStatus}
                         />
                     </div>
                     <div className='reveiving_appeal_content_form_element'>
                         <span className='receiving_appeal_content_form_element_name'>
                             Содержание обращения
                         </span>
-                        <textarea 
+                        <textarea
+                            rows="10"
                             id="feedback"
                             value={formik.values.feedback}
                             onChange={formik.handleChange}
@@ -160,4 +198,4 @@ const ReceivingAppeal = () => {
     )
 }
 
-export default ReceivingAppeal
+export default ReceivingFeedback
