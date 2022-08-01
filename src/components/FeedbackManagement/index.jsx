@@ -2,6 +2,8 @@ import { useState } from 'react'
 //
 import { BsPrinter } from 'react-icons/bs'
 //
+import { useNavigate } from 'react-router'
+//
 import config from '../../config'
 import routes from '../../routes'
 //
@@ -13,6 +15,8 @@ import './FeedbackManagement.css'
 
 const FeedbackManagement = ({ defaultData }) => {
     const [data, setData] = useState([...defaultData])
+
+    const navigate = useNavigate()
 
 
     const onHandleCloseAppeal = id => {
@@ -72,6 +76,7 @@ const FeedbackManagement = ({ defaultData }) => {
                                             {el.is_active ? 'Закрыть обращение' : 'Закрыто'}
                                         </button>
                                         <button
+                                            onClick={() => navigate(`/feedback-print/${el.id}`)}
                                             className='feedback_management_content_table_printer'>
                                             <BsPrinter />
                                         </button>
