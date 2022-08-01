@@ -154,6 +154,8 @@
 .feedback_print_content_element_receiv_text {
     min-height: 500px;
     font-weight: 500;
+
+    overflow-wrap: anywhere;
 }
 
 .feedback_print_accepted {
