@@ -42,7 +42,7 @@ const FeedbackManagement = ({ defaultData }) => {
                     <thead className='feedback_management_thead'>
                         <tr className='feedback_management_tr'>
                             <th className='feedback_management_th'>ID</th>
-                            <th className='feedback_management_th'>Дата</th>
+                            <th className='feedback_management_th'>Дата создания</th>
                             <th className='feedback_management_th'>ФИО</th>
                             <th className='feedback_management_th'>Телефон</th>
                             <th className='feedback_management_th'>Действия</th>
@@ -55,7 +55,7 @@ const FeedbackManagement = ({ defaultData }) => {
                                 return num.toString().padStart(2, '0');
                               }
 
-                            const date = new Date(el.created_at)
+                            const date = new Date(el.created_at * 1000)
                             const newDate = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`
                             return (
                                 <tr className='feedback_management_tr' key={el.id}>

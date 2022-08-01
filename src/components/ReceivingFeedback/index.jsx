@@ -63,7 +63,7 @@ const ReceivingFeedback = ({ patient, phone }) => {
                 ...values,
                 person_status: values.person_status.label,
                 gender: values.gender.short_label,
-                dob: +new Date(values.dob)
+                dob: +new Date(values.dob) / 1000
             }).then(r => {
                 if (r.status === 200) {
                     toast.success('Успешно', {
