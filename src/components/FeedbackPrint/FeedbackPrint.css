@@ -132,7 +132,8 @@
 }
 
 .feedback_print_content_element_receiv_text {
-    height: 500px;
+    min-height: 500px;
+    font-weight: 500;
 }
 
 .feedback_print_accepted {

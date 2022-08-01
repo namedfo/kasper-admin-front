@@ -134,7 +134,7 @@ const FeedbackPrint = ({ dataFeedbackPrint }) => {
                                 Пол:
                             </span>
                             <span className='feedback_print_content_element_value'>
-                                {getGender()}
+                                {dataFeedbackPrint.gender}
                             </span>
                         </div>
                         <div className='feedback_print_content_element'>
@@ -480,13 +480,13 @@ const FeedbackPrint = ({ dataFeedbackPrint }) => {
                                     Содержание обращения
                                 </span>
                                 <p className='feedback_print_content_element_receiv_text'>
-                                    
+                                    {dataFeedbackPrint?.feedback}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <span className='feedback_print_accepted'>
-                        Обращение принял(а): {dataFeedbackPrint.operator}
+                        Обращение принял(а): {dataFeedbackPrint?.operator}
                     </span>
                 </div>
             </div>
