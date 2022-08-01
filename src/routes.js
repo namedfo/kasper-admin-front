@@ -1,8 +1,8 @@
 const routes = {
 
     // for Feedback Management
-    feedback_path: "/hotline.json",
-    feedback_post: '/post/',
+    feedback_path: process.env.REACT_APP_ADMIN_GET_FEEDBACK,
+    feedback_post: process.env.REACT_APP_ADMIN_EDIT_FEEDBACK,
 
 
 
