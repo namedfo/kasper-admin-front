@@ -11,13 +11,16 @@ const api_host = axios.create({
 
 const getIsShowPage = {
     PMain: process.env.REACT_APP_SHOW_MAIN ?? true,
+
     PFeedbackManagement: process.env.REACT_APP_SHOW_FEEDBACK ?? false,
+    PFeedbackPrint: process.env.REACT_APP_SHOW_FEEDBACK_PRINT ?? true,
+    
     PServicesEditing: process.env.REACT_APP_SHOW_SERVICE_EDIT ?? true,
     PServiceEditingBulk: process.env.REACT_APP_SHOW_SERVICE_EDIT_BULK ?? true,
     PExceptionalEvents: process.env.REACT_APP_SHOW_EXCEPTIONAL_EVENTS ?? true,
     PServiceBinding: process.env.REACT_APP_SHOW_SERVICE_BINDING ?? true,
     PLogin: process.env.REACT_APP_SHOW_LOGIN ?? true,
-    PReceivingFeedback: process.env.REACT_APP_SHOW_RECEAVING_FEEDBACK ?? true
+    PReceivingFeedback: process.env.REACT_APP_SHOW_RECEAVING_FEEDBACK ?? true,
 }
 
 const logo_login = process.env.REACT_APP_LOGO_SRC

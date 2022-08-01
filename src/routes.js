@@ -51,7 +51,12 @@ const routes = {
     //      --- get ---
     get_patient_info: process.env.REACT_APP_GET_PATIENT_INFO,
     //      --- post ---
-    feedback_create: process.env.REACT_APP_ADMIN_FEEDBACK_CREATE
+    feedback_create: process.env.REACT_APP_ADMIN_FEEDBACK_CREATE,
+
+    
+    // for Feedback Print
+    //      --- get ---
+    get_feedback_print: process.env.REACT_APP_ADMIN_GET_FEEDBACK_PRINT,
 }
 
 
