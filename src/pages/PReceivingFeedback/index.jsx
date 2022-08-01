@@ -4,24 +4,24 @@ import { useParams } from 'react-router'
 // components
 import Navbar from '../../components/Navbar'
 import Sidebar from '../../components/Sidebar'
-import ReceivingAppeal from '../../components/ReceivingAppeal'
+import ReceivingFeedback from '../../components/ReceivingFeedback'
 // layouts
 import PageContainer from '../../Layouts/PageContainer'
 //
 import config from '../../config'
 import routes from '../../routes'
 //
-import './PReceivingAppeal.css'
+import './PReceivingFeedback.css'
 
 
-const PReceivingAppeal = () => {
+const PReceivingFeedback = () => {
     const [patient, setPatient] = useState(null)
 
     const params = useParams()
 
     useEffect(() => {
         if (params.id) {
-            config.api_host.get(routes.get_patient_info).then(r => {
+            config.api_host.get(`${routes.get_patient_info}?id=${params.id}`).then(r => {
                 setPatient(r.data)
             })
         }
@@ -30,16 +30,16 @@ const PReceivingAppeal = () => {
 
 
     return (
-        <div className='p_receiving_appeal'>
+        <div className='p_receiving_feedback'>
             <Navbar />
             <Sidebar />
             <PageContainer>
                 {patient && (
-                    <ReceivingAppeal patient={patient} />
+                    <ReceivingFeedback patient={patient} />
                 )}
             </PageContainer>
         </div>
     )
 }
 
-export default PReceivingAppeal
+export default PReceivingFeedback

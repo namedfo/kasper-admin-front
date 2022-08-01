@@ -45,11 +45,11 @@ const routes = {
     service_by_schedule_remove: '/post/',
 
 
-    // for Receiving Appeal
+    // for Receiving Feedback
     //      --- get ---
-    get_patient_info: '/patient.json',
+    get_patient_info: process.env.REACT_APP_GET_PATIENT_INFO,
     //      --- post ---
-    patient_create: '/post/'
+    feedback_create: process.env.REACT_APP_ADMIN_FEEDBACK_CREATE
 }
 
 

@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import config from '../../config'
 import routes from '../../routes';
 //
-import './ReceivingAppeal.css'
+import './ReceivingFeedback.css'
 
 
 const optionsGender = [
@@ -26,7 +26,7 @@ const optionsPersonStatus = [
     { value: 8, label: 'Одинокая мать (отец)' }
 ]
 
-const ReceivingAppeal = ({ patient }) => {
+const ReceivingFeedback = ({ patient }) => {
 
     console.log(patient)
     const getGender = gender => {
@@ -55,7 +55,7 @@ const ReceivingAppeal = ({ patient }) => {
             feedback: patient.comment
          },
         onSubmit: values => {
-            config.api_host.post(routes.patient_create, {
+            config.api_host.post(routes.feedback_create, {
                 ...values,
                 person_status: values.person_status.label
             }).then(r => {
@@ -196,4 +196,4 @@ const ReceivingAppeal = ({ patient }) => {
     )
 }
 
-export default ReceivingAppeal
+export default ReceivingFeedback

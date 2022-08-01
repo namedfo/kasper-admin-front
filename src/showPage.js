@@ -4,10 +4,10 @@ import PMain from "./pages/PMain";
 import PServiceBinding from './pages/PServiceBinding'
 import PServicesEditing from "./pages/PServicesEditing";
 import PServiceEditingBulk from "./pages/PServiceEditingBulk";
+import PReceivingFeedback from "./pages/PReceivingFeedback";
 import PLogin from "./pages/PLogin";
 //
 import config from './config'
-import PReceivingAppeal from "./pages/PReceivingAppeal";
 
 
 const showPage =  [
@@ -36,11 +36,11 @@ const showPage =  [
     },
 
     {
-        name: 'PReceivingAppeal',
-        component: <PReceivingAppeal />,
-        path: '/receiving-appeal/:id/:phone',
+        name: 'PReceivingFeedback',
+        component: <PReceivingFeedback />,
+        path: '/receiving-feedback/:id/:phone',
         title: 'Прием обращения',
-        isShow: config.getIsShowPage.PReceivingAppeal
+        isShow: config.getIsShowPage.PReceivingFeedback
     },
 
     {
