@@ -33,14 +33,14 @@ const ReceivingFeedback = ({ patient, phone }) => {
             return {
                 value: 0,
                 label: 'Женщина',
-                short_label: 'Жен'
+                short_label: 'Ж'
             }
         }
         if (gender === 1) {
             return {
                 value: 1,
                 label: 'Мужчина',
-                short_label: 'Муж'
+                short_label: 'М'
             }
         }
     }
