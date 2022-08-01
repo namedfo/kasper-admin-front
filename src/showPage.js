@@ -38,7 +38,7 @@ const showPage =  [
     {
         name: 'PReceivingAppeal',
         component: <PReceivingAppeal />,
-        path: '/receiving-appeal/:id',
+        path: '/receiving-appeal/:id/:phone',
         title: 'Прием обращения',
         isShow: config.getIsShowPage.PReceivingAppeal
     },

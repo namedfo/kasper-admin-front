@@ -28,6 +28,7 @@ const optionsPersonStatus = [
 
 const ReceivingAppeal = ({ patient }) => {
 
+    console.log(patient)
     const getGender = gender => {
         if (gender === 1) {
             return {

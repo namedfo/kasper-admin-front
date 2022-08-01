@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 //
-import { useLocation } from 'react-router'
+import { useParams } from 'react-router'
 // components
 import Navbar from '../../components/Navbar'
 import Sidebar from '../../components/Sidebar'
@@ -17,12 +17,14 @@ import './PReceivingAppeal.css'
 const PReceivingAppeal = () => {
     const [patient, setPatient] = useState(null)
 
-    const location = useLocation()
+    const params = useParams()
 
     useEffect(() => {
-        config.api_host.get(routes.get_patient_info).then(r => {
-            setPatient(r.data)
-        })
+        if (params.id) {
+            config.api_host.get(routes.get_patient_info).then(r => {
+                setPatient(r.data)
+            })
+        }
     }, [])
 
 
