@@ -56,7 +56,7 @@ const routes = {
     
     // for Feedback Print
     //      --- get ---
-    get_feedback: process.env.REACT_APP_ADMIN_GET_FEEDBACK,
+    get_feedback_print: process.env.REACT_APP_ADMIN_GET_FEEDBACK,
 }
 
 
