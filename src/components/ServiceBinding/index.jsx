@@ -2,8 +2,6 @@ import { useState } from 'react';
 //
 import Select from 'react-select';
 //
-import { toast } from 'react-toastify'
-//
 import ServiceBindingTable from '../ServiceBindingTable';
 //
 import config from '../../config'
@@ -100,12 +98,13 @@ const ServiceBinding = ({ defaultData }) => {
 
     const onHandleSelectedOption = selected => {
         setSelectedOption(selected)
+        console.log(selected)
 
         getSelectedDoctor(selected.value)
     }
 
     const onUpdateSelectedDoctor = () => {
-        getSelectedDoctor(selectedDoctor.value)
+        getSelectedDoctor(selectedOption.value)
     }
 
 

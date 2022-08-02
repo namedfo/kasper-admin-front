@@ -40,8 +40,8 @@ const routes = {
 
     // for Service Binding
     //      --- get ---
-    doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
-    doctor: process.env.REACT_APP_ADMIN_DOCTOR_SERVICES_BINDINGS,
+    doctors_all: process.env.REACT_APP_ADMIN_SERVICE_BINDING_DOCTORS_ALL,
+    doctor: process.env.REACT_APP_ADMIN_SERVICES_BINDINGS_DOCTOR,
     //      --- post ---
     service_by_schedule_save: '/post/',
     service_by_schedule_remove: '/post/',
