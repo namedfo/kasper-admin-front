@@ -36,6 +36,7 @@ const getIsShowPage = {
     PServiceBinding: process.env.REACT_APP_SHOW_SERVICE_BINDING ?? true,
     PLogin: process.env.REACT_APP_SHOW_LOGIN ?? true,
     PReceivingFeedback: process.env.REACT_APP_SHOW_RECEAVING_FEEDBACK ?? true,
+    PDoctorEditing: process.env.REACT_APP_SHOW_DOCTOR_EDITING ?? true
 }
 
 const logo_login = process.env.REACT_APP_LOGO_SRC

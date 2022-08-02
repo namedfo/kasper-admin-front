@@ -7,6 +7,7 @@ import PServiceEditingBulk from "./pages/PServiceEditingBulk";
 import PReceivingFeedback from "./pages/PReceivingFeedback";
 import PLogin from "./pages/PLogin";
 import PFeedbackPrint from "./pages/PFeedbackPrint";
+import PDoctorEditing from './pages/PDoctorEditing'
 //
 import config from './config'
 
@@ -58,6 +59,14 @@ const showPage = [
         path: '/feedback-print/:id',
         title: 'Печать обращения',
         isShow: config.getIsShowPage.PFeedbackPrint
+    },
+
+    {
+        name: 'PDoctorEditing',
+        component: <PDoctorEditing />,
+        path: '/doctor-editing',
+        title: 'Редактирования врача',
+        isShow: config.getIsShowPage.PDoctorEditing
     }
 ]
 

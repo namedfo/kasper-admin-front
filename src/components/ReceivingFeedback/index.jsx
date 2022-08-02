@@ -29,7 +29,6 @@ const optionsPersonStatus = [
 ]
 
 const ReceivingFeedback = ({ patient, phone }) => {
-    console.log(patient)
 
     const getGender = gender => {
         if (gender === 0) {
