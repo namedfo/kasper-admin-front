@@ -1,7 +1,8 @@
-import { type } from '@testing-library/user-event/dist/type';
 import { useState } from 'react';
 //
 import Select from 'react-select';
+//
+import { toast } from 'react-toastify'
 //
 import ServiceBindingTable from '../ServiceBindingTable';
 //
@@ -18,6 +19,8 @@ const ServiceBinding = ({ defaultData }) => {
 
     const [selectedDoctor, setSelectedDoctor] = useState(null)
 
+    const [changedData, setChangedData] = useState([])
+
 
     const data = defaultData.map(el => ({
         value: el.id,
@@ -26,6 +29,7 @@ const ServiceBinding = ({ defaultData }) => {
 
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
+
         config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
             let resultInObject = {}
 
@@ -69,7 +73,10 @@ const ServiceBinding = ({ defaultData }) => {
                 r.data.default_schedules.forEach(i => {
                     if (i.service_id === e.service_id) {
                         return {
-                            cells: e.cells.unshift(i)
+                            cells: e.cells.unshift({
+                                ...i,
+                                schedule_id: 1
+                            })
                         }
                     } else {
                         return {
@@ -82,10 +89,8 @@ const ServiceBinding = ({ defaultData }) => {
             
 
             setSelectedDoctor({
-                services: r.data.services,
                 schedules: r.data.schedules,
-                resultInArrayWithArrayCells,
-                resultInObject
+                resultInArrayWithArrayCells
             })
 
         })
@@ -101,6 +106,22 @@ const ServiceBinding = ({ defaultData }) => {
 
     const onUpdateSelectedDoctor = () => {
         getSelectedDoctor(selectedDoctor.value)
+    }
+
+
+    const onHandleSaveChangedData= () => {
+        changedData.forEach(elem => {
+            config.api_host.post(routes.service_by_schedule_save, {
+                schedule_id: elem.schedule_id,
+                service_id: elem.service_id,
+                min_age: elem.min_age,
+                max_age: elem.max_age,
+                duration: elem.duration,
+                active: elem.active
+            })
+        })
+
+        onUpdateSelectedDoctor()
     }
 
 
@@ -207,15 +228,18 @@ const ServiceBinding = ({ defaultData }) => {
                             Не настроено
                         </div>
                     </div>
-                    <button className='service_binding_content_info_btn_save'>
+                    <button 
+                        onClick={onHandleSaveChangedData}
+                        className='service_binding_content_info_btn_save'
+                    >
                         Сохранить
                     </button>
                 </div>
                 <div className='service_binding_content_wrapper_table'>
                     {selectedDoctor && selectedDoctor.resultInArrayWithArrayCells
-                        && <ServiceBindingTable 
-                            onUpdateSelectedDoctor={onUpdateSelectedDoctor} 
+                        && <ServiceBindingTable
                             selectedDoctor={selectedDoctor}
+                            setChangedData={setChangedData}
                         />
                     }
                 </div>
