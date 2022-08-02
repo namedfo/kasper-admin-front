@@ -16,7 +16,7 @@ api_host.interceptors.response.use(function (response) {
         return window.location.href = `/login?return=${window.location.pathname}`
     }
 
-    if (error.response.status && error.response.data.message) {
+    if (error && error.response && error.response.status && error.response.data.message && error.response.data.message) {
         toast.error(error.response.data.message, {
             position: "top-right",
             autoClose: 5000,
