@@ -11,7 +11,7 @@ const api_host = axios.create({
 api_host.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    if (401 === error.response.status) {
+    if (401 === error.response.status || 403 === error.response.status) {
         return window.location.href = `/login?return=${window.location.pathname}`
     }
 });
