@@ -39,7 +39,13 @@ const Login = ({ selects }) => {
             if (r.data.status === true) {
                 localStorage.setItem('token', r.data.token)
                 localStorage.setItem('userData', JSON.stringify({userData: r.data.data.user}))
-                navigate(linkReturn.get('return'))
+
+                
+                const timeout = setTimeout(() => {
+                    navigate(linkReturn.get('return'))
+                }, 1500)
+
+                clearTimeout(timeout)
             } else {
                 toast.error(r.data.message, {
                     autoClose: 3000,

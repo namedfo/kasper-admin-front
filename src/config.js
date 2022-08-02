@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const api_host = axios.create({
@@ -13,6 +14,13 @@ api_host.interceptors.response.use(function (response) {
 }, function (error) {
     if (401 === error.response.status || 403 === error.response.status) {
         return window.location.href = `/login?return=${window.location.pathname}`
+    }
+
+    if (error.response.status && error.response.data.message) {
+        toast.error(error.response.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+        });
     }
 });
 
