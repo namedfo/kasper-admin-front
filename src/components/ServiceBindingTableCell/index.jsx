@@ -2,6 +2,7 @@
 import { useState, memo } from 'react'
 //
 import _isEqual from 'lodash/isEqual'
+import _remove from 'lodash/remove'
 //
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 //
@@ -41,32 +42,25 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
     const onChange = (type, value) => {
         setNewCell(prev => ({
             ...prev,
-            [type]: value
+            [type]: typeof value === Boolean ? value : +value
         }))
 
-        // const newCell = {
-        //     ...cell,
-        //     duration: +duration ?? '',
-        //     min_age: +minAge ?? '',
-        //     max_age: +maxAge ?? ''
-        // }
+        const newCellLocal = {
+            ...newCell,
+            [type]: typeof value === Boolean ? value : +value
+        }
 
-        // setChangedData(prev => {
-        //     console.log(prev)
-        //     if (prev.length > 0) {
-        //         let newPrev = [ ...prev ]
-        //         newPrev.forEach((el, index) => {
-        //             if (el.service_id === cell.service_id && el.schedule_id === cell.schedule_id) {
-        //                 newPrev[index] = newCell
-        //             } else {
-        //                 newPrev = [ ...newPrev, newCell ]
-        //             }
-        //         })
-        //         return newPrev 
-        //     } else {
-        //         return [newCell]
-        //     }
-        // })
+        setChangedData(prev => {
+            if (prev.length > 0) {
+
+                _remove(prev, (item) => item.service_id === newCell.service_id && item.schedule_id === newCell.schedule_id)
+
+
+                return [...prev, newCellLocal]
+            } else {
+                return [newCellLocal]
+            }
+        })
     }
 
 
@@ -77,6 +71,14 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
         }).then(r => {
             if (r.status === 200) {
                 setNewCell(null)
+
+                setChangedData(prev => {
+
+                    _remove(prev, (item) => item.service_id === newCell.service_id && item.schedule_id === newCell.schedule_id)
+
+
+                    return prev
+                })
             }
         })
     }
@@ -100,7 +102,7 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
             style={{ backgroundColor: getBgColor() }}
         >
             <div className='service_binding_table_cell_header'>
-                <input type="checkbox" />
+                <input checked={newCell && newCell.active ? newCell.active : false} onChange={e => onChange('active', e.currentTarget.checked)} type="checkbox" />
                 {getRemove()}
             </div>
             <div className='service_binding_table_cell_content'>

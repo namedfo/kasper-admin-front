@@ -1,7 +1,8 @@
-import { type } from '@testing-library/user-event/dist/type';
 import { useState } from 'react';
 //
 import Select from 'react-select';
+//
+import { toast } from 'react-toastify'
 //
 import ServiceBindingTable from '../ServiceBindingTable';
 //
@@ -72,7 +73,10 @@ const ServiceBinding = ({ defaultData }) => {
                 r.data.default_schedules.forEach(i => {
                     if (i.service_id === e.service_id) {
                         return {
-                            cells: e.cells.unshift(i)
+                            cells: e.cells.unshift({
+                                ...i,
+                                schedule_id: 1
+                            })
                         }
                     } else {
                         return {
@@ -106,7 +110,18 @@ const ServiceBinding = ({ defaultData }) => {
 
 
     const onHandleSaveChangedData= () => {
-        console.log(changedData)
+        changedData.forEach(elem => {
+            config.api_host.post(routes.service_by_schedule_save, {
+                schedule_id: elem.schedule_id,
+                service_id: elem.service_id,
+                min_age: elem.min_age,
+                max_age: elem.max_age,
+                duration: elem.duration,
+                active: elem.active
+            })
+        })
+
+        onUpdateSelectedDoctor()
     }
 
 

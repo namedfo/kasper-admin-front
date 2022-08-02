@@ -1,3 +1,4 @@
+import { memo } from 'react'
 // components
 import ServiceBindingTableCell from '../ServiceBindingTableCell'
 //
@@ -29,4 +30,4 @@ const ServiceBindingTableRow = ({ row, setChangedData }) => {
 }
 
 
-export default ServiceBindingTableRow
+export default memo(ServiceBindingTableRow)
