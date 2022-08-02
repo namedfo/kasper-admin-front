@@ -62,6 +62,7 @@ const routes = {
     // for Doctor Editing
     //      --- get ---
     get_doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
+    get_doctor: process.env.REACT_APP_ADMIN_DOCTOR,
     //      --- post ---
     update_doctor: process.env.REACT_APP_ADMIN_UPDATE_DOCTOR,
 }
