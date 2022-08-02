@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 //
 import { toast } from 'react-toastify'
 //
+import { useLocation, useNavigate } from 'react-router';
+//
 import Select from 'react-select';
 //
 import config from '../../config'
 import routes from '../../routes';
 //
 import './Login.css'
-import { useNavigate } from 'react-router';
 
 
 
@@ -19,6 +20,9 @@ const Login = ({ selects }) => {
     const [isDisabledBtn, setIsDisabledBtn] = useState(true)
 
     const navigate = useNavigate()
+
+    const location = useLocation()
+    const linkReturn = new URLSearchParams(location.search)
 
 
     const options = selects.map(select => ({
@@ -35,7 +39,7 @@ const Login = ({ selects }) => {
             if (r.data.status === true) {
                 localStorage.setItem('token', r.data.token)
                 localStorage.setItem('userData', JSON.stringify({userData: r.data.data.user}))
-                navigate('/')
+                navigate(linkReturn.get('return'))
             } else {
                 toast.error(r.data.message, {
                     autoClose: 3000,

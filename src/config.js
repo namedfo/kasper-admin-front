@@ -8,13 +8,20 @@ const api_host = axios.create({
         Authorization: 'Bearer ' + window.localStorage.getItem('token')
     }
 });
+api_host.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (401 === error.response.status) {
+        return window.location.href = `/login?return=${window.location.pathname}`
+    }
+});
 
 const getIsShowPage = {
     PMain: process.env.REACT_APP_SHOW_MAIN ?? true,
 
     PFeedbackManagement: process.env.REACT_APP_SHOW_FEEDBACK ?? false,
     PFeedbackPrint: process.env.REACT_APP_SHOW_FEEDBACK_PRINT ?? true,
-    
+
     PServicesEditing: process.env.REACT_APP_SHOW_SERVICE_EDIT ?? true,
     PServiceEditingBulk: process.env.REACT_APP_SHOW_SERVICE_EDIT_BULK ?? true,
     PExceptionalEvents: process.env.REACT_APP_SHOW_EXCEPTIONAL_EVENTS ?? true,
@@ -29,6 +36,6 @@ const config = {
     api_host,
     getIsShowPage,
     logo_login
-} 
+}
 
 export default config;
