@@ -30,7 +30,7 @@ const ServiceBinding = ({ defaultData }) => {
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
 
-        config.api_host.get(`/si6.json?doctor_id=${id}`).then(r => {
+        config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
             const result = _uniqBy(r.data.services, 'service_id').map(item => {
                 const cells = r.data.schedules.map(schedule => {
                     return r.data.services.find(
