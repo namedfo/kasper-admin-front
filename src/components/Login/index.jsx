@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 //
-import { toast } from 'react-toastify'
+import { useFormik } from 'formik';
 //
 import { useLocation, useNavigate } from 'react-router';
 //
@@ -10,12 +10,11 @@ import config from '../../config'
 import routes from '../../routes';
 //
 import './Login.css'
-import { useFormik } from 'formik';
 
 
 
 const Login = ({ selects }) => {
-    const [isDisabledBtn, setIsDisabledBtn] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -34,33 +33,30 @@ const Login = ({ selects }) => {
             password: ''
         },
         onSubmit: values => {
+            setIsLoading(true)
+
             config.api_host.post(routes.login, {
                 username: values.username.value,
                 password: values.password
             }).then(r => {
+
                 if (r.data.status === true) {
                     localStorage.setItem('token', r.data.token)
                     localStorage.setItem('userData', JSON.stringify({ userData: r.data.data.user }))
 
 
                     setTimeout(() => {
+                        setIsLoading(false)
+
                         navigate(linkReturn.get('return') ?? '/')
-                    }, 1500)
+                    }, 3000)
                 }
-            })
+            }).catch(e => setIsLoading(false))
         }
     })
 
 
 
-
-    useEffect(() => {
-        if (formik.values.username && formik.values.password.length > 0) {
-            setIsDisabledBtn(false)
-        } else {
-            setIsDisabledBtn(true)
-        }
-    }, [formik.values.username, formik.values.password])
 
     return (
         <div className='login'>
@@ -88,11 +84,11 @@ const Login = ({ selects }) => {
                     type="password"
                 />
                 <button
-                    disabled={isDisabledBtn}
+                    disabled={isLoading || !formik.dirty}
                     type="submit"
-                    className={`login_form_btn_login ${isDisabledBtn && 'login_form_btn_login_disabled'}`}
+                    className={`login_form_btn_login ${(isLoading || !formik.dirty) && 'login_form_btn_login_disabled'}`}
                 >
-                    Войти
+                    {!isLoading ? 'Войти' : 'Вход...'}
                 </button>
             </form>
         </div>

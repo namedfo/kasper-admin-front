@@ -1,4 +1,5 @@
 import axios from 'axios';
+//
 import { toast } from 'react-toastify';
 
 
@@ -22,6 +23,8 @@ api_host.interceptors.response.use(function (response) {
             autoClose: 5000,
         });
     }
+
+    return Promise.reject(error)
 });
 
 const getIsShowPage = {
