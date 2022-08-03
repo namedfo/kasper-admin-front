@@ -15,9 +15,6 @@ import { useFormik } from 'formik';
 
 
 const Login = ({ selects }) => {
-    const [selected, setSelected] = useState(null)
-    const [password, setPassword] = useState('')
-
     const [isDisabledBtn, setIsDisabledBtn] = useState(true)
 
     const navigate = useNavigate()
