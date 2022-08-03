@@ -110,7 +110,7 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
                     value={newCell?.duration ?? ''}
                     onChange={e => onChange('duration', e.target.value)}
                     className='service_binding_table_cell_content_input'
-                    type="number"
+                    type="text"
                 />
                 <span
                     className='service_binding_table_cell_content_divider'
@@ -121,7 +121,7 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
                     value={newCell?.min_age ?? ''}
                     onChange={e => onChange('min_age', e.target.value)}
                     className='service_binding_table_cell_content_input'
-                    type="number"
+                    type="text"
                 />
                 <span
                     className='service_binding_table_cell_content_divider'
@@ -132,7 +132,7 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
                     value={newCell?.max_age ?? ''}
                     onChange={e => onChange('max_age', e.target.value)}
                     className='service_binding_table_cell_content_input'
-                    type="number"
+                    type="text"
                 />
             </div>
         </td>
