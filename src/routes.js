@@ -43,8 +43,8 @@ const routes = {
     doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
     doctor: process.env.REACT_APP_ADMIN_SERVICES_BINDINGS_DOCTOR,
     //      --- post ---
-    service_by_schedule_save: '/post/',
-    service_by_schedule_remove: '/post/',
+    service_by_schedule_save: process.env.REACT_APP_ADMIN_SERVICES_BINDINGS_EDIT,
+    service_by_schedule_remove: process.env.REACT_APP_ADMIN_SERVICES_BINDINGS_DELETE,
 
 
     // for Receiving Feedback

@@ -2,6 +2,8 @@ import { useState } from 'react';
 //
 import Select from 'react-select';
 //
+import _uniqBy from "lodash/uniqBy";
+//
 import ServiceBindingTable from '../ServiceBindingTable';
 //
 import config from '../../config'
@@ -29,66 +31,47 @@ const ServiceBinding = ({ defaultData }) => {
         setSelectedDoctor({})
 
         config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
-            let resultInObject = {}
 
-            r.data.services.forEach(service => {
-                resultInObject[service.service_id] = {
-                    service_id: service.service_id,
-                    name: service.name,
-                    cells: {}
-                }
 
-                r.data.schedules.forEach(schedule => {
-                    resultInObject[service.service_id].cells[schedule.schedule_id] = null
+            const result = _uniqBy(r.data.services, 'service_id').map(item => {
+                const cells = r.data.schedules.map(schedule => {
+                    return r.data.services.find(
+                        service =>
+                            service.service_id === item.service_id &&
+                            schedule.schedule_id === service.schedule_id
+                    ) ?? null
                 })
-            })
 
-            r.data.services.forEach(service => {
-                resultInObject[service.service_id].cells[service.schedule_id] = service
-            })
-
-
-            let resultInArray = []
-            for (let [key, value] of Object.entries(resultInObject)) {
-                resultInArray = [...resultInArray, value]
-            }
-
-
-            const resultInArrayWithArrayCells = resultInArray.map(e => {
-
-                let resultCells = []
-                for (let [key, value] of Object.entries(e.cells)) {
-                    resultCells = [...resultCells, value]
-                }
-
-                return {
-                    ...e,
-                    cells: resultCells
-                }
-            })
-
-            resultInArrayWithArrayCells.map(e => {
-                r.data.default_schedules.forEach(i => {
-                    if (i.service_id === e.service_id) {
-                        return {
-                            cells: e.cells.unshift({
-                                ...i,
+                
+                const defaultSchedules = r.data.default_schedules
+                if (defaultSchedules && defaultSchedules.some(default_schedule => item.service_id === default_schedule.service_id)) {
+                    defaultSchedules.forEach(default_schedule => {
+                        if (item.service_id === default_schedule.service_id) {
+                            cells.unshift({
+                                ...default_schedule,
                                 schedule_id: 1
                             })
                         }
-                    } else {
-                        return {
-                            ...e,
-                            cells: e.cells.unshift(null)
-                        }
-                    }
-                })
+                    })
+                } else {
+                    cells.unshift(null)
+                }
+
+
+
+                return {
+                    service_id: item.service_id,
+                    name: item.real_name,
+                    cells: cells
+                }
             })
-            
+
+
+
 
             setSelectedDoctor({
                 schedules: r.data.schedules,
-                resultInArrayWithArrayCells
+                result
             })
 
         })
@@ -98,7 +81,6 @@ const ServiceBinding = ({ defaultData }) => {
 
     const onHandleSelectedOption = selected => {
         setSelectedOption(selected)
-        console.log(selected)
 
         getSelectedDoctor(selected.value)
     }
@@ -108,7 +90,7 @@ const ServiceBinding = ({ defaultData }) => {
     }
 
 
-    const onHandleSaveChangedData= () => {
+    const onHandleSaveChangedData = () => {
         changedData.forEach(elem => {
             config.api_host.post(routes.service_by_schedule_save, {
                 schedule_id: elem.schedule_id,
@@ -227,7 +209,7 @@ const ServiceBinding = ({ defaultData }) => {
                             Не настроено
                         </div>
                     </div>
-                    <button 
+                    <button
                         onClick={onHandleSaveChangedData}
                         className='service_binding_content_info_btn_save'
                     >
@@ -235,7 +217,7 @@ const ServiceBinding = ({ defaultData }) => {
                     </button>
                 </div>
                 <div className='service_binding_content_wrapper_table'>
-                    {selectedDoctor && selectedDoctor.resultInArrayWithArrayCells
+                    {selectedDoctor && selectedDoctor.result
                         && <ServiceBindingTable
                             selectedDoctor={selectedDoctor}
                             setChangedData={setChangedData}
