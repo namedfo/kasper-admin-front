@@ -9,8 +9,6 @@ import './ServiceBindingTable.css'
 
 const ServiceBindingTable = ({ selectedDoctor, setChangedData }) => {
 
-    console.log(selectedDoctor)
-
     return (
         <table className='service_binding_table'>
             <thead className='service_binding_table_thead'>
