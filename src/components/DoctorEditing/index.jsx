@@ -7,9 +7,7 @@ import DoctorEditingForm from '../DoctorEditingForm';
 import './DoctorEditing.css'
 
 
-const DoctorEditing = ({ selectedDoctor, selectedDoctorOption, onChangeSelectedDoctorOption }) => {
-
-
+const DoctorEditing = ({ listDoctors, selectedDoctor, selectedDoctorOption, onChangeSelectedDoctorOption }) => {
     return (
         <div className="doctor_editing">
             <div className='doctor_editing_header'>
@@ -22,7 +20,7 @@ const DoctorEditing = ({ selectedDoctor, selectedDoctorOption, onChangeSelectedD
                     placeholder='Выберите врача'
                     selected={selectedDoctorOption}
                     onChange={onChangeSelectedDoctorOption}
-                    options={selectedDoctorOption}
+                    options={listDoctors}
                 />
             </div>
             {selectedDoctor && (

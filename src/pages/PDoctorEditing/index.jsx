@@ -14,14 +14,24 @@ import './PDoctorEditing.css'
 
 const PDoctorEditing = () => {
 
+    const [listDoctors, setListDoctors] = useState(null)
+
     const [selectedDoctor, setSelectedDoctor] = useState(null)
 
     const [selectedDoctorOption, setSelectedDoctorOption] = useState([{value: 1, label: 'Doctor first'}])
 
 
-    useEffect(() => {}, [
-        // get request for doctors all list
-    ])
+    useEffect(() => {
+        config.api_host.get(routes.doctors_all).then(r => {
+            if (r.status === 200) {
+                const newListDoctors = r.data.map(doctor => ({
+                    value: doctor.id,
+                    label: doctor.name
+                }))
+                setListDoctors(newListDoctors)
+            }
+        })
+    }, [])
 
 
     const getDoctor = id => {
@@ -45,7 +55,12 @@ const PDoctorEditing = () => {
             <Navbar />
             <Sidebar />
             <PageContainer>
-                <DoctorEditing selectedDoctor={selectedDoctor} selectedDoctorOption={selectedDoctorOption} onChangeSelectedDoctorOption={onChangeSelectedDoctorOption} />
+                <DoctorEditing 
+                    listDoctors={listDoctors} 
+                    selectedDoctor={selectedDoctor} 
+                    selectedDoctorOption={selectedDoctorOption} 
+                    onChangeSelectedDoctorOption={onChangeSelectedDoctorOption} 
+                />
             </PageContainer>
         </div>
     )

@@ -40,7 +40,7 @@ const routes = {
 
     // for Service Binding
     //      --- get ---
-    doctors_all: process.env.REACT_APP_ADMIN_SERVICE_BINDING_DOCTORS_ALL,
+    doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
     doctor: process.env.REACT_APP_ADMIN_SERVICES_BINDINGS_DOCTOR,
     //      --- post ---
     service_by_schedule_save: '/post/',
@@ -61,7 +61,6 @@ const routes = {
 
     // for Doctor Editing
     //      --- get ---
-    get_doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
     get_doctor: process.env.REACT_APP_ADMIN_DOCTOR,
     //      --- post ---
     update_doctor: process.env.REACT_APP_ADMIN_UPDATE_DOCTOR,
