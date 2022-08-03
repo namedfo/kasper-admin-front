@@ -10,6 +10,7 @@ import config from '../../config'
 import routes from '../../routes';
 //
 import './Login.css'
+import { useFormik } from 'formik';
 
 
 
@@ -30,32 +31,39 @@ const Login = ({ selects }) => {
         label: `${select.name} (${select.LOGIN})`
     }))
 
+    const formik = useFormik({
+        initialValues: {
+            username: null,
+            password: ''
+        },
+        onSubmit: values => {
+            config.api_host.post(routes.login, {
+                username: values.username.value,
+                password: values.password
+            }).then(r => {
+                if (r.data.status === true) {
+                    localStorage.setItem('token', r.data.token)
+                    localStorage.setItem('userData', JSON.stringify({ userData: r.data.data.user }))
 
-    const onHandleLogin = () => {
-        config.api_host.post(routes.login, {
-            username: selected.value,
-            password: password
-        }).then(r => {
-            if (r.data.status === true) {
-                localStorage.setItem('token', r.data.token)
-                localStorage.setItem('userData', JSON.stringify({userData: r.data.data.user}))
+
+                    setTimeout(() => {
+                        navigate(linkReturn.get('return') ?? '/')
+                    }, 1500)
+                }
+            })
+        }
+    })
 
 
-                setTimeout(() => {
-                    navigate(linkReturn.get('return') ?? '/')
-                }, 1500)
-            }
-        })
 
-    }
 
     useEffect(() => {
-        if (selected && password.length > 0) {
+        if (formik.values.username && formik.values.password.length > 0) {
             setIsDisabledBtn(false)
         } else {
             setIsDisabledBtn(true)
         }
-    }, [selected, password])
+    }, [formik.values.username, formik.values.password])
 
     return (
         <div className='login'>
@@ -63,29 +71,33 @@ const Login = ({ selects }) => {
             <h2 className='login_title'>
                 Вход в систему
             </h2>
-            <div className='login_form'>
+            <form onSubmit={formik.handleSubmit} className='login_form'>
                 <Select
-                    defaultValue={selected}
-                    onChange={setSelected}
+                    id="username"
+                    defaultValue={formik.values.username}
+                    onChange={selectedOption => {
+                        formik.setFieldValue('username', selectedOption)
+                    }}
                     placeholder='Выберите логин'
                     className='login_form_select'
                     options={options}
                 />
                 <input
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    id="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
                     placeholder='Пароль'
                     className='login_form_input'
                     type="password"
                 />
                 <button
                     disabled={isDisabledBtn}
-                    onClick={onHandleLogin}
+                    type="submit"
                     className={`login_form_btn_login ${isDisabledBtn && 'login_form_btn_login_disabled'}`}
                 >
                     Войти
                 </button>
-            </div>
+            </form>
         </div>
     )
 }
