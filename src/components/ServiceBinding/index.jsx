@@ -30,10 +30,7 @@ const ServiceBinding = ({ defaultData }) => {
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
 
-        config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(s => {
-            const r = {
-                data: {"schedules":[{"schedule_id":510,"place_name":"Unknown"},{"schedule_id":603,"place_name":"Прием онколога Г303-1"},{"schedule_id":779,"place_name":"Телмед Г303"}],"services":[{"schedule_id":603,"service_id":1762,"real_name":"Онколога (абдоминальная хирургия) К.М.Н первичный","name":"Онколога (абдоминальная хирургия) К.М.Н первичный","service_code":"OC1617","min_age":18,"max_age":99,"duration":30,"priority":1,"active":true,"price":2300},{"schedule_id":603,"service_id":1763,"real_name":"Онколога (абдоминальная хирургия) К.М.Н повторный","name":"Онколога (абдоминальная хирургия) К.М.Н повторный","service_code":"OC1618","min_age":18,"max_age":99,"duration":30,"priority":1,"active":true,"price":2100}],"default_schedules":null}
-            }
+        config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
 
 
             const result = _uniqBy(r.data.services, 'service_id').map(item => {
