@@ -46,7 +46,7 @@ const PServiceBinding = () => {
                 />
                 {services && (
 
-                    <ServiceBindingServicesAll services={services} />
+                    <ServiceBindingServicesAll setSelectedDoctor={setSelectedDoctor} services={services} />
                 )}
             </PageContainer>
         </div>

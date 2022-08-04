@@ -15,7 +15,7 @@ const ServiceBindingServicesAll = ({ setSelectedDoctor, services }) => {
     });
 
     const addService = service => {
-
+        
     }
 
 
