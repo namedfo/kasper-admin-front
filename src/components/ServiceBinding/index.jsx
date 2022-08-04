@@ -14,10 +14,8 @@ import './ServiceBinding.css'
 
 
 
-const ServiceBinding = ({ defaultData }) => {
+const ServiceBinding = ({ selectedDoctor, setSelectedDoctor, defaultData }) => {
     const [selectedOption, setSelectedOption] = useState(null);
-
-    const [selectedDoctor, setSelectedDoctor] = useState(null)
 
     const [changedData, setChangedData] = useState([])
 
