@@ -30,6 +30,12 @@ const ServiceBinding = ({ selectedDoctor, setSelectedDoctor, defaultData }) => {
 
         config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
 
+            if (r && r.data && !r.data.services) {
+                setSelectedDoctor({
+                    schedules: r.data.schedules,
+                    result: []
+                })
+            }
 
             const result = _uniqBy(r.data.services, 'service_id').map(item => {
                 const cells = r.data.schedules.map(schedule => {
@@ -52,7 +58,7 @@ const ServiceBinding = ({ selectedDoctor, setSelectedDoctor, defaultData }) => {
                         }
                     })
                 } else {
-                    cells.unshift(null)
+                    cells.unshift({})
                 }
 
 

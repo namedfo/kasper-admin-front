@@ -15,11 +15,18 @@ const ServiceBindingServicesAll = ({ setSelectedDoctor, services }) => {
     });
 
     const addService = service => {
-        
+        setSelectedDoctor(prev => {
+            return {
+                ...prev,
+                result: [...prev.result, {
+                    service_id: service.id,
+                    name: service.name,
+                    cells: new Array(prev.schedules.length + 1).fill({})
+                }], 
+            }
+        })
     }
 
-
-    console.log(services)
 
     return (
         <div className="service_binding_services_all">

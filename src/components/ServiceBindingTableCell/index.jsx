@@ -3,6 +3,7 @@ import { useState, memo } from 'react'
 //
 import _isEqual from 'lodash/isEqual'
 import _remove from 'lodash/remove'
+import _isEmpty from 'lodash/isEmpty'
 //
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 //
@@ -23,7 +24,7 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
 
 
     const getBgColor = () => {
-        if (!newCell) return 'white'
+        if (_isEmpty(newCell)) return 'white'
 
         if (!getIsChanged()) {
             return '#ff9800'
@@ -90,9 +91,9 @@ const ServiceBindingTableCell = ({ cell, cellIndex, setChangedData }) => {
             className="service_binding_table_cell_header_btn_remove"
         />
 
-        if (newCell && newCell.active && newCell.priority === 1) return btnRemove
+        if (!_isEmpty(newCell) && newCell.active && newCell.priority === 1) return btnRemove
 
-        if (newCell && !newCell.active) return btnRemove
+        if (!_isEmpty(newCell) && !newCell.active) return btnRemove
     }
 
 
