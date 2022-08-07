@@ -64,15 +64,13 @@
     border-radius: 8px;
 
     padding: 10px 20px;
+    cursor: pointer;
 }
 .service_binding_services_all_content_element:not(:first-child) {
     margin-top: 10px;
 }
 
-.service_binding_services_all_content_element_name {
-    cursor: pointer;
-}
-.service_binding_services_all_content_element_name:hover {
+.service_binding_services_all_content_element:hover {
     transition: .5s;
 
     color: #688CBF;

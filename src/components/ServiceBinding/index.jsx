@@ -107,6 +107,7 @@ const ServiceBinding = ({ selectedDoctor, setSelectedDoctor, defaultData }) => {
         })
 
         onUpdateSelectedDoctor()
+        setChangedData([])
     }
 
 

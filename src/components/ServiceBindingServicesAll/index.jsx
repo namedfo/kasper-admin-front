@@ -46,10 +46,11 @@ const ServiceBindingServicesAll = ({ setSelectedDoctor, services }) => {
             <div className='service_binding_services_all_content'>
                 {filtredServices.map(service => (
                     <div 
+                        onClick={() => addService(service)}
                         key={service.id} 
                         className='service_binding_services_all_content_element'
                     >
-                        <span onClick={() => addService(service)} className='service_binding_services_all_content_element_name'>
+                        <span className='service_binding_services_all_content_element_name'>
                             {service.name}
                         </span>
                         <div className='service_binding_services_all_content_element_prompt'>
