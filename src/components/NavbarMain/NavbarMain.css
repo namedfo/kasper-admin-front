@@ -18,6 +18,9 @@
     -moz-box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.08);
     box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.08);
 }
+.navbar_main_select {
+    width: 25%;
+}
 
 .navbar_main_input {
     border-radius: 5px;
@@ -33,9 +36,16 @@
 
     background: #f0f0f0;
 }
+.search_service {
+    width: 25%;
+}
+.search_age {
+    width: 15%;
+}
 
 .navbar_main_btns {
     /* height: 100%; */
+    width: 25%;
 
     display: flex;
     align-items: center;

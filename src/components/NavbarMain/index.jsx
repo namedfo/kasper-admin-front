@@ -13,16 +13,17 @@ const NavbarMain = () => {
     return (
         <div className='navbar_main'>
             <Select
+                className='navbar_main_select'
                 placeholder="Поиск по врачу..."
             />
             <input
                 placeholder='Поиск по названию услуги...'
-                className='navbar_main_input'
+                className='navbar_main_input search_service'
                 type="text"
             />
             <input
                 placeholder='Возраст'
-                className='navbar_main_input'
+                className='navbar_main_input search_age'
                 type="text"
             />
             <div className='navbar_main_btns'>
