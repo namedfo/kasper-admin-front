@@ -40,6 +40,7 @@ const routes = {
 
     // for Service Binding
     //      --- get ---
+    get_services_binding: process.env.REACT_APP_ADMIN_SERVICE_BINDING_SERVICES,
     doctors_all: process.env.REACT_APP_ADMIN_DOCTORS_ALL,
     doctor: process.env.REACT_APP_ADMIN_SERVICES_BINDINGS_DOCTOR,
     //      --- post ---

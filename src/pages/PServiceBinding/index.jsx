@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import ServiceBinding from '../../components/ServiceBinding'
 import Sidebar from '../../components/Sidebar'
+import ServiceBindingServicesAll from '../../components/ServiceBindingServicesAll'
 // layouts
 import PageContainer from '../../Layouts/PageContainer'
 // utils
@@ -15,10 +16,20 @@ import './PServiceBinding.css'
 
 const PServiceBinding = () => {
     const [defaultData, setDefaultData] = useState([])
+    const [selectedDoctor, setSelectedDoctor] = useState(null)
+    const [services, setServices] = useState([])
 
     useEffect(() => {
         config.api_host.get(routes.doctors_all).then(r => {
             setDefaultData(r.data)
+        })
+
+        config.api_host.get(routes.get_services_binding).then(r => {
+            let newServices = []
+            for (let [, value] of Object.entries(r.data)) {
+                newServices = [ ...newServices, value ]
+            }
+            setServices(newServices)
         })
     }, [])
 
@@ -28,7 +39,15 @@ const PServiceBinding = () => {
             <Navbar />
             <Sidebar />
             <PageContainer>
-                <ServiceBinding defaultData={defaultData} />
+                <ServiceBinding 
+                    selectedDoctor={selectedDoctor} 
+                    setSelectedDoctor={setSelectedDoctor} 
+                    defaultData={defaultData} 
+                />
+                {services && selectedDoctor && (
+
+                    <ServiceBindingServicesAll selectedDoctor={selectedDoctor} setSelectedDoctor={setSelectedDoctor} services={services} />
+                )}
             </PageContainer>
         </div>
     )
