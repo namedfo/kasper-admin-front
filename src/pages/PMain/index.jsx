@@ -14,15 +14,20 @@ const PMain = () => {
     const [services, setServices] = useState([])
 
 
+    const getServices = () => {
+        setServices(servicesJson)
+    }
+
+
     useEffect(() => {
         // request
-        setServices(servicesJson)
+        getServices()
     }, [])
 
 
     return (
         <div className="p_main">
-            <NavbarMain />
+            <NavbarMain getServices={getServices} />
             <div className='p_main_content'>
                 {services?.map(service => (
                     <MainServices key={service.name} service={service} />
