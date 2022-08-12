@@ -1,0 +1,141 @@
+.modal_patients_btn_close {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    border: none;
+    padding: 6px;
+
+    color: #787878;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* HEADER */
+
+.modal_patients_header {
+    width: 70%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_patients_header_phone_btns {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.modal_patients_header_input {
+    padding: 5px 10px;
+
+    font-size: 16px;
+
+    width: 100%;
+
+    outline: none;
+
+    border: 1px solid hsl(0, 0%, 80%);
+}
+
+.modal_patients_header_input:focus {
+    padding: 4px 9px;
+    border: 2px solid #3498db;
+}
+
+.modal_patients_headers_btn_clear {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+
+    padding: 5px 10px;
+    margin-left: 10px;
+
+    background: #ecd4df;
+    font-size: 18px;
+}
+
+.modal_patients_header_btn_search {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    width: 100%;
+
+    margin-left: 10px;
+    padding: 5px 10px;
+
+    background: #f3edc6;
+    font-size: 18px;
+}
+
+
+
+.modal_patients_header_date_mk {
+    width: 100%;
+
+    display: flex;
+
+    margin-top: 10px;
+}
+
+
+/* CONTENT */
+.modal_patients_content {
+    width: 100%;
+}
+
+.modal_patients_content_table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+table.modal_patients_content_table {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    border-width: 1px;
+    border-color: hsl(0, 0%, 80%);
+    border-style: solid;
+    color: #000000;
+}
+
+table.modal_patients_content_table tr {
+    /* background-color: #b4ef9c; */
+
+    cursor: pointer;
+}
+
+table.modal_patients_content_table td,
+table.modal_patients_content_table th {
+    border-width: 1px;
+    border-color: hsl(0, 0%, 80%);
+    border-style: solid;
+    padding: 5px;
+
+}
+
+table.modal_patients_content_table thead {
+    background-color: #7EA8F8;
+}
+
+.modal_patients_content_table_btn_map {
+    margin: 5px 10px;
+
+    background-color: white;
+    font-size: 14px;
+    border: 1px solid #cacaca;
+    padding: 2px 6px;
+    color: #444;
+
+    cursor: pointer;
+}

@@ -1,0 +1,38 @@
+.modal_patient_btn_close {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    border: none;
+    padding: 6px;
+
+    color: #787878;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* HEADER */
+.modal_patient_header {
+    display: flex;
+    flex-direction: column;
+}
+.modal_patient_header_fullname {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.modal_patient_header_info {
+    display: flex;
+    margin-top: 15px;
+}
+
+.modal_patient_header_info_email,.modal_patient_header_info_birthday,.modal_patient_header_info_emk {
+    margin-left: 15px;
+}

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 // components
 import MainServices from '../../components/MainServices'
 import NavbarMain from '../../components/NavbarMain'
-// test
-import servicesJson from '../../services_json'
+import config from '../../config'
+import routes from '../../routes'
 //
 import './PMain.css'
 
@@ -14,13 +14,20 @@ const PMain = () => {
     const [services, setServices] = useState([])
 
 
-    const getServices = () => {
-        setServices(servicesJson)
+    const getServices = async (body = {}) => {
+        await config.api_host.post(routes.get_services_main, body).then(r => {
+            if (r.status === 200) {
+                let newServices = []
+                for (let [, value] of Object.entries(r.data)) {
+                    newServices = [ ...newServices, value ]
+                }
+                setServices(newServices)
+            }
+        })
     }
 
 
     useEffect(() => {
-        // request
         getServices()
     }, [])
 
@@ -29,7 +36,7 @@ const PMain = () => {
         <div className="p_main">
             <NavbarMain getServices={getServices} />
             <div className='p_main_content'>
-                {services?.map(service => (
+                {services.length > 0 && services.map(service => (
                     <MainServices key={service.name} service={service} />
                 ))}
             </div>
