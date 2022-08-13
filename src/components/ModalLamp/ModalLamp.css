@@ -1,0 +1,42 @@
+.modal_lamp_btn_close {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    border: none;
+    padding: 6px;
+
+    color: #787878;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.modal_lamp_input {
+    width: 100%;
+
+    padding: 5px 10px;
+    margin-top: 5px;
+    border: 1px solid gray;  
+}
+
+.modal_lamp_textarea {
+    border: 1px solid gray;
+    width: 100%;
+    margin-top: 15px;
+
+    padding: 5px 10px;
+}
+
+.modal_lamp_submit {
+    margin-top: 20px;
+    padding: 5px;
+}

@@ -3,3 +3,7 @@
 
     position: relative;
 }
+
+.p_main_content {
+    padding: 40px 10px 10px 10px;
+}

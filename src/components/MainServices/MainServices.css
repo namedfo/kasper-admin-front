@@ -1,0 +1,36 @@
+.main_services {
+    display: flex;
+    flex-direction: column;
+
+
+    width: 100%;
+}
+
+.main_services:not(:first-child) {
+    margin-top: 20px;
+}
+
+/* HEADER */
+
+.main_services_header {
+    width: 100%;
+
+    cursor: pointer;
+}
+
+.main_services_header_title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* CONTENT */
+
+.main_services_content {
+    padding: 10px 0 0 0;
+
+
+    column-count: 4;
+
+    column-gap: 10px;
+    row-gap: 10px;
+}
