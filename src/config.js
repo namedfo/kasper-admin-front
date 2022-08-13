@@ -17,12 +17,12 @@ api_host.interceptors.response.use(function (response) {
         return window.location.href = `/login?return=${window.location.pathname}`
     }
 
-    if (error && error.response && error.response.status && error.response.data.message && error.response.data.message) {
-        toast.error(error.response.data.message, {
-            position: "top-right",
-            autoClose: 5000,
-        });
-    }
+    // if (error && error.response && error.response.status && error.response.data.message && error.response.data.message) {
+    //     toast.error(error.response.data.message, {
+    //         position: "top-right",
+    //         autoClose: 5000,
+    //     });
+    // }
 
     return Promise.reject(error)
 });

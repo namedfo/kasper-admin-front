@@ -48,9 +48,11 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
     const [patients, setPatients] = useState([])
     const [activePatient, setActivePatient] = useState(null)
 
+    console.log(patients)
+
 
     const getPatients = async (body = {
-        f: '', n: '', m: '', p: '', dob: '', emk: ''
+        surname: '', name: '', middlename: '', phone: '', dob: '', emk: ''
     }) => {
         await config.api_host.post(routes.get_patients_main, body)
             .then(r => {
@@ -63,10 +65,10 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
 
     const formik = useFormik({
         initialValues: {
-            f: '', // last name
-            n: '', // first name
-            m: '', // middle name
-            p: '', // phone
+            surname: '', // last name
+            name: '', // first name
+            middlename: '', // middle name
+            phone: '', // phone
             dob: '', // date birthday
             emk: '' // emk
         },
@@ -96,10 +98,10 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
 
 
     const onClearFormikValues = () => {
-        formik.values.f = ''
-        formik.values.n = ''
-        formik.values.m = ''
-        formik.values.p = ''
+        formik.values.surname = ''
+        formik.values.name = ''
+        formik.values.middlename = ''
+        formik.values.phone = ''
         formik.values.dob = ''
         formik.values.emk = ''
     }
@@ -134,8 +136,8 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
             >
                 <div className='modal_patients_header_phone_btns'>
                     <input
-                        id="p"
-                        value={formik.values.p}
+                        id="phone"
+                        value={formik.values.phone}
                         onChange={formik.handleChange}
                         placeholder='Телефон'
                         className='modal_patients_header_input'
@@ -149,8 +151,8 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                     </button>
                 </div>
                 <input
-                    id="f"
-                    value={formik.values.f}
+                    id="surname"
+                    value={formik.values.surname}
                     onChange={formik.handleChange}
                     style={{ marginTop: '10px' }}
                     placeholder='Фамилия'
@@ -158,8 +160,8 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                     type="text"
                 />
                 <input
-                    id="n"
-                    value={formik.values.n}
+                    id="name"
+                    value={formik.values.name}
                     onChange={formik.handleChange}
                     style={{ marginTop: '10px' }}
                     placeholder='Имя'
@@ -167,8 +169,8 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                     type="text"
                 />
                 <input
-                    id="m"
-                    value={formik.values.m}
+                    id="middlename"
+                    value={formik.values.middlename}
                     onChange={formik.handleChange}
                     style={{ marginTop: '10px' }}
                     placeholder='Отчество'
