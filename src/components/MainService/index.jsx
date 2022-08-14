@@ -1,6 +1,7 @@
 import { useState } from 'react'
 //
 import { BsQuestion } from 'react-icons/bs'
+import ServiceHint from '../ServiceHint'
 //
 import './MainService.css'
 
@@ -26,14 +27,15 @@ const MainService = ({ service }) => {
                         alignItems: 'center' 
                     }}
                 >
-                    <div 
+                    {/* <div 
                         style={{ 
                             display: isHover ? 'block' : 'none' 
                         }} 
                         className='main_service_element_dropdown'
                     >
                         {service.synonym}
-                    </div>
+                    </div> */}
+                    <ServiceHint text={service.synonym} isOpen={isHover}/>
                     <button className='main_service_element_btn'>
                         <BsQuestion size={18} />
                     </button>
