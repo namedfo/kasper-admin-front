@@ -15,6 +15,7 @@ const PMain = () => {
 
 
     const getServices = async (body = {}) => {
+        setServices([])
         await config.api_host.post(routes.get_services_main, body).then(r => {
             if (r.status === 200) {
                 let newServices = []
