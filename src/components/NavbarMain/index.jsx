@@ -13,6 +13,7 @@ import config from '../../config'
 import routes from '../../routes'
 //
 import './NavbarMain.css'
+import { useNavigate } from 'react-router'
 
 
 
@@ -26,6 +27,8 @@ const NavbarMain = ({ getServices }) => {
     const [searchByDoctor, setSearchByDoctor] = useState(null)
     const [searchByService, setSearchByService] = useState('')
     const [searchByAge, setSearchByAge] = useState('')
+
+    const navigate = useNavigate()
 
 
     const onClear = () => {
@@ -59,7 +62,7 @@ const NavbarMain = ({ getServices }) => {
     const onSearchByDoctorId = selectedDoctor => {
         setSearchByDoctor(selectedDoctor)
         getServices({
-            doctorID: selectedDoctor.value
+            doctor_id: selectedDoctor.value
         })
     }
 
@@ -92,11 +95,11 @@ const NavbarMain = ({ getServices }) => {
 
     return (
         <div className='navbar_main'>
-            <ModalLamp 
-                modalIsOpen={modalIsOpenLamp} 
+            <ModalLamp
+                modalIsOpen={modalIsOpenLamp}
                 closeModal={closeModalLamp}
             />
-            <ModalPatients 
+            <ModalPatients
                 modalIsOpen={modalIsOpenPatients}
                 closeModal={closeModalPatients}
             />
@@ -123,20 +126,18 @@ const NavbarMain = ({ getServices }) => {
                 className='navbar_main_input search_age'
                 type="number"
             />
-            <div className='navbar_main_btns'>
-                <button onClick={onClear} className='navbar_main_btn'>
-                    Очистить
-                </button>
-                <button className='navbar_main_btn'>
-                    <TbFilePencil size={24} />
-                </button>
-                <button onClick={openModalPatients} className='navbar_main_btn'>
-                    <MdPersonSearch size={24} />
-                </button>
-                <button onClick={openModalLamp} className='navbar_main_btn'>
-                    <RiLightbulbFlashFill color='#f4db78' size={24} />
-                </button>
-            </div>
+            <button onClick={onClear} className='navbar_main_btn'>
+                Очистить
+            </button>
+            <button onClick={() => navigate('/feedback-management')} className='navbar_main_btn'>
+                <TbFilePencil size={24} />
+            </button>
+            <button onClick={openModalPatients} className='navbar_main_btn'>
+                <MdPersonSearch size={24} />
+            </button>
+            <button onClick={openModalLamp} className='navbar_main_btn'>
+                <RiLightbulbFlashFill color='#f4db78' size={24} />
+            </button>
         </div>
     )
 }
