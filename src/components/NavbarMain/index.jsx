@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 //
 import Select from 'react-select'
 //
+import { useNavigate } from 'react-router'
+//
 import { TbFilePencil } from 'react-icons/tb'
 import { RiLightbulbFlashFill } from 'react-icons/ri'
 import { MdPersonSearch } from 'react-icons/md'
@@ -13,12 +15,11 @@ import config from '../../config'
 import routes from '../../routes'
 //
 import './NavbarMain.css'
-import { useNavigate } from 'react-router'
 
 
 
 
-const NavbarMain = ({ getServices }) => {
+const NavbarMain = ({ getServices, searchByAge, setSearchByAge }) => {
     const [listDoctors, setListDoctors] = useState([])
 
     const [modalIsOpenLamp, setModalIsOpenLamp] = useState(false)
@@ -26,7 +27,6 @@ const NavbarMain = ({ getServices }) => {
 
     const [searchByDoctor, setSearchByDoctor] = useState(null)
     const [searchByService, setSearchByService] = useState('')
-    const [searchByAge, setSearchByAge] = useState('')
 
     const navigate = useNavigate()
 

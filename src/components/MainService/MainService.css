@@ -24,6 +24,18 @@
 .main_service_element_name {
     overflow-wrap: anywhere;
 }
+
+
+.main_service_element_btn_multi {
+    padding: 8px 12px;
+    cursor: pointer;
+    outline: none;
+
+    position: absolute;
+    
+    background: #f0f0f0;
+}
+
 .main_service_element_dropdown {
     position: absolute;
 

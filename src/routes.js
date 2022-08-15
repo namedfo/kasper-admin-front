@@ -70,7 +70,9 @@ const routes = {
     // for Main
     get_services_main: process.env.REACT_APP_GET_SERVICES_MAIN,
     post_feedback_main: process.env.REACT_APP_EDIT_FEEDBACK_MAIN,
-    get_patients_main: process.env.REACT_APP_GET_PATIENTS_MAIN
+    get_patients_main: process.env.REACT_APP_GET_PATIENTS_MAIN,
+    get_service_info: process.env.REACT_APP_GET_SERVICE_INFO,
+    post_multislots: process.env.REACT_APP_POST_MULTISLOTS,
 }
 
 

@@ -6,9 +6,11 @@ import './MainServices.css'
 
 
 
-const MainServices = ({ service }) => {
+const MainServices = ({ service, getService, handleMultiRecords }) => {
 
     const [isShow, setIsShow] = useState(true)
+
+    console.log(service)
 
     return (
         <div className='main_services'>
@@ -19,7 +21,12 @@ const MainServices = ({ service }) => {
             </div>
             <ul style={{ display: isShow ? 'block' : 'none' }} className='main_services_content'>
                 {service?.services?.map(item => (
-                    <MainService key={item.id} service={item} />
+                    <MainService 
+                        getService={getService} 
+                        key={item.id} 
+                        service={item} 
+                        handleMultiRecords={handleMultiRecords}
+                    />
                 ))}
             </ul>
         </div>
