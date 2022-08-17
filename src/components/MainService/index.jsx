@@ -10,16 +10,23 @@ import './MainService.css'
 
 
 
-const MainService = ({ service, handleMultiRecords }) => {
+const MainService = ({ service, handleMultiRecords, getService, isMultiRecords }) => {
 
 
     const [isHover, setIsHover] = useState(false)
+
+    const onHandle = async () => {
+        if (isMultiRecords) {
+            await getService(service.code)
+        }
+    }
     
 
 
     return (
         <li
-            onContextMenu={handleMultiRecords}
+            onClick={onHandle}
+            onContextMenu={e => handleMultiRecords(e, service.code)}
             className='main_service_element'
         >
             <span className='main_service_element_name'>

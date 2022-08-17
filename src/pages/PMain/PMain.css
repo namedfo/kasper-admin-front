@@ -10,10 +10,12 @@
     width: 100%;
     height: auto;
     margin: 25px;
+
+    position: relative;
 }
 
 .p_main_content {
-    padding: 40px 10px 10px 10px;
+    padding: 40px 10px 10px;
 
     position: relative;
 }
@@ -146,6 +148,8 @@
     background: #f0f0f0;
     cursor: pointer;
     padding: 8px 12px;
+
+    position: absolute;
 
     border-radius: 10px;
     border: 1px solid hsl(0, 0%, 85%);

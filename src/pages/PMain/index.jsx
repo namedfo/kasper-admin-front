@@ -19,6 +19,9 @@ const PMain = () => {
     const [multiRecords, setMultiRecords] = useState([])
 
 
+    const [btnMultiRecords, setBtnMultiRecords] = useState(null)
+
+
     const [searchByAge, setSearchByAge] = useState('')
 
 
@@ -41,6 +44,7 @@ const PMain = () => {
 
 
     const getService = async code => {
+        setBtnMultiRecords(null)
         try {
             await config.api_host.post(`/api2${routes.get_service_info}${code}`)
                 .then(r => {
@@ -103,7 +107,9 @@ const PMain = () => {
                                 selectedDoctors: selectedDoctors
                             }]
                         })
+
                     }
+
                 })
         } catch (e) {
 
@@ -158,35 +164,40 @@ const PMain = () => {
 
         await config.api_host.post(`/api2${routes.post_multislots}?strict=1`, newMultiRecords)
     }
-    const [btnMultiRecords, setBtnMultiRecords] = useState(null)
 
 
     const ref = useOutside(() => setBtnMultiRecords(null))
 
-    const btnMultiRecord = (top, left) => {
+    const btnMultiRecord = (top, left, code) => {
 
 
         const style = {
-            position: 'absolute',
             top: top,
             left: left,
-            zIndex: 10,
+            zIndex: 101,
         }
         return (
-            <button className='p_main_content_btn_multi_records' ref={ref} style={style}>
+            <button
+                onClick={() => getService(code)}
+                className='p_main_content_btn_multi_records'
+                ref={ref}
+                style={style}
+            >
                 Мультизапись
             </button>
         )
     }
 
-    const handleMultiRecords = e => {
+    const handleMultiRecords = (e, code) => {
         e.preventDefault()
         if (e.type === 'contextmenu') {
             const top = e.pageY - 90 + 'px'
             const left = e.pageX - 10 + 'px'
-            setBtnMultiRecords(btnMultiRecord(top, left))
+            setBtnMultiRecords(btnMultiRecord(top, left, code))
         }
     }
+
+    const isMultiRecords = multiRecords.length > 0
 
 
     return (
@@ -198,75 +209,78 @@ const PMain = () => {
                     getServices={getServices}
                 />
                 <div className='p_main_content'>
-                    {btnMultiRecords}
                     {services.length > 0 && services.map(service => (
                         <MainServices
                             getService={getService}
                             key={service.name}
                             service={service}
                             handleMultiRecords={handleMultiRecords}
+                            isMultiRecords={isMultiRecords}
                         />
                     ))}
+                    {btnMultiRecords}
                 </div>
             </div>
-            <div className="p_main_multi_recording_wrapper">
-                <div className="p_main_multi_recording">
-                    <div className="p_main_multi_recording_header">
-                        <h3 className="p_main_multi_recording_header_title">
-                            Мультизапись
-                        </h3>
-                    </div>
-                    <div className="p_main_multi_recording_content">
-                        <button onClick={fetchMultislots} className="p_main_multi_recording_content_btn">
-                            В любом порядке
-                        </button>
-                        <button className="p_main_multi_recording_content_btn">
-                            В строгом порядке
-                        </button>
-                        <button className="p_main_multi_recording_content_btn">
-                            В одно время
-                        </button>
-                        <button className="p_main_multi_recording_content_btn">
-                            Пересекающиеся услуги
-                        </button>
-                    </div>
-                    <div style={{ width: '100%', borderBottom: '1.5px solid gray', paddingBottom: '10px' }}>
-                        <button className="p_main_multi_recording_content_btn">
-                            Итого: {resultPrice()}
-                        </button>
-                    </div>
-                    <div className="p_main_multi_recording_footer">
-                        {multiRecords.map(service => {
+            {multiRecords.length > 0 && (
+                <div className="p_main_multi_recording_wrapper">
+                    <div className="p_main_multi_recording">
+                        <div className="p_main_multi_recording_header">
+                            <h3 className="p_main_multi_recording_header_title">
+                                Мультизапись
+                            </h3>
+                        </div>
+                        <div className="p_main_multi_recording_content">
+                            <button onClick={fetchMultislots} className="p_main_multi_recording_content_btn">
+                                В любом порядке
+                            </button>
+                            <button className="p_main_multi_recording_content_btn">
+                                В строгом порядке
+                            </button>
+                            <button className="p_main_multi_recording_content_btn">
+                                В одно время
+                            </button>
+                            <button className="p_main_multi_recording_content_btn">
+                                Пересекающиеся услуги
+                            </button>
+                        </div>
+                        <div style={{ width: '100%', borderBottom: '1.5px solid gray', paddingBottom: '10px' }}>
+                            <button className="p_main_multi_recording_content_btn">
+                                Итого: {resultPrice()}
+                            </button>
+                        </div>
+                        <div className="p_main_multi_recording_footer">
+                            {multiRecords.map(service => {
 
-                            const getPrice = () => {
-                                if (service.minPrice === service.maxPrice) {
-                                    return `${service.minPrice}₽`
+                                const getPrice = () => {
+                                    if (service.minPrice === service.maxPrice) {
+                                        return `${service.minPrice}₽`
+                                    }
+
+                                    return `${service.minPrice}₽ - ${service.maxPrice}₽`
                                 }
-
-                                return `${service.minPrice}₽ - ${service.maxPrice}₽`
-                            }
-                            return (
-                                <div key={service.id} className="p_main_multi_recording_footer_element">
-                                    <span>
-                                        {service.serv_name}
-                                    </span>
-                                    <span className="p_main_multi_recording_footer_element_price">
-                                        Стоимость: {getPrice()}
-                                    </span>
-                                    <div className='p_main_multi_recording_footer_element_footer'>
+                                return (
+                                    <div key={service.id} className="p_main_multi_recording_footer_element">
                                         <span>
-                                            Выбрано врачей: {service.selectedDoctors}
+                                            {service.serv_name}
                                         </span>
-                                        <button onClick={() => onRemoveRecord(service.id)} className='p_main_multi_recording_footer_element_footer_remove'>
-                                            <MdRemoveCircleOutline />
-                                        </button>
+                                        <span className="p_main_multi_recording_footer_element_price">
+                                            Стоимость: {getPrice()}
+                                        </span>
+                                        <div className='p_main_multi_recording_footer_element_footer'>
+                                            <span>
+                                                Выбрано врачей: {service.selectedDoctors}
+                                            </span>
+                                            <button onClick={() => onRemoveRecord(service.id)} className='p_main_multi_recording_footer_element_footer_remove'>
+                                                <MdRemoveCircleOutline />
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

@@ -6,7 +6,7 @@ import './MainServices.css'
 
 
 
-const MainServices = ({ service, getService, handleMultiRecords }) => {
+const MainServices = ({ service, getService, handleMultiRecords, isMultiRecords }) => {
 
     const [isShow, setIsShow] = useState(true)
 
@@ -25,6 +25,7 @@ const MainServices = ({ service, getService, handleMultiRecords }) => {
                         getService={getService} 
                         key={item.id} 
                         service={item} 
+                        isMultiRecords={isMultiRecords}
                         handleMultiRecords={handleMultiRecords}
                     />
                 ))}
