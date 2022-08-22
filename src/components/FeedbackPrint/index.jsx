@@ -106,7 +106,7 @@ const FeedbackPrint = ({ dataFeedbackPrint }) => {
                                 Способ обращения:
                             </span>
                             <span className='feedback_print_content_element_value'>
-                                Устно. Горачая Линия.
+                                Устно. Горячая Линия.
                             </span>
                         </div>
                         <div className='feedback_print_content_element'>
