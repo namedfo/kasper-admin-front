@@ -6,6 +6,7 @@ import useOutside from '../../hooks/useOutside'
 // components
 import MainServices from '../../components/MainServices'
 import NavbarMain from '../../components/NavbarMain'
+import ModalSchedule from '../../components/ModalSchedule'
 import config from '../../config'
 import routes from '../../routes'
 //
@@ -17,6 +18,9 @@ const PMain = () => {
 
     const [services, setServices] = useState([])
     const [multiRecords, setMultiRecords] = useState([])
+    const [multiSlots, setMultiSlots] = useState([])
+
+    const [isModalSchedule, setIsModalSchedule] = useState(false)
 
 
     const [btnMultiRecords, setBtnMultiRecords] = useState(null)
@@ -46,9 +50,9 @@ const PMain = () => {
     const getService = async code => {
         setBtnMultiRecords(null)
         try {
-            await config.api_host.post(`/api2${routes.get_service_info}${code}`)
+            await config.api_host.post(`${routes.get_service_info}${code}`)
                 .then(r => {
-                    console.log(r.data)
+                    // console.log(r.data)
                     if (r.status === 200) {
                         let newServices = []
                         for (let [key, value] of Object.entries(r.data.services)) {
@@ -143,14 +147,23 @@ const PMain = () => {
     }
 
 
-    const fetchMultislots = async () => {
+    const onCloseModalSchedule = () => setIsModalSchedule(false)
+
+    const onOpenModalSchedule = () => setIsModalSchedule(true)
+
+
+
+    const fetchMultislots = async strict => {
         let newMultiRecords = []
         multiRecords.forEach(service => {
             let data = {}
+
             service.doctors.forEach(doctor => {
-                data = {
-                    ...data,
-                    [doctor.id]: doctor.duree
+                if (+searchByAge >= +doctor.age[0] && +searchByAge <= +doctor.age[1]) {
+                    data = {
+                        ...data,
+                        [doctor.id]: doctor.duree
+                    }
                 }
             })
 
@@ -162,7 +175,13 @@ const PMain = () => {
         })
 
 
-        await config.api_host.post(`/api2${routes.post_multislots}?strict=1`, newMultiRecords)
+        await config.api_host.post(`${routes.post_multislots}?strict=${strict}`, newMultiRecords)
+            .then(r => {
+                if (r.status === 200) {
+                    setMultiSlots(r.data)
+                    onOpenModalSchedule()
+                }
+            })
     }
 
 
@@ -200,6 +219,10 @@ const PMain = () => {
     const isMultiRecords = multiRecords.length > 0
 
 
+
+
+
+
     return (
         <div className="p_main">
             <div className='p_main_services'>
@@ -223,6 +246,11 @@ const PMain = () => {
             </div>
             {multiRecords.length > 0 && (
                 <div className="p_main_multi_recording_wrapper">
+                    <ModalSchedule 
+                        multiSlots={multiSlots}
+                        modalIsOpen={isModalSchedule} 
+                        closeModal={onCloseModalSchedule} 
+                    />
                     <div className="p_main_multi_recording">
                         <div className="p_main_multi_recording_header">
                             <h3 className="p_main_multi_recording_header_title">
@@ -230,10 +258,10 @@ const PMain = () => {
                             </h3>
                         </div>
                         <div className="p_main_multi_recording_content">
-                            <button onClick={fetchMultislots} className="p_main_multi_recording_content_btn">
+                            <button onClick={() => fetchMultislots(0)} className="p_main_multi_recording_content_btn">
                                 В любом порядке
                             </button>
-                            <button className="p_main_multi_recording_content_btn">
+                            <button onClick={() => fetchMultislots(1)} className="p_main_multi_recording_content_btn">
                                 В строгом порядке
                             </button>
                             <button className="p_main_multi_recording_content_btn">

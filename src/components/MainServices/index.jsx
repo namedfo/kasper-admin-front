@@ -10,7 +10,6 @@ const MainServices = ({ service, getService, handleMultiRecords, isMultiRecords 
 
     const [isShow, setIsShow] = useState(true)
 
-    console.log(service)
 
     return (
         <div className='main_services'>

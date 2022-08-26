@@ -48,7 +48,6 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
     const [patients, setPatients] = useState([])
     const [activePatient, setActivePatient] = useState(null)
 
-    console.log(patients)
 
 
     const getPatients = async (body = {
