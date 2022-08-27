@@ -22,15 +22,19 @@ table.modal_time_content_table th {
     font-size: 14px;
 
 }
-table.modal_time_content_table td:nth-child(odd) {
+/* table.modal_time_content_table td:nth-child(odd) {
     text-align: center;
-}
+} */
 table.modal_time_content_table th {
     text-align: center;
 }
 
-table.modal_time_content_table td:not(:first-child) {
-    cursor: pointer;
+
+.modal_time_content_table_td__status_zero {
+    background: gray;
+}
+.modal_time_content_table_td__status_zero:hover {
+    cursor: not-allowed;
 }
 /* 
 table.modal_time_content_table td:not(:first-child):hover {
@@ -40,7 +44,7 @@ table.modal_time_content_table td:not(:first-child):hover {
 } */
 
 
-table.modal_time_content_table tr:nth-child(odd) td:nth-child(odd) {
+/* table.modal_time_content_table tr:nth-child(odd) td:nth-child(odd) {
     background: #d8e5f6;
     color:#36406f;
 
@@ -51,4 +55,4 @@ table.modal_time_content_table tr:nth-child(even) td:nth-child(odd) {
     color:#36406f;
 
     font-weight: 600;
-}
+} */

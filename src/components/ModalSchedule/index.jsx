@@ -82,11 +82,16 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
     }
 
     const onClickActive = (prevDate, result) => {
-        const date = new Date(prevDate)
-        const newDate = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()}`
+        const date = +new Date(prevDate) / 1000
+        let newResult = []
+        for (let [, value] of Object.entries(result)) {
+            newResult = [ ...newResult, Object.keys(value) ]
+        }
 
+        
         const params = {
-            date: newDate
+            date: date,
+            doctors: newResult[0].map(el => +el)
         }
         onOpenModalTime()
         setModalTimeParams(params)
