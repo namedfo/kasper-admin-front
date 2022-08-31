@@ -106,7 +106,7 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                                 Часы
                             </th>
                             {data?.doctors?.map(doctor => (
-                                <th key={doctor.id}>
+                                <th style={{ backgroundColor: '#bed3f0', color: '#36406f' }} key={doctor.id}>
                                     {doctor.name}
                                 </th>
                             ))}
@@ -120,13 +120,14 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                                     if (doctor.slots[item].status === 0) {
                                         return (
                                             <td key={doctor.id} className='modal_time_content_table_td__status_zero'>
-
+                                                {/* {item} */}
                                             </td>
                                         )
                                     }
                                     if (doctor.slots[item].status === 1) {
                                         return (
-                                            <td key={doctor.id} style={{ backgroundColor: 'green' }}>
+                                            <td key={doctor.id} style={{ backgroundColor: '#69f59e' }}>
+                                                
                                             </td>
                                         )
                                     }
@@ -151,13 +152,12 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                                 })
 
                                 return td
-
-
-
                             }
                             return (
                                 <tr key={item}>
-                                    <td style={{ width: '80px' }}>
+                                    <td style={{
+                                        backgroundColor: item.split('')[item.split('').length - 1] === '5' ? '#bed3f0' : '#d8e5f6',
+                                    }} className='modal_time_td'>
                                         {item}
                                     </td>
                                     {getCol()}

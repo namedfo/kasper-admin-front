@@ -15,7 +15,7 @@ table.modal_time_content_table th {
     border-width: 1px;
     border-color: hsl(0, 0%, 80%);
     border-style: solid;
-    padding: 5px;
+    padding: 3px 6px;
     
 
 
@@ -31,7 +31,8 @@ table.modal_time_content_table th {
 
 
 .modal_time_content_table_td__status_zero {
-    background: gray;
+    background: #bbbfbd;
+    color: #c2d7d6;
 }
 .modal_time_content_table_td__status_zero:hover {
     cursor: not-allowed;
@@ -56,3 +57,10 @@ table.modal_time_content_table tr:nth-child(even) td:nth-child(odd) {
 
     font-weight: 600;
 } */
+
+table tr td.modal_time_td{
+    padding: 3px 6px;
+    text-align: center;
+    color: #36406f;
+    font-weight: 600;
+}
