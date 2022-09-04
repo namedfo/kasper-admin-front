@@ -1,15 +1,17 @@
 import axios from 'axios';
-//
-import { toast } from 'react-toastify';
 
 
 const api_host = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
-    headers: {
-        // for test
-        Authorization: 'Bearer ' + window.localStorage.getItem('token')
-    }
 });
+
+
+api_host.interceptors.request.use((config) => {
+    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+    return config;
+})
+
+
 api_host.interceptors.response.use(function (response) {
     return response;
 }, function (error) {

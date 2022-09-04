@@ -52,9 +52,7 @@ const ModalPatient = ({ modalIsOpen, closeModal, patientId }) => {
 
     useEffect(() => {
         if (patientId) {
-            config.api_host.post(routes.get_patient_info, {
-                id: patientId
-            }).then(r => {
+            config.api_host.get(`${routes.get_patient_info}?id=${patientId}`).then(r => {
                 if (r.status === 200) {
                     setPatient(r.data)
                 }
@@ -74,19 +72,19 @@ const ModalPatient = ({ modalIsOpen, closeModal, patientId }) => {
                 <IoMdClose size={30} />
             </button>
             <div className='modal_patient_header'>
-                <h4 className='modal_patient_header_fullname'>Преловская Ирина Михайловна</h4>
+                <h4 className='modal_patient_header_fullname'>{patient?.fio}</h4>
                 <div className='modal_patient_header_info'>
                     <span className='modal_patient_header_info_phone'>
-                        Телефон: <b>+7(911)985-5986</b>
+                        Телефон: <b>{patient?.phone}</b>
                     </span>
                     <span className='modal_patient_header_info_email'>
-                        Email: <b>почта</b>
+                        Email: <b>{patient?.email}</b>
                     </span>
                     <span className='modal_patient_header_info_birthday'>
-                        Дата рождения: <b>26.04.1938 (возраст 84)</b>
+                        Дата рождения: <b>{patient?.dob}</b>
                     </span>
                     <span className='modal_patient_header_info_emk'>
-                        № ЭМК: <b>1000011</b>
+                        № ЭМК: <b>{patient?.id}</b>
                     </span>
                 </div>
                 <h3 style={{ marginTop: '20px' }}>Приёмы пациента</h3>

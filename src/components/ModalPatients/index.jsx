@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 //
 import Modal from 'react-modal'
+//
+import _debounce from 'lodash/debounce';
 //
 import { useFormik } from 'formik';
 //
@@ -61,6 +63,9 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
             })
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debounceFn = useCallback(_debounce(async (body) => getPatients(body), 300), [])
+
 
     const formik = useFormik({
         initialValues: {
@@ -72,7 +77,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
             emk: '' // emk
         },
         onSubmit: async values => {
-            await getPatients(values)
+            await debounceFn(values)
         }
     })
 
@@ -138,6 +143,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                         id="phone"
                         value={formik.values.phone}
                         onChange={formik.handleChange}
+                        onKeyUp={formik.submitForm}
                         placeholder='Телефон'
                         className='modal_patients_header_input'
                         type="text"
@@ -153,6 +159,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                     id="surname"
                     value={formik.values.surname}
                     onChange={formik.handleChange}
+                    onKeyUp={formik.submitForm}
                     style={{ marginTop: '10px' }}
                     placeholder='Фамилия'
                     className='modal_patients_header_input'
@@ -162,6 +169,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                     id="name"
                     value={formik.values.name}
                     onChange={formik.handleChange}
+                    onKeyUp={formik.submitForm}
                     style={{ marginTop: '10px' }}
                     placeholder='Имя'
                     className='modal_patients_header_input'
@@ -171,6 +179,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                     id="middlename"
                     value={formik.values.middlename}
                     onChange={formik.handleChange}
+                    onKeyUp={formik.submitForm}
                     style={{ marginTop: '10px' }}
                     placeholder='Отчество'
                     className='modal_patients_header_input'
@@ -183,6 +192,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                         onChange={selectedOption => {
                             formik.setFieldValue('dob', selectedOption)
                         }}
+                        onKeyUp={formik.submitForm}
                         placeholderText='дд.мм.гггг'
                         className='modal_patients_header_input'
                         type="text"
@@ -191,6 +201,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
                         id="emk"
                         value={formik.values.emk}
                         onChange={formik.handleChange}
+                        onKeyUp={formik.submitForm}
                         style={{ marginLeft: '10px' }}
                         placeholder='№ ЭМК'
                         className='modal_patients_header_input'

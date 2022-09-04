@@ -33,25 +33,26 @@ const Login = ({ selects }) => {
             password: ''
         },
         onSubmit: values => {
-            setIsLoading(true)
+            try {
+                config.api_host.post(routes.login, {
+                    username: values.username.value,
+                    password: values.password
+                }).then(r => {
 
-            config.api_host.post(routes.login, {
-                username: values.username.value,
-                password: values.password
-            }).then(r => {
-
-                if (r.data.status === true) {
-                    localStorage.setItem('token', r.data.token)
-                    localStorage.setItem('userData', JSON.stringify({ userData: r.data.data.user }))
+                    if (r.data.status === true) {
+                        localStorage.setItem('token', r.data.token)
+                        localStorage.setItem('userData', JSON.stringify({ userData: r.data.data.user }))
 
 
-                    setTimeout(() => {
-                        setIsLoading(false)
+                        setTimeout(() => {
 
-                        navigate(linkReturn.get('return') ?? '/')
-                    }, 3000)
-                }
-            }).catch(e => setIsLoading(false))
+                            navigate(linkReturn.get('return') ?? '/')
+                        }, 3000)
+                    }
+                })
+            } catch (e) {
+
+            }
         }
     })
 

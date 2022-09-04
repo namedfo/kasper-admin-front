@@ -29,6 +29,7 @@ const ExceptionalEventsItem = ({ id, name, tags, type }) => {
             }
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceFn = useCallback(_debounce(handleDebounceFn, 1000), [])
 
     
