@@ -28,7 +28,7 @@ const ServiceBinding = ({ selectedDoctor, setSelectedDoctor, defaultData }) => {
     const getSelectedDoctor = id => {
         setSelectedDoctor({})
 
-        config.api_host.get(`${routes.doctor}?doctor_id=${id}`).then(r => {
+        config.api_host.post(`${routes.doctor}?doctor_id=${id}`).then(r => {
 
             if (r && r.data && !r.data.services) {
                 setSelectedDoctor({
