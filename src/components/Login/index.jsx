@@ -43,11 +43,7 @@ const Login = ({ selects }) => {
                         localStorage.setItem('token', r.data.token)
                         localStorage.setItem('userData', JSON.stringify({ userData: r.data.data.user }))
 
-
-                        setTimeout(() => {
-
-                            navigate(linkReturn.get('return') ?? '/')
-                        }, 3000)
+                        navigate(linkReturn.get('return') ?? '/')
                     }
                 })
             } catch (e) {
