@@ -10,12 +10,24 @@ table.modal_time_content_table {
     color: #000000;
 }
 
+.modal_time_current_date {
+    position: fixed;
+    left: 25px;
+    top: 80px;
+    background: white;
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: 500;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
+    padding: 3px 6px;
+}
+
 table.modal_time_content_table td,
 table.modal_time_content_table th {
     border-width: 1px;
     border-color: hsl(0, 0%, 80%);
     border-style: solid;
-    padding: 3px 6px;
     
 
 
@@ -31,8 +43,10 @@ table.modal_time_content_table th {
 
 
 .modal_time_content_table_td__status_zero {
-    background: #bbbfbd;
     color: #c2d7d6;
+    background: radial-gradient(#000 5%, transparent 20%) 0 0, radial-gradient(rgba(0,0,0,.1) 1%, transparent 1%) 50px 50px;
+    background-color: gray;
+    background-size: 5px 5px;
 }
 .modal_time_content_table_td__status_zero:hover {
     cursor: not-allowed;
@@ -59,8 +73,8 @@ table.modal_time_content_table tr:nth-child(even) td:nth-child(odd) {
 } */
 
 table tr td.modal_time_td{
-    padding: 3px 6px;
     text-align: center;
     color: #36406f;
     font-weight: 600;
+    width: 47px;
 }

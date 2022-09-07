@@ -50,12 +50,16 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
     const [patients, setPatients] = useState([])
     const [activePatient, setActivePatient] = useState(null)
 
-
+    let abortController = new AbortController();
+    let signal = abortController.signal;
 
     const getPatients = async (body = {
         surname: '', name: '', middlename: '', phone: '', dob: '', emk: ''
-    }) => {
-        await config.api_host.post(routes.get_patients_main, body)
+    }, signal) => {
+
+        await config.api_host.post(routes.get_patients_main, body, {
+            signal,
+        })
             .then(r => {
                 if (r.status === 200) {
                     setPatients(r.data)
@@ -64,7 +68,14 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const debounceFn = useCallback(_debounce(async (body) => getPatients(body), 300), [])
+    const debounceFn = useCallback(_debounce(async (body) => {
+        abortController.abort();
+        abortController = new AbortController();
+        signal = abortController.signal;
+
+
+        return await getPatients(body, signal)
+    }, 600), [])
 
 
     const formik = useFormik({
@@ -118,7 +129,7 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
     const closeModalPatient = () => {
         setModalIsPatient(false)
     }
- 
+
 
     return (
         <Modal
@@ -126,10 +137,10 @@ const ModalPatients = ({ modalIsOpen, closeModal }) => {
             onRequestClose={closeModal}
             style={customStyles}
         >
-            <ModalPatient 
+            <ModalPatient
                 patientId={patientId}
                 closeModal={closeModalPatient}
-                modalIsOpen={modalIsPatient} 
+                modalIsOpen={modalIsPatient}
             />
             <button onClick={closeModal} className='modal_patients_btn_close'>
                 <IoMdClose size={30} />

@@ -4,6 +4,8 @@ import Modal from 'react-modal'
 //
 import { IoMdClose } from 'react-icons/io'
 //
+import padTo2Digits from '../../utils/padTo2Digits'
+//
 import config from '../../config'
 import routes from '../../routes'
 //
@@ -28,7 +30,7 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        padding: '20px 25px',
+        padding: '30px 25px 20px  25px',
 
         width: '96%',
         height: '96%',
@@ -40,34 +42,44 @@ const customStyles = {
 const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
     const [data, setData] = useState(null)
 
+    // idle loading success error
+    const [dataStatus, setDataStatus] = useState('idle')
+
+
     const fetchBuildTimeTable = async () => {
+        setDataStatus('loading')
         try {
             await config.api_host.post(routes.post_build_time_table, modalTimeParams)
                 .then(r => {
                     if (r.status === 200) {
-                        const newDoctors = r.data?.doctors?.map(doctor => {
-                            let newSlots = {}
-                            for (let [, value] of Object.entries(doctor.slots)) {
-                                newSlots = {
-                                    ...newSlots, [value.time]: {
-                                        ...value
+                        if (r.data?.doctors) {
+                            const newDoctors = r.data?.doctors?.map(doctor => {
+                                let newSlots = {}
+                                for (let [, value] of Object.entries(doctor.slots)) {
+                                    newSlots = {
+                                        ...newSlots, [value.time]: {
+                                            ...value
+                                        }
                                     }
                                 }
-                            }
 
-                            return {
-                                ...doctor,
-                                slots: newSlots
-                            }
-                        })
-                        setData({
-                            ...r.data,
-                            doctors: newDoctors
-                        })
+                                return {
+                                    ...doctor,
+                                    slots: newSlots
+                                }
+                            })
+                            setDataStatus('success')
+                            setData({
+                                ...r.data,
+                                doctors: newDoctors
+                            })
+                        } else {
+                            setDataStatus('idle')
+                        }
                     }
                 })
         } catch (error) {
-
+            setDataStatus('error')
         }
     }
 
@@ -82,113 +94,132 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
         }
     }, [modalIsOpen])
 
+    const fullDayWeek = {
+        0: 'воскресенье',
+        1: 'понедельник',
+        2: 'вторник',
+        3: 'среда',
+        4: 'четверг',
+        5: 'пятница',
+        6: 'суббота'
+    }
 
+    const onHandleCloseModal = () => {
+        setData(null)
+        closeModal()
+    }
 
+    const getDateFormat = () => {
+        if (data?.date) {
+            const date = new Date(data?.date * 1000)
 
+            const newDate = `${padTo2Digits(date.getDate())}.${padTo2Digits(date.getMonth() + 1)}.${date.getFullYear()}`
+            const dayWeek = date.getDay()
+
+            return `${newDate}, ${fullDayWeek[dayWeek]}`
+        }
+    }
     return (
         <Modal
             isOpen={modalIsOpen}
-            onRequestClose={closeModal}
+            onRequestClose={onHandleCloseModal}
             style={customStyles}
         >
-            <button onClick={closeModal} className='modal_schedule_header_btn_close'>
+            <button onClick={onHandleCloseModal} className='modal_schedule_header_btn_close'>
                 <IoMdClose size={30} />
             </button>
-            <div style={{ overflow: 'auto' }}>
-                <table className='modal_time_content_table'>
-                    <thead>
-                        <tr>
-                            <th style={{
-                                width: '80px',
-                                backgroundColor: '#bed3f0',
-                                color: "#36406f",
-                            }}>
-                                Часы
-                            </th>
-                            {data?.doctors?.map(doctor => (
-                                <th style={{ backgroundColor: '#bed3f0', color: '#36406f' }} key={doctor.id}>
-                                    {doctor.name}
+            {dataStatus === 'loading' && (
+                <span>
+                    loading...
+                </span>
+            )}
+            {dataStatus === 'success' && (
+                <div style={{ overflow: 'auto', position: 'relative' }}>
+                    <div className='modal_time_current_date'>
+                        {getDateFormat()}
+                    </div>
+                    <table className='modal_time_content_table'>
+                        <thead style={{ position: 'relative' }}>
+                            <tr style={{ position: 'fixed', display: 'flex', left: '25px', top: '15px', width: 'calc(100% - 65px)' }}>
+                                <th style={{
+                                    minWidth: '47px',
+                                    backgroundColor: '#bed3f0',
+                                    color: "#36406f",
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    Часы
                                 </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {timeTableRows.map(item => {
-                            const getCol = () => {
-                                const td = data?.doctors?.map((doctor, index) => {
+                                {data?.doctors?.map(doctor => (
+                                    <th style={{ backgroundColor: '#bed3f0', color: '#36406f', width: '100%' }} key={doctor.id}>
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <span>{doctor.name}</span>
+                                            <span>[20]</span>
+                                        </div>
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {timeTableRows.map(item => {
+                                const getCol = () => {
+                                    const td = data?.doctors?.map((doctor, index) => {
 
-                                    if (doctor.slots[item].status === 0) {
-                                        return (
-                                            <td key={doctor.id} className='modal_time_content_table_td__status_zero'>
-                                                {/* {item} */}
-                                            </td>
-                                        )
-                                    }
-                                    if (doctor.slots[item].status === 1) {
-                                        return (
-                                            <td key={doctor.id} style={{ backgroundColor: '#69f59e' }}>
-                                                
-                                            </td>
-                                        )
-                                    }
-                                    if (doctor.slots[item].status === 2) {
-                                        return (
-                                            <td key={doctor.id}>
-                                                <div style={{ display: 'flex' }}>
-                                                    <div style={{
-                                                        border: '2px solid white',
-                                                        borderRadius: '50%',
-                                                        backgroundColor: doctor.slots[item].color,
-                                                        height: '20px',
-                                                        width: '20px'
-                                                    }} />
-                                                    <span style={{ fontWeight: 600, marginLeft: '5px' }}>
-                                                        {doctor.slots[item].text}
+                                        if (doctor.slots[item].status === 0) {
+                                            return (
+                                                <td key={doctor.id} className='modal_time_content_table_td__status_zero'>
+                                                    {/* {item} */}
+                                                </td>
+                                            )
+                                        }
+                                        if (doctor.slots[item].status === 1) {
+                                            return (
+                                                <td key={doctor.id} style={{ backgroundColor: '#69f59e' }}>
+                                                    <span style={{ marginLeft: '15px', color: '#A8A4A4' }}>
+                                                        {doctor.slots[item].time}
                                                     </span>
-                                                </div>
-                                            </td>
-                                        )
-                                    }
-                                })
+                                                </td>
+                                            )
+                                        }
+                                        if (doctor.slots[item].status === 2) {
+                                            return (
+                                                <td key={doctor.id}>
+                                                    <div style={{ display: 'flex' }}>
+                                                        <div style={{
+                                                            border: '2px solid white',
+                                                            borderRadius: '50%',
+                                                            backgroundColor: doctor.slots[item].color,
+                                                            height: '20px',
+                                                            width: '20px'
+                                                        }} />
+                                                        <span style={{ fontWeight: 600, marginLeft: '5px' }}>
+                                                            {doctor.slots[item].text}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            )
+                                        }
+                                    })
 
-                                return td
-                            }
-                            return (
-                                <tr key={item}>
-                                    <td style={{
-                                        backgroundColor: item.split('')[item.split('').length - 1] === '5' ? '#bed3f0' : '#d8e5f6',
-                                    }} className='modal_time_td'>
-                                        {item}
-                                    </td>
-                                    {getCol()}
-                                </tr>
-                                // <tr key={item}>
-                                //     <td style={{ width: '80px' }}>
-                                //         {item}
-                                //     </td>
-                                //     <td>
-                                //         <div style={{
-                                //             display: 'flex',
-                                //             alignItems: 'center'
-                                //         }}>
-                                //             <div style={{
-                                //                 border: '2px solid white',
-                                //                 borderRadius: '50%',
-                                //                 backgroundColor: 'green',
-                                //                 height: '20px',
-                                //                 width: '20px'
-                                //             }} />
-                                //             <span style={{ fontWeight: 600, marginLeft: '5px' }}>
-                                //                 Червонюк Юлия Евгеньевна
-                                //             </span>
-                                //         </div>
-                                //     </td>
-                                // </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+                                    return td
+                                }
+                                return (
+                                    <tr key={item}>
+                                        <td style={{
+                                            backgroundColor: item.split('')[item.split('').length - 1] === '5' ? '#bed3f0' : '#d8e5f6',
+                                        }} className='modal_time_td'>
+                                            {item}
+                                        </td>
+                                        {getCol()}
+                                    </tr>
+
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </Modal>
     )
 }
