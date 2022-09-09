@@ -22,6 +22,7 @@ const PMain = () => {
 
 
     const [btnMultiRecords, setBtnMultiRecords] = useState(null)
+    const [popupHintComponent, setPopupHintComponent] = useState(null)
 
 
     const [searchByAge, setSearchByAge] = useState('')
@@ -129,11 +130,11 @@ const PMain = () => {
 
         }
     }
- 
+
 
     const getService = async code => {
         setBtnMultiRecords(null)
-  
+
         const isRepeat = multiRecords.some(el => el.code === code)
 
         if (!isRepeat) getMultiRecord(code)
@@ -172,6 +173,41 @@ const PMain = () => {
         )
     }
 
+    const popupHint = (top, text) => {
+        return (
+            <div style={{
+                top,
+                left: 0,
+                zIndex: 102,
+
+                position: 'absolute',
+                background: 'white',
+                border: '1px solid #e6e6e6',
+                width: '100%',
+                padding: '20px',
+                borderRadius: '15px',
+                boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'
+            }}>
+                <p>
+                    {text}
+                </p>
+            </div>
+        )
+    }
+
+    const handlePopupHint = (isOpen, e, text) => {
+        console.log(isOpen, e, text)
+        if (isOpen) {
+            e.preventDefault()
+
+            const top = e.pageY - 300 + 'px'
+            setPopupHintComponent(popupHint(top, text))
+        } else {
+            setPopupHintComponent(null)
+        }
+
+    }
+
     const handleMultiRecords = (e, code) => {
         e.preventDefault()
         if (e.type === 'contextmenu') {
@@ -185,6 +221,7 @@ const PMain = () => {
 
 
 
+    console.log(popupHintComponent)
 
 
 
@@ -203,10 +240,12 @@ const PMain = () => {
                             key={service.name}
                             service={service}
                             handleMultiRecords={handleMultiRecords}
+                            handlePopupHint={handlePopupHint}
                             isMultiRecords={isMultiRecords}
                         />
                     ))}
                     {btnMultiRecords}
+                    {popupHintComponent}
                 </div>
             </div>
             {multiRecords?.length > 0 && (
