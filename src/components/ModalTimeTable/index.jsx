@@ -39,7 +39,12 @@ const customStyles = {
 };
 
 
-const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
+const ModalTimeTable = ({ 
+    modalIsOpen, 
+    closeModal, 
+    modalTimeParams, 
+    timeReceptions
+}) => {
     const [data, setData] = useState(null)
 
     // idle loading success error
@@ -129,13 +134,18 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                 <IoMdClose size={30} />
             </button>
             {dataStatus === 'loading' && (
-                <span>
-                    loading...
+                <span style={{
+                    fontFamily: 'Nunito',
+                    fontWeight: 'bold',
+                    fontSize: '18px',
+                    color: '#232323'
+                }}>
+                    Загрузка...
                 </span>
             )}
             {dataStatus === 'success' && (
                 <div style={{ overflow: 'auto', position: 'relative' }}>
-                    <div className='modal_time_current_date'>
+                    <div onClick={fetchBuildTimeTable} className='modal_time_current_date'>
                         {getDateFormat()}
                     </div>
                     <table className='modal_time_content_table'>
@@ -151,11 +161,11 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                                 }}>
                                     Часы
                                 </th>
-                                {data?.doctors?.map(doctor => (
+                                {data?.doctors?.map((doctor, index) => (
                                     <th style={{ backgroundColor: '#bed3f0', color: '#36406f', width: '100%' }} key={doctor.id}>
                                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                                             <span>{doctor.name}</span>
-                                            <span>[20]</span>
+                                            <span>[{timeReceptions[index]?.time} мин / {timeReceptions[0]?.slots} слота]</span>
                                         </div>
                                     </th>
                                 ))}
@@ -168,14 +178,19 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
 
                                         if (doctor.slots[item].status === 0) {
                                             return (
-                                                <td key={doctor.id} className='modal_time_content_table_td__status_zero'>
+                                                <td key={doctor.id} style={{
+                                                    width: `calc(100% / ${data?.doctors?.length})`
+                                                }} className='modal_time_content_table_td__status_zero'>
                                                     {/* {item} */}
                                                 </td>
                                             )
                                         }
                                         if (doctor.slots[item].status === 1) {
                                             return (
-                                                <td key={doctor.id} style={{ backgroundColor: '#69f59e' }}>
+                                                <td key={doctor.id} style={{
+                                                    backgroundColor: '#69f59e',
+                                                    width: `calc(100% / ${data?.doctors?.length})`
+                                                }}>
                                                     <span style={{ marginLeft: '15px', color: '#A8A4A4' }}>
                                                         {doctor.slots[item].time}
                                                     </span>
@@ -184,7 +199,9 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                                         }
                                         if (doctor.slots[item].status === 2) {
                                             return (
-                                                <td key={doctor.id}>
+                                                <td style={{
+                                                    width: `calc(100% / ${data?.doctors?.length})`
+                                                }} key={doctor.id}>
                                                     <div style={{ display: 'flex' }}>
                                                         <div style={{
                                                             border: '2px solid white',
@@ -207,7 +224,7 @@ const ModalTimeTable = ({ modalIsOpen, closeModal, modalTimeParams }) => {
                                 return (
                                     <tr key={item}>
                                         <td style={{
-                                            backgroundColor: item.split('')[item.split('').length - 1] === '5' ? '#bed3f0' : '#d8e5f6',
+                                            backgroundColor: item.split('')[item.split('').length - 1] === '5' ? '#bed3f0' : '#d8e5f6'
                                         }} className='modal_time_td'>
                                             {item}
                                         </td>

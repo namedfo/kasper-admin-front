@@ -46,7 +46,7 @@ const MultiRecord = ({
                 <span>
                     Выбрано врачей: {service.selectedDoctors}
                 </span>
-                <button onClick={() => onRemoveRecord(service.id)} className='p_main_multi_recording_footer_element_footer_remove'>
+                <button onClick={() => onRemoveRecord(service.code)} className='p_main_multi_recording_footer_element_footer_remove'>
                     <MdRemoveCircleOutline />
                 </button>
             </div>

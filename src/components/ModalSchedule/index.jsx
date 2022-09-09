@@ -35,7 +35,12 @@ const customStyles = {
 };
 
 
-const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
+const ModalSchedule = ({ 
+    modalIsOpen, 
+    closeModal, 
+    multiSlots, 
+    timeReceptions
+}) => {
 
     const [modalIsTime, setModalIsTime] = useState(false)
     const [modalTimeParams, setModalTimeParams] = useState(null)
@@ -82,7 +87,7 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
     }
 
     const onClickActive = (prevDate, result) => {
-        const date = +new Date(prevDate) / 1000
+        const date = (+new Date(prevDate) / 1000) + 3600 * 6 
         let newResult = []
         for (let [, value] of Object.entries(result)) {
             newResult = [ ...newResult, Object.keys(value) ]
@@ -108,6 +113,7 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
                 modalTimeParams={modalTimeParams} 
                 modalIsOpen={modalIsTime} 
                 closeModal={onCloseModalTime} 
+                timeReceptions={timeReceptions}
             />
             <button onClick={closeModal} className='modal_schedule_header_btn_close'>
                 <IoMdClose size={30} />

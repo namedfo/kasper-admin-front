@@ -14,6 +14,8 @@ import routes from '../../routes';
 
 const MultiRecords = ({
     setMultiRecords,
+    setTimeReceptions,
+    timeReceptions,
     multiRecords,
     searchByAge
 }) => {
@@ -31,7 +33,6 @@ const MultiRecords = ({
             let data = {}
 
             service.doctors.forEach(doctor => {
-                console.log(doctor)
                 if (searchByAge?.length > 0) {
                     if (+searchByAge >= +doctor.age[0] && +searchByAge <= +doctor.age[1]) {
                         data = {
@@ -81,8 +82,9 @@ const MultiRecords = ({
     }
 
 
-    const onRemoveRecord = id => {
-        setMultiRecords(prev => prev.filter(el => el.id !== id))
+    const onRemoveRecord = code => {
+        setMultiRecords(prev => prev.filter(el => el.code !== code))
+        setTimeReceptions(prev => prev.filter(el => el.code !== code))
     }
 
 
@@ -111,6 +113,7 @@ const MultiRecords = ({
                 multiSlots={multiSlots}
                 modalIsOpen={isModalSchedule}
                 closeModal={onCloseModalSchedule}
+                timeReceptions={timeReceptions}
             />
             <div className="p_main_multi_recording">
                 <div className="p_main_multi_recording_header">

@@ -18,6 +18,8 @@ const PMain = () => {
     const [services, setServices] = useState([])
     const [multiRecords, setMultiRecords] = useState([])
 
+    const [timeReceptions, setTimeReceptions] = useState([])
+
 
     const [btnMultiRecords, setBtnMultiRecords] = useState(null)
 
@@ -41,8 +43,6 @@ const PMain = () => {
 
         }
     }
-
-    console.log(multiRecords)
 
     const getMultiRecord = async code => {
         try {
@@ -79,6 +79,18 @@ const PMain = () => {
                             })
                             selectedDoctors = `${count} из ${newDoctors.length}`
                         }
+
+                        setTimeReceptions(prev => {
+                            const newTimeReception = {
+                                code: code,
+                                time: newDoctors[0]?.duree,
+                                slots: newDoctors[0]?.duree / 5
+                            }
+                            if (prev.length === 0) {
+                                return [newTimeReception]
+                            }
+                            return [...prev, newTimeReception]
+                        })
 
 
                         setMultiRecords(prev => {
@@ -121,14 +133,10 @@ const PMain = () => {
 
     const getService = async code => {
         setBtnMultiRecords(null)
-        if (multiRecords.length === 0) {
-            getMultiRecord(code)
-        }
-        multiRecords.forEach(async (el) => {
-            if (el.code !== code) {
-                getMultiRecord(code)
-            }
-        })
+  
+        const isRepeat = multiRecords.some(el => el.code === code)
+
+        if (!isRepeat) getMultiRecord(code)
     }
 
 
@@ -205,6 +213,8 @@ const PMain = () => {
                 <MultiRecords
                     multiRecords={multiRecords}
                     setMultiRecords={setMultiRecords}
+                    setTimeReceptions={setTimeReceptions}
+                    timeReceptions={timeReceptions}
                     searchByAge={searchByAge}
                 />
             )}

@@ -21,6 +21,8 @@ table.modal_time_content_table {
     border-radius: 5px;
     box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
     padding: 3px 6px;
+
+    cursor: pointer;
 }
 
 table.modal_time_content_table td,
@@ -76,5 +78,5 @@ table tr td.modal_time_td{
     text-align: center;
     color: #36406f;
     font-weight: 600;
-    width: 47px;
+    min-width: 47px;
 }
