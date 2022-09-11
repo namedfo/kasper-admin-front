@@ -148,12 +148,26 @@ const ModalTimeTable = ({
             )}
             {dataStatus === 'success' && (
                 <div className="wrapper_modal_time">
-                    <div onClick={fetchBuildTimeTable} className='modal_time_current_date'>
+                    <div onClick={fetchBuildTimeTable}
+                        style={{
+                            position: 'fixed',
+                            left: '25px',
+                            top: '80px',
+                            background: 'white',
+                            fontSize: '20px',
+                            fontFamily: 'sans-serif',
+                            fontWeight: 500,
+                            padding: '3px 6px',
+                            cursor: 'pointer',
+                            boxShadow: '0 0 8px 0 rgb(0 0 0 / 20%)',
+                            borderRadius: '5px'
+                        }}
+                    >
                         {getDateFormat()}
                     </div>
                     <table className='modal_time_content_table'>
                         <thead style={{ position: 'relative' }}>
-                            <tr style={{ position: 'fixed', display: 'flex', left: '25px', top: '22px', width: 'calc(100% - 55px)' }}>
+                            <tr style={{ position: 'fixed', display: 'flex', left: '25px', top: '22px', width: 'calc(100% - 55px)', zIndex: 10 }}>
                                 <th style={{
                                     minWidth: '47px',
                                     backgroundColor: '#bed3f0',
@@ -357,30 +371,33 @@ const BodyTdStatusTwo = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes, 
         <td
             style={{
                 width: `calc(100% / ${doctorsSize})`,
-                display: 'flex',
                 backgroundColor: bg
 
             }}
             onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes)}
             onMouseLeave={() => setHoverTimes(null)}
         >
-            <div
-                style={{
-                    border: '2px solid white',
-                    borderRadius: '50%',
-                    backgroundColor: doctor.slots[currentTime].color,
-                    height: '20px',
-                    width: '20px'
-                }}
-            />
-            <span
-                style={{
-                    fontWeight: 600,
-                    marginLeft: '5px'
-                }}
-            >
-                {doctor.slots[currentTime].text}
-            </span>
+            <div style={{
+                display: 'flex',
+                width: '100%'
+            }}>
+                <div
+                    style={{
+                        borderRadius: '50%',
+                        backgroundColor: doctor.slots[currentTime].color,
+                        height: '20px',
+                        width: '20px'
+                    }}
+                />
+                <span
+                    style={{
+                        fontWeight: 600,
+                        marginLeft: '5px'
+                    }}
+                >
+                    {doctor.slots[currentTime].text}
+                </span>
+            </div>
         </td>
     )
 })
