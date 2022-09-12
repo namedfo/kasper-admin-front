@@ -14,14 +14,13 @@ import routes from '../../routes';
 
 const MultiRecords = ({
     setMultiRecords,
-    setTimeReceptions,
-    timeReceptions,
     multiRecords,
     searchByAge
 }) => {
 
     const [multiSlots, setMultiSlots] = useState([])
     const [isModalSchedule, setIsModalSchedule] = useState(false)
+
 
     const onCloseModalSchedule = () => setIsModalSchedule(false)
 
@@ -84,14 +83,13 @@ const MultiRecords = ({
 
     const onRemoveRecord = code => {
         setMultiRecords(prev => prev.filter(el => el.code !== code))
-        setTimeReceptions(prev => prev.filter(el => el.code !== code))
     }
 
 
 
 
     const onDragEnd = result => {
-        console.log(result)
+
         if (!result.destination) {
             return;
         }
@@ -107,13 +105,14 @@ const MultiRecords = ({
 
 
 
+
     return (
         <div className="p_main_multi_recording_wrapper">
             <ModalSchedule
                 multiSlots={multiSlots}
                 modalIsOpen={isModalSchedule}
                 closeModal={onCloseModalSchedule}
-                timeReceptions={timeReceptions}
+                multiRecords={multiRecords}
             />
             <div className="p_main_multi_recording">
                 <div className="p_main_multi_recording_header">

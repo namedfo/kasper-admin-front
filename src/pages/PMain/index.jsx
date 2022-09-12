@@ -18,8 +18,6 @@ const PMain = () => {
     const [services, setServices] = useState([])
     const [multiRecords, setMultiRecords] = useState([])
 
-    const [timeReceptions, setTimeReceptions] = useState([])
-
 
     const [btnMultiRecords, setBtnMultiRecords] = useState(null)
     const [popupHintComponent, setPopupHintComponent] = useState(null)
@@ -81,17 +79,8 @@ const PMain = () => {
                             selectedDoctors = `${count} из ${newDoctors.length}`
                         }
 
-                        setTimeReceptions(prev => {
-                            const newTimeReception = {
-                                code: code,
-                                time: newDoctors[0]?.duree,
-                                slots: newDoctors[0]?.duree / 5
-                            }
-                            if (prev.length === 0) {
-                                return [newTimeReception]
-                            }
-                            return [...prev, newTimeReception]
-                        })
+                
+    
 
 
                         setMultiRecords(prev => {
@@ -252,8 +241,6 @@ const PMain = () => {
                 <MultiRecords
                     multiRecords={multiRecords}
                     setMultiRecords={setMultiRecords}
-                    setTimeReceptions={setTimeReceptions}
-                    timeReceptions={timeReceptions}
                     searchByAge={searchByAge}
                 />
             )}

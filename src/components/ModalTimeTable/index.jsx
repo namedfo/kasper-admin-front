@@ -96,6 +96,7 @@ const ModalTimeTable = ({
 
         return () => {
             document.getElementById('root').style.overflow = 'auto'
+
         }
     }, [modalIsOpen])
 
@@ -125,6 +126,7 @@ const ModalTimeTable = ({
         }
 
     }
+
 
 
     return (
@@ -182,14 +184,14 @@ const ModalTimeTable = ({
                                     <th style={{ backgroundColor: '#bed3f0', color: '#36406f', width: '100%' }} key={doctor.id}>
                                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                                             <span>{doctor.name}</span>
-                                            <span>[{timeReceptions[index]?.time} мин / {timeReceptions[0]?.slots} слота]</span>
+                                            <span>[{timeReceptions[doctor.name]?.time} мин / {timeReceptions[doctor.name]?.slots} слота]</span>
                                         </div>
                                     </th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
-                            <TableBody doctors={data?.doctors} />
+                            <TableBody timeReceptions={timeReceptions} doctors={data?.doctors} />
                         </tbody>
                     </table>
                 </div>
@@ -200,14 +202,16 @@ const ModalTimeTable = ({
 
 
 
-const TableBody = memo(({ doctors }) => {
+const TableBody = memo(({ doctors, timeReceptions }) => {
     const [hoverTimes, setHoverTimes] = useState(null)
 
     const getCols = useCallback((time, timeIndex) => {
         return doctors?.map((doctor, doctorIndex) => {
+            const doctorsSlots = timeReceptions[doctor.name]?.slots
             if (doctor.slots[time].status === 0) {
                 return (
                     <BodyTdStatusZero
+                        doctorsSlots={doctorsSlots}
                         key={doctor.id}
                         doctor={doctor}
                         doctorsSize={doctors?.length}
@@ -222,6 +226,7 @@ const TableBody = memo(({ doctors }) => {
             if (doctor.slots[time].status === 1) {
                 return (
                     <BodyTdStatusOne
+                        doctorsSlots={doctorsSlots}
                         key={doctor.id}
                         doctor={doctor}
                         doctorsSize={doctors?.length}
@@ -236,6 +241,7 @@ const TableBody = memo(({ doctors }) => {
             if (doctor.slots[time].status === 2) {
                 return (
                     <BodyTdStatusTwo
+                        doctorsSlots={doctorsSlots}
                         key={doctor.id}
                         doctor={doctor}
                         doctorsSize={doctors?.length}
@@ -249,11 +255,10 @@ const TableBody = memo(({ doctors }) => {
 
             return null
         })
-    }, [doctors, hoverTimes])
+    }, [doctors, hoverTimes, timeReceptions])
 
 
     const tdBg = time => time.split('')[time.split('').length - 1] === '5' ? '#bed3f0' : '#d8e5f6'
-
 
     return (
         <tbody>
@@ -261,7 +266,7 @@ const TableBody = memo(({ doctors }) => {
                 <tr key={time}>
                     <td
                         style={{
-                            backgroundColor: hoverTimes ? hoverTimes[time] ? '#69f59e' : tdBg(time) : tdBg(time)
+                            backgroundColor: hoverTimes ? Object.values(hoverTimes)[0][time] ? '#69f59e' : tdBg(time) : tdBg(time)
                         }}
                         className="modal_time_td"
                     >
@@ -274,12 +279,12 @@ const TableBody = memo(({ doctors }) => {
     )
 })
 
-const hoverRows = (doctor, timeIndex, setHoverTimes) => {
+const hoverRows = (doctor, timeIndex, setHoverTimes, slots = 5) => {
 
     let localHoverTimes = {}
 
     let localTimeIndex = timeIndex
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < slots; i++) {
         const timeTableRowsObj = Object.entries(timeTableRows)
 
         localHoverTimes = {
@@ -293,21 +298,25 @@ const hoverRows = (doctor, timeIndex, setHoverTimes) => {
         localTimeIndex = localTimeIndex + 1
 
     }
-    setHoverTimes(localHoverTimes)
+
+    setHoverTimes(prev => ({
+        ...prev,
+        [doctor.id]: localHoverTimes
+    }))
 
 }
 
 
 
-const BodyTdStatusZero = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusZero = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('#e5e5e5')
 
 
     useEffect(() => {
-        if (hoverTimes && hoverTimes[currentTime]) return setBg('gray')
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('gray')
 
         setBg("#e5e5e5")
-    }, [currentTime, hoverTimes])
+    }, [currentTime, doctor.id, hoverTimes])
 
     return (
         <td
@@ -316,7 +325,7 @@ const BodyTdStatusZero = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes,
                 backgroundColor: bg
             }}
             className='modal_time_content_table_td__status_zero'
-            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes)}
+            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
             onMouseLeave={() => setHoverTimes(null)}
         >
 
@@ -325,23 +334,23 @@ const BodyTdStatusZero = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes,
 })
 
 
-const BodyTdStatusOne = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusOne = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
 
     const [bg, setBg] = useState('#e2ffed')
 
 
     useEffect(() => {
-        if (hoverTimes && hoverTimes[currentTime]) return setBg('#69f59e')
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#69f59e')
 
         setBg("#e2ffed")
-    }, [currentTime, hoverTimes])
+    }, [currentTime, doctor?.id, hoverTimes])
     return (
         <td
             style={{
                 backgroundColor: bg,
                 width: `calc(100% / ${doctorsSize})`
             }}
-            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes)}
+            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
             onMouseLeave={() => setHoverTimes(null)}
         >
             <span
@@ -357,30 +366,33 @@ const BodyTdStatusOne = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes, 
 })
 
 
-const BodyTdStatusTwo = memo(({ doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusTwo = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('white')
 
 
     useEffect(() => {
-        if (hoverTimes && hoverTimes[currentTime]) return setBg('#ff97aa')
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#ff97aa')
 
         setBg("white")
-    }, [currentTime, hoverTimes])
-    // ff97aa
+    }, [currentTime, doctor?.id, hoverTimes])
+
+
     return (
         <td
             style={{
                 width: `calc(100% / ${doctorsSize})`,
-                backgroundColor: bg
+                backgroundColor: bg,
+                cursor: 'not-allowed'
 
             }}
-            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes)}
+            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
             onMouseLeave={() => setHoverTimes(null)}
         >
-            <div style={{
-                display: 'flex',
-                width: '100%'
-            }}>
+            <div
+                style={{
+                    display: 'flex',
+                    width: '100%'
+                }}>
                 <div
                     style={{
                         borderRadius: '50%',
