@@ -31,6 +31,7 @@ api_host.interceptors.response.use(function (response) {
 
 const getIsShowPage = {
     PMain: process.env.REACT_APP_SHOW_MAIN ?? true,
+    PService: process.env.REACT_APP_SHOW_SERVICE ?? true,
 
     PFeedbackManagement: process.env.REACT_APP_SHOW_FEEDBACK ?? false,
     PFeedbackPrint: process.env.REACT_APP_SHOW_FEEDBACK_PRINT ?? true,

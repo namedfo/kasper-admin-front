@@ -190,9 +190,7 @@ const ModalTimeTable = ({
                                 ))}
                             </tr>
                         </thead>
-                        <tbody>
-                            <TableBody timeReceptions={timeReceptions} doctors={data?.doctors} />
-                        </tbody>
+                        <TableBody timeReceptions={timeReceptions} doctors={data?.doctors} />
                     </table>
                 </div>
             )}
@@ -253,7 +251,11 @@ const TableBody = memo(({ doctors, timeReceptions }) => {
                 )
             }
 
-            return null
+            return (
+                <td>
+                    Нет совпадений по статусам :(
+                </td>
+            )
         })
     }, [doctors, hoverTimes, timeReceptions])
 

@@ -10,6 +10,7 @@ import PFeedbackPrint from "./pages/PFeedbackPrint";
 import PDoctorEditing from './pages/PDoctorEditing'
 //
 import config from './config'
+import PService from "./pages/PService";
 
 
 const showPage = [
@@ -19,6 +20,14 @@ const showPage = [
         path: '/',
         title: 'Главная',
         isShow: config.getIsShowPage.PMain
+    },
+
+    {
+        name: 'PService',
+        component: <PService />,
+        path: '/service/:code',
+        title: 'Услуга',
+        isShow: config.getIsShowPage.PService
     },
 
     { name: 'PFeedbackManagement', component: <PFeedbackManagement />, path: '/feedback-management', title: 'Управление обращениями граждан', isShow: config.getIsShowPage.PFeedbackManagement },

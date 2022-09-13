@@ -107,7 +107,6 @@ const ModalSchedule = ({
             }
 
         })
-
         return () => {
             setTimeReceptions([])
         }
