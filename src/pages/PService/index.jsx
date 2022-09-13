@@ -1,8 +1,10 @@
+import { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 // components
 import PServiceAdditionalSchedules from '../../components/ServiceComponents/PServiceAdditionalSchedules'
 import PServiceExceptionalEvents from '../../components/ServiceComponents/PServiceExceptionalEvents'
+import PServiceSchedulesTable from '../../components/ServiceComponents/PServiceSchedulesTable'
 import PServiceSchedulesTitle from '../../components/ServiceComponents/PServiceSchedulesTitle'
 import PServiceServices from '../../components/ServiceComponents/PServiceServices'
 import PServiceSpecialists from '../../components/ServiceComponents/PServiceSpecialists'
@@ -15,6 +17,9 @@ import routes from '../../routes'
 const PService = () => {
     const [service, setService] = useState(null)
     const [status, setStatus] = useState('idle')
+
+    //
+    const [specialists, setSpecialists] = useState([])
 
     const params = useParams()
 
@@ -30,6 +35,12 @@ const PService = () => {
 
                 if (res.status === 200) {
                     setService(res.data)
+                    const convertMedecins = Object.values(res?.data?.medecins)
+                    setSpecialists(convertMedecins?.map(specialist => ({
+                        ...specialist,
+                        isCheck: true
+                    })))
+
                     setStatus('success')
                 }
             } catch (error) {
@@ -57,6 +68,7 @@ const PService = () => {
     const age = linkReturn.get('age') ?? ''
 
 
+
     return (
         <div className='h-full w-full flex justify-between p-[25px] relative'>
             {status === 'success' && (
@@ -64,7 +76,8 @@ const PService = () => {
                     <div className='w-[390px] flex flex-col'>
                         <PServiceSpecialists
                             initAge={age}
-                            specialists={Object.values(service.medecins)}
+                            specialists={specialists}
+                            setSpecialists={setSpecialists}
                         />
                         <PServiceServices services={service?.services} />
                         <PServiceExceptionalEvents />
@@ -78,8 +91,16 @@ const PService = () => {
                         <PServiceSchedulesTitle
                             title={service?.serv_name}
                             description={service?.descr}
+                            moreDescription={service?.more_descr}
                             getTimeDuree={getTimeDuree}
                         />
+                        {service.doctors && (
+                            <PServiceSchedulesTable
+                                age={age}
+                                specialists={specialists}
+                                initSchedule={Object.values(service.doctors)}
+                            />
+                        )}
                     </div>
                 </>
             )}

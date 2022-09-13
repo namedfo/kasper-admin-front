@@ -2,12 +2,40 @@ import { useState } from "react"
 
 
 const PServiceSpecialists = ({
+    setSpecialists,
     specialists,
     initAge
 }) => {
     const [age, setAge] = useState(initAge)
     const [isShow, setIsShow] = useState(true)
 
+
+
+    const onChangeIsCheckSpecialist = (isCheck, id) => {
+        setSpecialists(prev => {
+            if (prev) {
+                return prev.map(specialist => {
+                    if (specialist.id === id) {
+                        return {
+                            ...specialist,
+                            isCheck: isCheck
+                        }
+                    }
+
+                    return specialist
+                })
+            }
+            return prev
+        })
+    }
+
+
+    const onChangeAllIsCheckSpecialists = isCheck => {
+        setSpecialists(prev => prev ? prev.map(specialist => ({ ...specialist, isCheck: isCheck })) : prev)
+    }
+
+
+    
 
     return (
         <div className="bg-white flex flex-col relative  shadow-standart p-[18px] rounded-[10px]">
@@ -23,29 +51,45 @@ const PServiceSpecialists = ({
                         <span className="border w-full py-[3px] px-[8px] border-[#e0e0e0] rounded-[5px] bg-[#f4ffb8]">
                             Точный возраст:
                         </span>
-                        <input value={age} onChange={e => setAge(e.target.value)} className="border-[#e0e0e0] outline-none px-[8px] border w-[60px] ml-[20px] rounded-[5px]" type="text" />
+                        <input
+                            value={age}
+                            onChange={e => setAge(e.target.value)}
+                            className="border-[#e0e0e0] outline-none px-[8px] border w-[60px] ml-[20px] rounded-[5px]"
+                            type="text"
+                        />
                     </div>
                     <div className="w-full mt-[15px] flex">
-                        <button className="border hover:bg-[#FF6B6B] hover:rounded-[5px] hover:text-white cursor-pointer outline-none bg-[#fff2f2] border-[#e0e0e0] w-[50%]">
+                        <button
+                            onClick={() => onChangeAllIsCheckSpecialists(false)}
+                            className="border hover:bg-[#FF6B6B] hover:rounded-[5px] hover:text-white cursor-pointer outline-none bg-[#fff2f2] border-[#e0e0e0] w-[50%]"
+                        >
                             Убрать все
                         </button>
-                        <button className="border hover:text-white hover:bg-[#29B8FF] hover:rounded-[5px] hover:text-whiteccc cursor-pointer outline-none border-[#e0e0e0 w-[50%]">
+                        <button
+                            onClick={() => onChangeAllIsCheckSpecialists(true)}
+                            className="border hover:text-white hover:bg-[#29B8FF] hover:rounded-[5px] hover:text-whiteccc cursor-pointer outline-none border-[#e0e0e0 w-[50%]"
+                        >
                             Поставить все
                         </button>
                     </div>
                     <div className="flex flex-col mt-[16px]">
                         {specialists?.length > 0 && specialists.map(specialist => (
-                        <div key={specialist.id} className="flex justify-between">
-                            <div className="flex">
-                                <input className="w-[20px] cursor-pointer h-[20px]" type="checkbox" />
-                                <span className="text-[14px] font-sans font-medium  ml-[10px] text-[#0096e0]">
-                                    {specialist.name}
+                            <div key={specialist.id} className="flex justify-between">
+                                <div className="flex">
+                                    <input
+                                        checked={specialist.isCheck}
+                                        onChange={(e) => onChangeIsCheckSpecialist(e.target.checked, specialist.id)}
+                                        className="w-[20px] cursor-pointer h-[20px]"
+                                        type="checkbox"
+                                    />
+                                    <span className="text-[14px] font-sans font-medium  ml-[10px] text-[#0096e0]">
+                                        {specialist.name}
+                                    </span>
+                                </div>
+                                <span>
+                                    ?
                                 </span>
                             </div>
-                            <span>
-                                ?
-                            </span>
-                        </div>
                         ))}
                     </div>
                 </>

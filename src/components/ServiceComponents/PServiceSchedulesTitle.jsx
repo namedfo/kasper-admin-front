@@ -9,11 +9,15 @@ import config from '../../config'
 const PServiceSchedulesTitle = ({
     title,
     description,
+    moreDescription,
     getTimeDuree
 }) => {
     const [isMoreDescShow, setIsMoreDescShow] = useState(false)
 
     const navigate = useNavigate()
+
+
+
 
     return (
         <div className="bg-white relative w-full shadow-standart p-[20px] rounded-[10px]">
@@ -23,20 +27,22 @@ const PServiceSchedulesTitle = ({
                     <h1 className='font-bold text-[17px]'>
                         {title} – {getTimeDuree()}
                     </h1>
-                    {/* <span className='text-[#585858]'>
-                        {description}
-                    </span> */}
-                    {/* {isMoreDescShow && (
-                        <span className='text-[#585858] mt-[5px]'>
-                            {description}
-                        </span>
-                    )} */}
+                    <div
+                        dangerouslySetInnerHTML={{ __html: description }}
+                        className='text-[#585858]'
+                    />
+                    {isMoreDescShow && (
+                        <div
+                            dangerouslySetInnerHTML={{ __html: moreDescription }}
+                            className='text-[#585858] mt-[5px]'
+                        />
+                    )}
                 </div>
-                <img 
-                    onClick={() => navigate('/')} 
-                    className='object-contain cursor-pointer h-[30px]' 
-                    src={config.logo_login} 
-                    alt="logo" 
+                <img
+                    onClick={() => navigate('/')}
+                    className='object-contain cursor-pointer h-[30px]'
+                    src={config.logo_login}
+                    alt="logo"
                 />
             </div>
             <div className='absolute w-full flex items-center justify-between bottom-[-10px] left-0 px-[20px]'>

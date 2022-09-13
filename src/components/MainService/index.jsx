@@ -21,7 +21,7 @@ const MainService = ({
         if (isMultiRecords) {
             await getService(service.code)
         } else {
-            navigate(`/service/${service.code}?age=${searchByAge ?? 18}`)
+            navigate(`/service/${service.code}?age=${searchByAge.length > 0 || 18}`)
         }
     }
 

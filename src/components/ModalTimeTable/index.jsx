@@ -466,7 +466,7 @@ const BodyTdStatusTwo = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, s
 const BodyTdStatusThree = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('white')
     useEffect(() => {
-        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#69f59e')
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#ff97aa')
 
         setBg("white")
     }, [currentTime, doctor?.id, hoverTimes])
@@ -475,6 +475,7 @@ const BodyTdStatusThree = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes,
             style={{
                 width: `calc(100% / ${doctorsSize})`,
                 backgroundColor: bg,
+                cursor: 'not-allowed'
 
             }}
             onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
