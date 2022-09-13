@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 //
 import Modal from 'react-modal'
 //
+import _uniqBy from "lodash/uniqBy";
+//
 import { IoMdClose } from 'react-icons/io'
 //
 import padTo2Digits from '../../utils/padTo2Digits'
@@ -35,10 +37,17 @@ const customStyles = {
 };
 
 
-const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
+const ModalSchedule = ({
+    modalIsOpen,
+    closeModal,
+    multiSlots,
+    multiRecords
+}) => {
 
     const [modalIsTime, setModalIsTime] = useState(false)
     const [modalTimeParams, setModalTimeParams] = useState(null)
+
+    const [timeReceptions, setTimeReceptions] = useState([])
 
 
     useEffect(() => {
@@ -50,6 +59,59 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
             document.getElementById('root').style.overflow = 'auto'
         }
     }, [modalIsOpen])
+
+    useEffect(() => {
+        setTimeReceptions(() => {
+
+            if (multiRecords.length > 0) {
+                let allDoctors = []
+                multiRecords?.forEach(el => {
+                    allDoctors = [
+                        ...allDoctors,
+                        ...el.doctors
+                    ]
+                })
+
+                const countSlots = allDoctors.map((doctor) => {
+                    return { count: 1, name: doctor.doctor_name }
+                }).reduce((a, b) => {
+                    a[b.name] = (a[b.name] || 0) + b.count
+                    return a
+                }, {})
+                console.log(countSlots)
+
+                const uniqDoctors = _uniqBy(allDoctors, 'doctor_name')
+                console.log(uniqDoctors)
+  // const newTimeReception = {
+                            //     code: code,
+                            //     time: newDoctors[0]?.duree,
+                            //     slots: newDoctors[0]?.duree / 5
+                            // }
+                            // if (prev.length === 0) {
+                            //     return [newTimeReception]
+                            // }
+                            // return [...prev, newTimeReception]
+
+                let newUniqDoctors = {}
+                uniqDoctors.forEach(uniqDoctor => {
+                    newUniqDoctors = {
+                        ...newUniqDoctors,
+                        [uniqDoctor.doctor_name]: {
+                            time: uniqDoctor.duree,
+                            slots: uniqDoctor.duree / 5
+                        }
+                    }
+                })
+
+                return newUniqDoctors
+            }
+
+        })
+
+        return () => {
+            setTimeReceptions([])
+        }
+    }, [multiRecords])
 
     const shortDayWeek = {
         0: 'ВС',
@@ -82,13 +144,13 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
     }
 
     const onClickActive = (prevDate, result) => {
-        const date = +new Date(prevDate) / 1000
+        const date = (+new Date(prevDate) / 1000) + 3600 * 6
         let newResult = []
         for (let [, value] of Object.entries(result)) {
-            newResult = [ ...newResult, Object.keys(value) ]
+            newResult = [...newResult, Object.keys(value)]
         }
 
-        
+
         const params = {
             date: date,
             doctors: newResult[0].map(el => +el)
@@ -97,6 +159,9 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
         setModalTimeParams(params)
     }
 
+    console.log(timeReceptions)
+
+
 
     return (
         <Modal
@@ -104,10 +169,11 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
             onRequestClose={closeModal}
             style={customStyles}
         >
-            <ModalTimeTable 
-                modalTimeParams={modalTimeParams} 
-                modalIsOpen={modalIsTime} 
-                closeModal={onCloseModalTime} 
+            <ModalTimeTable
+                modalTimeParams={modalTimeParams}
+                modalIsOpen={modalIsTime}
+                closeModal={onCloseModalTime}
+                timeReceptions={timeReceptions}
             />
             <button onClick={closeModal} className='modal_schedule_header_btn_close'>
                 <IoMdClose size={30} />
@@ -139,7 +205,7 @@ const ModalSchedule = ({ modalIsOpen, closeModal, multiSlots }) => {
                                 Клиника
                             </td>
                             {multiSlots?.dates?.map(date => (
-                                <td 
+                                <td
                                     onClick={multiSlots?.result[date] ? () => onClickActive(date, multiSlots?.result[date]) : undefined}
                                     key={date} style={{ backgroundColor: multiSlots?.result[date] ? '#aad48c' : '#f8cbac' }}>
 

@@ -6,7 +6,13 @@ import './MainServices.css'
 
 
 
-const MainServices = ({ service, getService, handleMultiRecords, isMultiRecords }) => {
+const MainServices = ({ 
+    service, 
+    getService, 
+    handleMultiRecords, 
+    isMultiRecords,
+    handlePopupHint
+}) => {
 
     const [isShow, setIsShow] = useState(true)
 
@@ -25,6 +31,7 @@ const MainServices = ({ service, getService, handleMultiRecords, isMultiRecords 
                         key={item.id} 
                         service={item} 
                         isMultiRecords={isMultiRecords}
+                        handlePopupHint={handlePopupHint}
                         handleMultiRecords={handleMultiRecords}
                     />
                 ))}

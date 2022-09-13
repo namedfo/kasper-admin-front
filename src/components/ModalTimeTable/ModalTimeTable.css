@@ -1,41 +1,67 @@
 
+
+.wrapper_modal_time {
+    position: relative;
+    overflow-y: auto;
+}
+.wrapper_modal_time::-webkit-scrollbar {
+  width: 5px;
+}
+.wrapper_modal_time::-webkit-scrollbar-thumb {
+    background: rgb(189, 176, 176);
+    border-radius: 10px;
+}​
+
+.modal_time_current_date {
+  position: fixed;
+  left: 25px;
+  top: 80px;
+  z-index: 100;
+  background: white;
+  font-size: 20px;
+  font-family: sans-serif;
+  font-weight: 500;
+  border-radius: 5px;
+  box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
+  padding: 3px 6px;
+
+  cursor: pointer;
+}
+
 table.modal_time_content_table {
-    margin-top: 25px;
+    margin-top: 20px;
     width: 100%;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-collapse: collapse;
     border-width: 1px;
     border-color: hsl(0, 0%, 80%);
     border-style: solid;
     color: #000000;
-}
+  }
 
 table.modal_time_content_table td,
 table.modal_time_content_table th {
-    border-width: 1px;
-    border-color: hsl(0, 0%, 80%);
-    border-style: solid;
-    padding: 3px 6px;
-    
+  border-width: 1px;
+  border-color: hsl(0, 0%, 80%);
+  border-style: solid;
 
-
-    font-size: 14px;
-
+  font-size: 14px;
 }
 /* table.modal_time_content_table td:nth-child(odd) {
     text-align: center;
 } */
 table.modal_time_content_table th {
-    text-align: center;
+  text-align: center;
 }
-
 
 .modal_time_content_table_td__status_zero {
-    background: #bbbfbd;
-    color: #c2d7d6;
+  color: #c2d7d6;
+  background: radial-gradient(#000 5%, transparent 20%) 0 0,
+    radial-gradient(rgba(0, 0, 0, 0.1) 1%, transparent 1%) 60px 50px;
+  background-size: 5px 5px;
 }
 .modal_time_content_table_td__status_zero:hover {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 /* 
 table.modal_time_content_table td:not(:first-child):hover {
@@ -43,7 +69,6 @@ table.modal_time_content_table td:not(:first-child):hover {
     -moz-box-shadow: 0px 0px 5px 1px rgba(34, 60, 80, 0.2);
     box-shadow: 0px 0px 5px 1px rgba(34, 60, 80, 0.2);
 } */
-
 
 /* table.modal_time_content_table tr:nth-child(odd) td:nth-child(odd) {
     background: #d8e5f6;
@@ -58,9 +83,9 @@ table.modal_time_content_table tr:nth-child(even) td:nth-child(odd) {
     font-weight: 600;
 } */
 
-table tr td.modal_time_td{
-    padding: 3px 6px;
-    text-align: center;
-    color: #36406f;
-    font-weight: 600;
+table tr td.modal_time_td {
+  text-align: center;
+  color: #36406f;
+  font-weight: 600;
+  min-width: 47px;
 }

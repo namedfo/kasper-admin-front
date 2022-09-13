@@ -99,10 +99,12 @@ const NavbarMain = ({ getServices, searchByAge, setSearchByAge }) => {
                 modalIsOpen={modalIsOpenLamp}
                 closeModal={closeModalLamp}
             />
-            <ModalPatients
-                modalIsOpen={modalIsOpenPatients}
-                closeModal={closeModalPatients}
-            />
+            {modalIsOpenPatients && (
+                <ModalPatients
+                    modalIsOpen={modalIsOpenPatients}
+                    closeModal={closeModalPatients}
+                />
+            )}
             <Select
                 defaultValue={searchByDoctor}
                 onChange={onSearchByDoctorId}

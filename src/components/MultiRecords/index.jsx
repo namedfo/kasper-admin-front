@@ -21,6 +21,7 @@ const MultiRecords = ({
     const [multiSlots, setMultiSlots] = useState([])
     const [isModalSchedule, setIsModalSchedule] = useState(false)
 
+
     const onCloseModalSchedule = () => setIsModalSchedule(false)
 
     const onOpenModalSchedule = () => setIsModalSchedule(true)
@@ -31,7 +32,6 @@ const MultiRecords = ({
             let data = {}
 
             service.doctors.forEach(doctor => {
-                console.log(doctor)
                 if (searchByAge?.length > 0) {
                     if (+searchByAge >= +doctor.age[0] && +searchByAge <= +doctor.age[1]) {
                         data = {
@@ -81,15 +81,15 @@ const MultiRecords = ({
     }
 
 
-    const onRemoveRecord = id => {
-        setMultiRecords(prev => prev.filter(el => el.id !== id))
+    const onRemoveRecord = code => {
+        setMultiRecords(prev => prev.filter(el => el.code !== code))
     }
 
 
 
 
     const onDragEnd = result => {
-        console.log(result)
+
         if (!result.destination) {
             return;
         }
@@ -105,12 +105,14 @@ const MultiRecords = ({
 
 
 
+
     return (
         <div className="p_main_multi_recording_wrapper">
             <ModalSchedule
                 multiSlots={multiSlots}
                 modalIsOpen={isModalSchedule}
                 closeModal={onCloseModalSchedule}
+                multiRecords={multiRecords}
             />
             <div className="p_main_multi_recording">
                 <div className="p_main_multi_recording_header">
