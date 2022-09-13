@@ -27,12 +27,12 @@ const PServiceComponentServices = ({
                             Поставить все
                         </button>
                     </div>
-                    <div className="flex mt-[16px] justify-between">
+                    <div className="flex flex-col mt-[16px]">
                         {covertServices && covertServices.length > 0 && covertServices.map(service => (
                             <div key={service.name} className="flex">
                                 <div className="flex w-auto">
                                     <input className="w-[20px] cursor-pointer h-[20px]" type="checkbox" />
-                                    <span className="text-[14px] w-auto font-sans font-medium ml-[10px] text-[#0096e0]">
+                                    <span className="text-[14px] w-[260px] font-sans font-medium ml-[10px] text-[#0096e0]">
                                         {service.name}
                                     </span>
                                 </div>

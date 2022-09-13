@@ -251,6 +251,52 @@ const TableBody = memo(({ doctors, timeReceptions }) => {
                 )
             }
 
+            if (doctor.slots[time].status === 3) {
+                return (
+                    <BodyTdStatusThree
+                        doctorsSlots={doctorsSlots}
+                        key={doctor.id}
+                        doctor={doctor}
+                        doctorsSize={doctors?.length}
+                        hoverTimes={hoverTimes}
+                        setHoverTimes={setHoverTimes}
+                        timeIndex={timeIndex}
+                        currentTime={time}
+                    />
+                )
+            }
+
+            if (doctor.slots[time].status === 4) {
+                return (
+                    <BodyTdStatusFour
+                        doctorsSlots={doctorsSlots}
+                        key={doctor.id}
+                        doctor={doctor}
+                        doctorsSize={doctors?.length}
+                        hoverTimes={hoverTimes}
+                        setHoverTimes={setHoverTimes}
+                        timeIndex={timeIndex}
+                        currentTime={time}
+                    />
+                )
+            }
+
+            if (doctor.slots[time].status === 5) {
+                return (
+                    <BodyTdStatusFive
+                        doctorsSlots={doctorsSlots}
+                        key={doctor.id}
+                        doctor={doctor}
+                        doctorsSize={doctors?.length}
+                        hoverTimes={hoverTimes}
+                        setHoverTimes={setHoverTimes}
+                        timeIndex={timeIndex}
+                        currentTime={time}
+                    />
+                )
+            }
+
+
             return (
                 <td>
                     Нет совпадений по статусам :(
@@ -415,6 +461,144 @@ const BodyTdStatusTwo = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, s
         </td>
     )
 })
+
+
+const BodyTdStatusThree = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+    const [bg, setBg] = useState('white')
+    useEffect(() => {
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#69f59e')
+
+        setBg("white")
+    }, [currentTime, doctor?.id, hoverTimes])
+    return (
+        <td
+            style={{
+                width: `calc(100% / ${doctorsSize})`,
+                backgroundColor: bg,
+
+            }}
+            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
+            onMouseLeave={() => setHoverTimes(null)}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    width: '100%'
+                }}>
+                <div
+                    style={{
+                        backgroundColor: doctor.slots[currentTime].color,
+                        height: '20px',
+                        width: '20px'
+                    }}
+                />
+                <span
+                    style={{
+                        fontWeight: 600,
+                        marginLeft: '5px'
+                    }}
+                >
+                    {doctor.slots[currentTime].text}
+                </span>
+            </div>
+        </td>
+    )
+})
+
+const BodyTdStatusFour = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+    const [bg, setBg] = useState('white')
+
+
+    useEffect(() => {
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#69f59e')
+
+        setBg("white")
+    }, [currentTime, doctor?.id, hoverTimes])
+    return (
+        <td
+            style={{
+                width: `calc(100% / ${doctorsSize})`,
+                backgroundColor: bg,
+            }}
+            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
+            onMouseLeave={() => setHoverTimes(null)}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    width: '100%'
+                }}>
+                <div
+                    style={{
+                        backgroundColor: doctor.slots[currentTime].color,
+                        height: '20px',
+                        width: '20px'
+                    }}
+                />
+                <span
+                    style={{
+                        fontWeight: 600,
+                        marginLeft: '5px'
+                    }}
+                >
+                    {doctor.slots[currentTime].text}
+                </span>
+            </div>
+        </td>
+    )
+})
+
+const BodyTdStatusFive = memo(({ doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+    const [bg, setBg] = useState('white')
+
+
+    useEffect(() => {
+        if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#ff97aa')
+
+        setBg("white")
+    }, [currentTime, doctor?.id, hoverTimes])
+    return (
+        <td
+            style={{
+                width: `calc(100% / ${doctorsSize})`,
+                backgroundColor: bg,
+                cursor: 'not-allowed'
+            }}
+            onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
+            onMouseLeave={() => setHoverTimes(null)}
+        >
+            <div className="flex">
+                <div
+                    style={{
+                        backgroundColor: doctor.slots[currentTime].color1,
+                        height: '20px',
+                        width: '20px'
+
+                    }}
+                    className="flex items-center justify-center"
+                >
+                    <div style={{
+                        borderRadius: '50%',
+                        backgroundColor: doctor.slots[currentTime].color,
+                        height: '16px',
+                        width: '16px'
+                    }} />
+                </div>
+                <span
+                    style={{
+                        fontWeight: 600,
+                        marginLeft: '5px'
+                    }}
+                >
+                    {doctor.slots[currentTime].text}
+                </span>
+            </div>
+        </td>
+    )
+})
+
+
+
 
 
 export default ModalTimeTable
