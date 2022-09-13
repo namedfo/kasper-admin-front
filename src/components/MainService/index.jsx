@@ -1,4 +1,5 @@
 import { BsQuestion } from 'react-icons/bs'
+import { useNavigate } from 'react-router'
 //
 import './MainService.css'
 
@@ -12,10 +13,14 @@ const MainService = ({
     isMultiRecords
 }) => {
 
+    const navigate = useNavigate()
+
 
     const onHandle = async () => {
         if (isMultiRecords) {
             await getService(service.code)
+        } else {
+            navigate(`/service/${service.code}`)
         }
     }
 

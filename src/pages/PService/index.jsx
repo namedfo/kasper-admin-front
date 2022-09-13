@@ -23,9 +23,12 @@ const PService = () => {
         (async () => {
             setStatus('loading')
             try {
-                const res = await config.api_host.post(`${routes.get_service_info}/${params?.code}`, {age: 18})
-                console.log(res)
-                setStatus('success')
+                const res = await config.api_host.post(`${routes.get_service_info}${params?.code}`, {age: 18})
+                
+                if (res.status === 200) {
+                    setService(res.data)
+                    setStatus('success')
+                }
             } catch (error) {
                 setStatus('error')
             }
@@ -38,7 +41,7 @@ const PService = () => {
         <div className='h-full w-full flex justify-between p-[25px] relative'>
             <div className='w-[390px] flex flex-col'>
                 <PServiceSpecialists />
-                <PServiceServices />
+                <PServiceServices services={service?.services} />
                 <PServiceExceptionalEvents />
                 <PServiceAdditionalSchedules />
             </div>
@@ -48,7 +51,11 @@ const PService = () => {
                 }} 
                 className=''
             >
-                <PServiceSchedulesTitle />
+                <PServiceSchedulesTitle
+                    title={service?.serv_name}
+                    description={service?.descr}
+                    moreDescription={service?.more_descr}
+                />
             </div>
 
 

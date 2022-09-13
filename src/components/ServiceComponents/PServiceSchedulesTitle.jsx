@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 //
 import config from '../../config'
 
 
 
 
-const PServiceSchedulesTitle = () => {
+const PServiceSchedulesTitle = ({
+    title,
+    description,
+    moreDescription
+}) => {
     const [isMoreDescShow, setIsMoreDescShow] = useState(false)
 
     return (
@@ -14,14 +18,14 @@ const PServiceSchedulesTitle = () => {
                 <div className="flex flex-col">
                     {/* <h1 className='text-[#ff9b00] font-bold text-[17px]'>Установлен фильтр по исключительному событию: ОМС</h1> */}
                     <h1 className='font-bold text-[17px]'>
-                        Консультация психолога, первичная – 30 минут
+                        {title} – 30 минут
                     </h1>
                     <span className='text-[#585858]'>
-                        Тестовое описание
+                        {description}
                     </span>
                     {isMoreDescShow && (
                         <span className='text-[#585858] mt-[5px]'>
-                            Тестовое описание
+                            {moreDescription}
                         </span>
                     )}
                 </div>
@@ -62,4 +66,4 @@ const PServiceSchedulesTitle = () => {
     )
 }
 
-export default PServiceSchedulesTitle
+export default memo(PServiceSchedulesTitle)

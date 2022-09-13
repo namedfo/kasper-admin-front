@@ -1,8 +1,11 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 
-const PServiceComponentServices = () => {
+const PServiceComponentServices = ({
+    services
+}) => {
     const [isShow, setIsShow] = useState(true)
 
+    const covertServices = services ? Object.values(services) : undefined
 
     return (
         <div className="bg-white mt-[30px] relative  shadow-standart p-[18px] rounded-[10px]">
@@ -25,15 +28,21 @@ const PServiceComponentServices = () => {
                         </button>
                     </div>
                     <div className="flex mt-[16px] justify-between">
-                        <div className="flex">
-                            <input className="w-[20px] cursor-pointer h-[20px]" type="checkbox" />
-                            <span className="text-[14px] font-sans font-medium ml-[10px] text-[#0096e0]">
-                                Консультация психолога, первичная
-                            </span>
-                        </div>
-                        <div className="text-[14px] text-[#444] px-[5px] font-bold flex items-center justify-center border border-[#e3e3e3] rounded-[4px] bg-[#efefef]">
-                            1800 &#8381;
-                        </div>
+                        {covertServices && covertServices.length > 0 && covertServices.map(service => (
+                            <div key={service.name} className="flex">
+                                <div className="flex w-auto">
+                                    <input className="w-[20px] cursor-pointer h-[20px]" type="checkbox" />
+                                    <span className="text-[14px] w-auto font-sans font-medium ml-[10px] text-[#0096e0]">
+                                        {service.name}
+                                    </span>
+                                </div>
+                                <div>
+                                    <div className="text-[14px] w-[60px] text-[#444] px-[5px] font-bold flex items-center justify-center border border-[#e3e3e3] rounded-[4px] bg-[#efefef]">
+                                        {service.price} &#8381;
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </>
             )}
@@ -41,4 +50,4 @@ const PServiceComponentServices = () => {
     )
 }
 
-export default PServiceComponentServices
+export default memo(PServiceComponentServices)
