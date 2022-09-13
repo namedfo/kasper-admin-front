@@ -1,4 +1,5 @@
 import { useState, memo } from 'react'
+import { useNavigate } from 'react-router'
 //
 import config from '../../config'
 
@@ -8,9 +9,11 @@ import config from '../../config'
 const PServiceSchedulesTitle = ({
     title,
     description,
-    moreDescription
+    getTimeDuree
 }) => {
     const [isMoreDescShow, setIsMoreDescShow] = useState(false)
+
+    const navigate = useNavigate()
 
     return (
         <div className="bg-white relative w-full shadow-standart p-[20px] rounded-[10px]">
@@ -18,18 +21,23 @@ const PServiceSchedulesTitle = ({
                 <div className="flex flex-col">
                     {/* <h1 className='text-[#ff9b00] font-bold text-[17px]'>Установлен фильтр по исключительному событию: ОМС</h1> */}
                     <h1 className='font-bold text-[17px]'>
-                        {title} – 30 минут
+                        {title} – {getTimeDuree()}
                     </h1>
-                    <span className='text-[#585858]'>
+                    {/* <span className='text-[#585858]'>
                         {description}
-                    </span>
-                    {isMoreDescShow && (
+                    </span> */}
+                    {/* {isMoreDescShow && (
                         <span className='text-[#585858] mt-[5px]'>
-                            {moreDescription}
+                            {description}
                         </span>
-                    )}
+                    )} */}
                 </div>
-                <img className='object-contain h-[30px]' src={config.logo_login} alt="logo" />
+                <img 
+                    onClick={() => navigate('/')} 
+                    className='object-contain cursor-pointer h-[30px]' 
+                    src={config.logo_login} 
+                    alt="logo" 
+                />
             </div>
             <div className='absolute w-full flex items-center justify-between bottom-[-10px] left-0 px-[20px]'>
                 <span className='text-[12px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
@@ -53,12 +61,6 @@ const PServiceSchedulesTitle = ({
                     </span>
                     <span className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +7
-                    </span>
-                    <span className='text-[12px] ml-[5px] leading-4 bg-[#ffb562] rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer'>
-                        +30
-                    </span>
-                    <span className='text-[12px] ml-[5px] leading-4 bg-[#ffb562] rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer'>
-                        -30
                     </span>
                 </div>
             </div>

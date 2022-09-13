@@ -10,7 +10,8 @@ const MainService = ({
     handleMultiRecords,
     handlePopupHint,
     getService,
-    isMultiRecords
+    isMultiRecords,
+    searchByAge
 }) => {
 
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ const MainService = ({
         if (isMultiRecords) {
             await getService(service.code)
         } else {
-            navigate(`/service/${service.code}`)
+            navigate(`/service/${service.code}?age=${searchByAge ?? 18}`)
         }
     }
 

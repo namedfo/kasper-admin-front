@@ -210,7 +210,6 @@ const PMain = () => {
 
 
 
-    console.log(popupHintComponent)
 
 
 
@@ -231,6 +230,7 @@ const PMain = () => {
                             handleMultiRecords={handleMultiRecords}
                             handlePopupHint={handlePopupHint}
                             isMultiRecords={isMultiRecords}
+                            searchByAge={searchByAge}
                         />
                     ))}
                     {btnMultiRecords}

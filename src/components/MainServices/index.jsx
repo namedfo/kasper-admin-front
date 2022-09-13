@@ -11,7 +11,9 @@ const MainServices = ({
     getService, 
     handleMultiRecords, 
     isMultiRecords,
-    handlePopupHint
+    handlePopupHint,
+    
+    searchByAge
 }) => {
 
     const [isShow, setIsShow] = useState(true)
@@ -30,6 +32,7 @@ const MainServices = ({
                         getService={getService} 
                         key={item.id} 
                         service={item} 
+                        searchByAge={searchByAge}
                         isMultiRecords={isMultiRecords}
                         handlePopupHint={handlePopupHint}
                         handleMultiRecords={handleMultiRecords}
