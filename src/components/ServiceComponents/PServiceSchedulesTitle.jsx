@@ -65,30 +65,30 @@ const PServiceSchedulesTitle = ({
                     ПОДРОБНЕЕ
                 </span>
                 <div>
-                    <span
+                    <button
                         onClick={() => onChangeTimeSchedule('-', 7)}
                         className='text-[12px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -7
-                    </span>
-                    <span
+                    </button>
+                    <button
                         
                         onClick={() => onChangeTimeSchedule('-', 1)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -1
-                    </span>
-                    <span className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
+                    </button>
+                    <button className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         СЕГОДНЯ
-                    </span>
-                    <span
+                    </button>
+                    <button
                         onClick={() => onChangeTimeSchedule('+', 1)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +1
-                    </span>
-                    <span
+                    </button>
+                    <button
                         onClick={() => onChangeTimeSchedule('+', 7)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +7
-                    </span>
+                    </button>
                 </div>
             </div>
         </div>

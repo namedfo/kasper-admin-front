@@ -20,7 +20,7 @@ const PService = () => {
 
     //
     const [specialists, setSpecialists] = useState([])
-    const [timeSchedule, setTimeSchedule] = useState([0, 7])
+    const [timeSchedule, setTimeSchedule] = useState(null)
 
 
 
@@ -104,6 +104,7 @@ const PService = () => {
                                 specialists={specialists}
                                 initSchedule={Object.values(service.doctors)}
                                 timeSchedule={timeSchedule}
+                                setTimeSchedule={setTimeSchedule}
                             />
                         )}
                     </div>
