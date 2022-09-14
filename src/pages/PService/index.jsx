@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 // components
@@ -20,6 +19,8 @@ const PService = () => {
 
     //
     const [specialists, setSpecialists] = useState([])
+    const [services, setServices] = useState([])
+
     const [timeSchedule, setTimeSchedule] = useState(null)
 
 
@@ -38,10 +39,17 @@ const PService = () => {
 
                 if (res.status === 200) {
                     setService(res.data)
+
                     const convertMedecins = Object.values(res?.data?.medecins)
                     setSpecialists(convertMedecins?.map(specialist => ({
                         ...specialist,
                         isCheck: true
+                    })))
+
+                    const convertServices = Object.values(res.data.services)
+                    setServices(convertServices?.map(service => ({
+                        ...service,
+                        isCheck: false
                     })))
 
                     setStatus('success')
@@ -82,7 +90,12 @@ const PService = () => {
                             specialists={specialists}
                             setSpecialists={setSpecialists}
                         />
-                        <PServiceServices services={service?.services} />
+                        {services?.length > 0 && (
+                            <PServiceServices
+                                services={services}
+                                setServices={setServices}
+                            />
+                        )}
                         <PServiceExceptionalEvents />
                         <PServiceAdditionalSchedules />
                     </div>

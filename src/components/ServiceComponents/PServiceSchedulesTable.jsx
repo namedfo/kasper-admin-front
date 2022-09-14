@@ -27,15 +27,16 @@ const PServiceSchedulesTable = ({
         if (initSchedule) {
             initSchedule.forEach(schedule => {
                 specialists.forEach(specialist => {
-                    if (specialist.isCheck && schedule.medecinsID === specialist.id && (schedule.age[0] >= age || schedule.age[1] <= age)) {
-                        params = [
-                            ...params,
-                            // [schedule.id]: schedule.duree
-                            {
-                                id: schedule.id,
-                                duration: schedule.duree
-                            }
-                        ]
+                    if (specialist.isCheck && schedule.medecinsID === specialist.id) {
+                        if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
+                            params = [
+                                ...params,
+                                {
+                                    id: schedule.id,
+                                    duration: schedule.duree
+                                }
+                            ]
+                        }
                     }
                 })
             })
@@ -155,12 +156,12 @@ const PServiceSchedulesTable = ({
                             </th>
                             {schedule && schedule?.dates?.slice(timeSchedule[0], timeSchedule[1]).map(el => (
                                 <th key={el.date_text} className="border text-[15px] text-center border-[#e0e0e0]">
-                                    <div className="flex flex-col py-[4px]">
+                                    <div className="flex items-center justify-center flex-wrap py-[6px] px-[10px]">
                                         <span className="leading-0">
                                             {el.date_text}
                                         </span>
                                         <div>
-                                            <span className="bg-[#efefef] text-[#444] px-[4px] rounded-[5px] border border-[#e3e3e3]">
+                                            <span className="bg-[#efefef] ml-[5px] text-[#444] px-[4px] rounded-[5px] border border-[#e3e3e3]">
                                                 {el.day}
                                             </span>
                                         </div>
@@ -190,25 +191,27 @@ const TBody = ({ slots, timeSchedule, onOpenModal }) => {
     return (
         <tbody>
             <tr>
-                <td className="border text-center font-bold border-[#e0e0e0]">
+                <td className="border leading-0 p-[5px] text-center font-bold border-[#e0e0e0]">
                     00-12
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
-                        className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
+                        className="cursor-pointer h-[28px] text-center font-bold"
                         onClick={() => onOpenModal(index)}
                         key={`${el[0]}_${index}`}
                     >
                         <div
-                            className="flex">
+                            className="flex h-full w-full">
                             <div style={{
-                                background: el[0] === 0 ? '#f8cbac' : '#aad48c'
-                            }} className="w-[70%]">
+                                background: el[0] === 0 ? '#f8cbac' : '#aad48c',
+                                color: el[0] === 0 ? '#bf5c38' : '#358e11'
+                            }} className="w-[60%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
                                 {el[0]}
                             </div>
                             <div style={{
-                                background: el[0] === 0 ? '#f8cbac' : '#ffe699'
-                            }} className="w-[30%]">
+                                background: el[0] === 0 ? '#f8cbac' : '#ffe699',
+                                color: el[0] === 0 ? '#bf5c38' : '#7a5c00'
+                            }} className="w-[40%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
                                 {el[0]}
                             </div>
                         </div>
@@ -216,81 +219,87 @@ const TBody = ({ slots, timeSchedule, onOpenModal }) => {
                 ))}
             </tr>
             <tr>
-                <td className="border text-center font-bold border-[#e0e0e0]">
+                <td className="border leading-0 p-[5px] text-center font-bold border-[#e0e0e0]">
                     12-15
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
-                    <td
-                        className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
-                        onClick={() => onOpenModal(index)}
-                        key={`${el[1]}_${index}`}
-                    >
-                        <div
-                            className="flex">
-                            <div style={{
-                                background: el[1] === 0 ? '#f8cbac' : '#aad48c'
-                            }} className="w-[70%]">
-                                {el[1]}
-                            </div>
-                            <div style={{
-                                background: el[1] === 0 ? '#f8cbac' : '#ffe699'
-                            }} className="w-[30%]">
-                                {el[1]}
-                            </div>
-                        </div>
-                    </td>
+                     <td
+                     className="cursor-pointer h-[28px] text-center font-bold "
+                     onClick={() => onOpenModal(index)}
+                     key={`${el[1]}_${index}`}
+                 >
+                     <div
+                         className="flex h-full w-full">
+                         <div style={{
+                             background: el[1] === 0 ? '#f8cbac' : '#aad48c',
+                             color: el[1] === 0 ? '#bf5c38' : '#358e11'
+                         }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                             {el[1]}
+                         </div>
+                         <div style={{
+                             background: el[1] === 0 ? '#f8cbac' : '#ffe699',
+                             color: el[1] === 0 ? '#bf5c38' : '#7a5c00'
+                         }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                             {el[1]}
+                         </div>
+                     </div>
+                 </td>
                 ))}
             </tr>
             <tr>
-                <td className="border text-center font-bold border-[#e0e0e0]">
+                <td className="border leading-0 p-[5px] text-center font-bold border-[#e0e0e0]">
                     15-18
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
-                        className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
-                        onClick={() => onOpenModal(index)}
-                        key={`${el[2]}_${index}`}
-                    >
-                        <div
-                            className="flex">
-                            <div style={{
-                                background: el[2] === 0 ? '#f8cbac' : '#aad48c'
-                            }} className="w-[70%]">
-                                {el[2]}
-                            </div>
-                            <div style={{
-                                background: el[2] === 0 ? '#f8cbac' : '#ffe699'
-                            }} className="w-[30%]">
-                                {el[2]}
-                            </div>
+                    className="cursor-pointer h-[28px] text-center font-bold"
+                    onClick={() => onOpenModal(index)}
+                    key={`${el[2]}_${index}`}
+                >
+                    <div
+                        className="flex h-full w-full">
+                        <div style={{
+                            background: el[2] === 0 ? '#f8cbac' : '#aad48c',
+                            color: el[2] === 0 ? '#bf5c38' : '#358e11'
+                        }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            {el[2]}
                         </div>
-                    </td>
+                        <div style={{
+                            background: el[2] === 0 ? '#f8cbac' : '#ffe699',
+                            color: el[2] === 0 ? '#bf5c38' : '#7a5c00'
+                        }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            {el[2]}
+                        </div>
+                    </div>
+                </td>
                 ))}
             </tr>
             <tr>
-                <td className="border text-center font-bold border-[#e0e0e0]">
+                <td className="border leading-0 p-[5px] text-center font-bold border-[#e0e0e0]">
                     18-24
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
-                    <td
-                        className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
-                        onClick={() => onOpenModal(index)}
-                        key={`${el[3]}_${index}`}
-                    >
-                       <div
-                            className="flex">
-                            <div style={{
-                                background: el[3] === 0 ? '#f8cbac' : '#aad48c'
-                            }} className="w-[70%]">
-                                {el[3]}
-                            </div>
-                            <div style={{
-                                background: el[3] === 0 ? '#f8cbac' : '#ffe699'
-                            }} className="w-[30%]">
-                                {el[3]}
-                            </div>
-                        </div>
-                    </td>
+                     <td
+                     className="cursor-pointer h-[28px] text-center font-bold"
+                     onClick={() => onOpenModal(index)}
+                     key={`${el[3]}_${index}`}
+                 >
+                     <div
+                         className="flex h-full w-full">
+                         <div style={{
+                             background: el[3] === 0 ? '#f8cbac' : '#aad48c',
+                             color: el[3] === 0 ? '#bf5c38' : '#358e11'
+                         }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                             {el[3]}
+                         </div>
+                         <div style={{
+                             background: el[3] === 0 ? '#f8cbac' : '#ffe699',
+                             color: el[3] === 0 ? '#bf5c38' : '#7a5c00'
+                         }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                             {el[3]}
+                         </div>
+                     </div>
+                 </td>
                 ))}
             </tr>
         </tbody>

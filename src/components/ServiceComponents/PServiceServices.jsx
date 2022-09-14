@@ -1,14 +1,41 @@
 import { useState, memo } from "react"
 
 const PServiceComponentServices = ({
-    services
+    services,
+    setServices
 }) => {
     const [isShow, setIsShow] = useState(true)
 
-    const covertServices = services ? Object.values(services) : undefined
+
+
+    const onChangeIsCheckServices = (isCheck, id) => {
+        setServices(prev => {
+            if (prev) {
+                return prev.map(service => {
+                    if (service.id === id) {
+                        return {
+                            ...service,
+                            isCheck: isCheck
+                        }
+                    }
+
+                    return service
+                })
+            }
+            return prev
+        })
+    }
+
+
+    const onChangeAllIsCheckServices = isCheck => {
+        setServices(prev => prev ? prev.map(service => ({ ...service, isCheck: isCheck })) : prev)
+    }
+
+
+
 
     return (
-        <div className="bg-white mt-[30px] relative  shadow-standart p-[18px] rounded-[10px]">
+        <div className="bg-white mt-[30px] relative  shadow-standart p-[15px] rounded-[10px]">
             <span className="px-[4px] leading-4 font-bold rounded-[2px] absolute left-[20px] top-[-10px] border text-white border-[#535353] bg-[#777] text-[11px]">
                 УСЛУГИ
             </span>
@@ -20,25 +47,37 @@ const PServiceComponentServices = ({
             {isShow && (
                 <>
                     <div className="w-full flex">
-                        <button className="border hover:bg-[#FF6B6B] hover:rounded-[5px] hover:text-white cursor-pointer outline-none bg-[#fff2f2] border-[#e0e0e0] w-[50%]">
+                        <button
+                            onClick={() => onChangeAllIsCheckServices(false)}
+                            className="border hover:bg-[#FF6B6B] hover:rounded-[5px] hover:text-white cursor-pointer outline-none bg-[#fff2f2] border-[#e0e0e0] w-[50%]"
+                        >
                             Убрать все
                         </button>
-                        <button className="border hover:text-white hover:bg-[#29B8FF] hover:rounded-[5px] hover:text-whiteccc cursor-pointer outline-none border-[#e0e0e0 w-[50%]">
+                        <button
+                            onClick={() => onChangeAllIsCheckServices(true)}
+                            className="border hover:text-white hover:bg-[#29B8FF] hover:rounded-[5px] hover:text-whiteccc cursor-pointer outline-none border-[#e0e0e0 w-[50%]"
+                        >
                             Поставить все
                         </button>
                     </div>
-                    <div className="grid grid-cols-1 gap-[12px] divide-y mt-[16px]">
-                        {covertServices && covertServices.length > 0 && covertServices.map(service => (
-                            <div key={service.name} className="flex pt-[12px] not-first:pt-[10px] justify-between">
-                                <div className="flex w-auto">
-                                    <input className="w-[20px] cursor-pointer h-[20px]" type="checkbox" />
-                                    <span className="text-[14px] w-[260px] font-sans font-medium ml-[10px] text-[#0096e0]">
+                    <div className="grid grid-cols-1 gap-[6px] divide-y mt-[10px]">
+                        {services?.map(service => (
+                            <div key={service.name} className="flex pt-[6px] justify-between">
+                                <label htmlFor={`service_check_${service.id}`} className="flex cursor-pointer items-center w-auto">
+                                    <input 
+                                        id={`service_check_${service.id}`}
+                                        checked={service.isCheck}
+                                        onChange={(e) => onChangeIsCheckServices(e.target.checked, service.id)}
+                                        className="w-[20px] leading-none cursor-pointer h-[20px]" type="checkbox" />
+                                    <span className="text-[14px] w-[265px] font-sans font-medium ml-[10px] text-[#0096e0]">
                                         {service.name}
                                     </span>
-                                </div>
+                                </label>
                                 <div>
-                                    <div className="text-[14px] w-[60px] text-[#444] px-[5px] font-bold flex items-center justify-center border border-[#e3e3e3] rounded-[4px] bg-[#efefef]">
-                                        {service.price} &#8381;
+                                    <div className="text-[12px] w-[55px] text-[#444] py-[4px] px-[5px] font-sans font-[800] flex items-center justify-center border border-[#e3e3e3] rounded-[4px] bg-[#efefef]">
+                                        <span className=" leading-none">
+                                            {service.price} &#8381;
+                                        </span>
                                     </div>
                                 </div>
                             </div>

@@ -38,7 +38,7 @@ const PServiceSpecialists = ({
     
 
     return (
-        <div className="bg-white flex flex-col relative  shadow-standart p-[18px] rounded-[10px]">
+        <div className="bg-white flex flex-col relative  shadow-standart p-[15px] rounded-[10px]">
             <span className="px-[4px] leading-4 font-bold rounded-[2px] absolute left-[20px] top-[-10px] border text-white border-[#535353] bg-[#777] text-[11px]">
                 СПЕЦИАЛИСТЫ
             </span>
@@ -72,20 +72,21 @@ const PServiceSpecialists = ({
                             Поставить все
                         </button>
                     </div>
-                    <div className="flex flex-col mt-[16px]">
+                    <div className="grid grid-cols-1 gap-[5px] divide-y mt-[10px]">
                         {specialists?.length > 0 && specialists.map(specialist => (
-                            <div key={specialist.id} className="flex justify-between">
-                                <div className="flex">
+                            <div key={specialist.id} className="flex pt-[5px] justify-between">
+                                <label htmlFor={`specialist_check_${specialist.id}`} className="flex cursor-pointer items-center">
                                     <input
+                                        id={`specialist_check_${specialist.id}`}
                                         checked={specialist.isCheck}
                                         onChange={(e) => onChangeIsCheckSpecialist(e.target.checked, specialist.id)}
                                         className="w-[20px] cursor-pointer h-[20px]"
                                         type="checkbox"
                                     />
-                                    <span className="text-[14px] font-sans font-medium  ml-[10px] text-[#0096e0]">
+                                    <span className="text-[14px] leading-none  font-sans font-medium  ml-[10px] text-[#0096e0]">
                                         {specialist.name}
                                     </span>
-                                </div>
+                                </label>
                                 <span>
                                     ?
                                 </span>
