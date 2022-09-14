@@ -101,7 +101,7 @@ const PServiceSchedulesTable = ({
 
     useEffect(() => {
         if (!Array.isArray(schedule?.slots)) {
-            const convertSlots = Object.values(Object.values(schedule.slots)[0]).slice(timeSchedule[0], timeSchedule[1]).map(slot => Object.values(slot))
+            const convertSlots = Object.values(Object.values(schedule.slots)[0]).map(slot => Object.values(slot))
 
 
             setSchedule(prev => ({
@@ -186,7 +186,7 @@ const PServiceSchedulesTable = ({
                         <td className="border text-center font-bold border-[#e0e0e0]">
                             00-12
                         </td>
-                        {Array.isArray(schedule?.slots) && schedule?.slots?.map((el, index) => (
+                        {Array.isArray(schedule?.slots) && schedule?.slots?.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                             <td
                                 className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
                                 onClick={onOpenModal}
@@ -200,7 +200,7 @@ const PServiceSchedulesTable = ({
                         <td className="border text-center font-bold border-[#e0e0e0]">
                             12-15
                         </td>
-                        {Array.isArray(schedule?.slots) && schedule?.slots?.map((el, index) => (
+                        {Array.isArray(schedule?.slots) && schedule?.slots?.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                             <td
                                 className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
                                 onClick={onOpenModal}
@@ -214,7 +214,7 @@ const PServiceSchedulesTable = ({
                         <td className="border text-center font-bold border-[#e0e0e0]">
                             15-18
                         </td>
-                        {Array.isArray(schedule?.slots) && schedule?.slots?.map((el, index) => (
+                        {Array.isArray(schedule?.slots) && schedule?.slots?.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                             <td
                                 className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
                                 onClick={onOpenModal}
@@ -228,7 +228,7 @@ const PServiceSchedulesTable = ({
                         <td className="border text-center font-bold border-[#e0e0e0]">
                             18-24
                         </td>
-                        {Array.isArray(schedule?.slots) && schedule?.slots?.map((el, index) => (
+                        {Array.isArray(schedule?.slots) && schedule?.slots?.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                             <td
                                 className="border cursor-pointer text-center font-bold border-[#e0e0e0]"
                                 onClick={onOpenModal}
