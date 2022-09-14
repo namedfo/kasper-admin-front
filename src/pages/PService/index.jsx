@@ -20,6 +20,9 @@ const PService = () => {
 
     //
     const [specialists, setSpecialists] = useState([])
+    const [timeSchedule, setTimeSchedule] = useState([0, 7])
+
+
 
     const params = useParams()
 
@@ -93,12 +96,14 @@ const PService = () => {
                             description={service?.descr}
                             moreDescription={service?.more_descr}
                             getTimeDuree={getTimeDuree}
+                            setTimeSchedule={setTimeSchedule}
                         />
                         {service.doctors && (
                             <PServiceSchedulesTable
                                 age={age}
                                 specialists={specialists}
                                 initSchedule={Object.values(service.doctors)}
+                                timeSchedule={timeSchedule}
                             />
                         )}
                     </div>

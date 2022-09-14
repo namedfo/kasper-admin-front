@@ -54,6 +54,7 @@ const ModalTimeTable = ({
     const fetchBuildTimeTable = async () => {
         setDataStatus('loading')
         try {
+            console.log(modalTimeParams)
             await config.api_host.post(routes.post_build_time_table, modalTimeParams)
                 .then(r => {
                     if (r.status === 200) {
@@ -184,7 +185,7 @@ const ModalTimeTable = ({
                                     <th style={{ backgroundColor: '#bed3f0', color: '#36406f', width: '100%' }} key={doctor.id}>
                                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                                             <span>{doctor.name}</span>
-                                            <span>[{timeReceptions[doctor.name]?.time} мин / {timeReceptions[doctor.name]?.slots} слота]</span>
+                                            <span>{timeReceptions && `[${timeReceptions[doctor?.name]?.time} мин / ${timeReceptions[doctor?.name]?.slots} слота]`}</span>
                                         </div>
                                     </th>
                                 ))}
@@ -205,7 +206,7 @@ const TableBody = memo(({ doctors, timeReceptions }) => {
 
     const getCols = useCallback((time, timeIndex) => {
         return doctors?.map((doctor, doctorIndex) => {
-            const doctorsSlots = timeReceptions[doctor.name]?.slots
+            const doctorsSlots = timeReceptions ? timeReceptions[doctor.name]?.slots : 5
             if (doctor.slots[time].status === 0) {
                 return (
                     <BodyTdStatusZero

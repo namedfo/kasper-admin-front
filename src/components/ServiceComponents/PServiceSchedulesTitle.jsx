@@ -10,7 +10,8 @@ const PServiceSchedulesTitle = ({
     title,
     description,
     moreDescription,
-    getTimeDuree
+    getTimeDuree,
+    setTimeSchedule
 }) => {
     const [isMoreDescShow, setIsMoreDescShow] = useState(false)
 
@@ -53,19 +54,27 @@ const PServiceSchedulesTitle = ({
                     ПОДРОБНЕЕ
                 </span>
                 <div>
-                    <span className='text-[12px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
+                    <span
+                        onClick={() => setTimeSchedule(prev => [prev[0] - 7, prev[1] - 7])}
+                        className='text-[12px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -7
                     </span>
-                    <span className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
+                    <span
+                        onClick={() => setTimeSchedule(prev => [prev[0] - 1, prev[1] - 1])}
+                        className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -1
                     </span>
                     <span className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         СЕГОДНЯ
                     </span>
-                    <span className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
+                    <span
+                        onClick={() => setTimeSchedule(prev => [prev[0] + 1, prev[1] + 1])}
+                        className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +1
                     </span>
-                    <span className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
+                    <span
+                        onClick={() => setTimeSchedule(prev => [prev[0] + 7, prev[1] + 7])}
+                        className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +7
                     </span>
                 </div>
