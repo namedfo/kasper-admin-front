@@ -19,6 +19,17 @@ const PServiceSchedulesTitle = ({
 
 
 
+    const onChangeTimeSchedule = (operator, value) => {
+        setTimeSchedule(prev => {
+           if (operator === '+') {
+            return [prev[0] + value, prev[1] + value]
+           }
+           if (operator === '-') {
+            return [prev[0] - value, prev[1] - value]
+           }
+        })
+    }
+
 
     return (
         <div className="bg-white relative w-full shadow-standart p-[20px] rounded-[10px]">
@@ -55,12 +66,13 @@ const PServiceSchedulesTitle = ({
                 </span>
                 <div>
                     <span
-                        onClick={() => setTimeSchedule(prev => [prev[0] - 7, prev[1] - 7])}
+                        onClick={() => onChangeTimeSchedule('-', 7)}
                         className='text-[12px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -7
                     </span>
                     <span
-                        onClick={() => setTimeSchedule(prev => [prev[0] - 1, prev[1] - 1])}
+                        
+                        onClick={() => onChangeTimeSchedule('-', 1)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -1
                     </span>
@@ -68,12 +80,12 @@ const PServiceSchedulesTitle = ({
                         СЕГОДНЯ
                     </span>
                     <span
-                        onClick={() => setTimeSchedule(prev => [prev[0] + 1, prev[1] + 1])}
+                        onClick={() => onChangeTimeSchedule('+', 1)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +1
                     </span>
                     <span
-                        onClick={() => setTimeSchedule(prev => [prev[0] + 7, prev[1] + 7])}
+                        onClick={() => onChangeTimeSchedule('+', 7)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         +7
                     </span>
