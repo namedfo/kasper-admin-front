@@ -4,7 +4,9 @@ import { useState } from "react"
 const PServiceSpecialists = ({
     setSpecialists,
     specialists,
-    initAge
+    initAge,
+
+    fetchSchedule
 }) => {
     const [age, setAge] = useState(initAge)
     const [isShow, setIsShow] = useState(true)
@@ -24,8 +26,12 @@ const PServiceSpecialists = ({
 
                 return specialist
             })
+
+            setSpecialists(newSpecialists)
+
+            // request for new data for a table
+            fetchSchedule()
         }
-        setSpecialists(newSpecialists)
     }
 
 
@@ -34,11 +40,14 @@ const PServiceSpecialists = ({
 
         if (newSpecialists.length) {
             setSpecialists(newSpecialists.map(specialist => ({ ...specialist, isCheck: isCheck })))
+            
+            // request for new data for a table
+            fetchSchedule()
         }
     }
 
 
-    
+
 
     return (
         <div className="bg-white flex flex-col relative  shadow-standart p-[15px] rounded-[10px]">

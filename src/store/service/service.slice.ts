@@ -75,10 +75,11 @@ export const serviceSlice = createSlice({
             ...state,
             statusSchedule: action.payload
         }),
-        setSchedule: (state, actions) => ({
+        setSchedule: (state, action) => ({
             ...state,
-            schedule: actions.payload
+            schedule: action.payload
         }),
+
 
         setTimeSchedule: (state, action) => ({
             ...state,

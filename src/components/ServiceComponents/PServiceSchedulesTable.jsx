@@ -3,16 +3,13 @@ import { useEffect, memo, useState, useCallback } from "react"
 import ModalTimeTable from "../ModalTimeTable"
 // hooks
 import { useTypedSelector, useActions } from '../../hooks'
-//
-import config from "../../config"
-import routes from "../../routes"
+
 
 
 
 const PServiceSchedulesTable = ({
-    paramsSchedule,
-    age,
-    specialists,
+    fetchSchedule,
+    getScheduleParams,
     timeSchedule,
     setTimeSchedule
 }) => {
@@ -27,15 +24,9 @@ const PServiceSchedulesTable = ({
     } = useTypedSelector(state => state.service)
 
 
-    // setters
-    const {
-        // init
-        setSchedule,
-        setStatusSchedule,
 
-        // slots,
-        setInitSlots
-    } = useActions()
+    // setters
+    // const {} = useActions()
 
 
 
@@ -43,61 +34,7 @@ const PServiceSchedulesTable = ({
     const [modalTimeIsOpen, setModalTimeIsOpen] = useState(false)
 
 
-    const getParams = useCallback(() => {
-        let params = []
-        if (paramsSchedule) {
-            paramsSchedule.forEach(schedule => {
-                specialists.forEach(specialist => {
-                    if (specialist.isCheck && schedule.medecinsID === specialist.id) {
-                        if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
-                            params = [
-                                ...params,
-                                {
-                                    id: schedule.id,
-                                    duration: schedule.duree
-                                }
-                            ]
-                        }
-                    }
-                })
-            })
-        }
 
-        return params
-    }, [age, paramsSchedule, specialists])
-
-
-
-    const fetchSchedule = useCallback(async () => {
-        setStatusSchedule('loading')
-
-        try {
-
-            const res = await config.api_host.post(routes.post_timetable, { doctors: getParams() })
-
-
-            if (res.status === 200) {
-                const convertEvents = Object.values(res.data?.events)
-                const convertSlots = Object.values(Object.values(res.data.slots)[0]).map(slot => Object.values(slot))
-
-  
-                setSchedule({
-                    dates: res.data?.dates,
-                    events: convertEvents,
-                    slots: convertSlots
-                })
-                // for first upload page
-                if (!initSlots?.length) {
-                    setInitSlots(convertSlots)
-                }
-                setStatusSchedule('success')
-            }
-
-        } catch (error) {
-            setStatusSchedule('error')
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
 
 
@@ -108,17 +45,11 @@ const PServiceSchedulesTable = ({
             setTimeSchedule([0, 7])
         }
 
-    }, [fetchSchedule, setTimeSchedule, timeSchedule])
 
-    // if (schedule?.slots && !Array.isArray(schedule?.slots)) {
-    //     const convertSlots = Object.values(Object.values(schedule.slots)[0]).map(slot => Object.values(slot))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
 
-    //     setSchedule(prev => ({
-    //         ...prev,
-    //         slots: convertSlots
-    //     }))
-    // }
 
     const onOpenModal = (index) => {
         if (timeSchedule) {
@@ -130,43 +61,13 @@ const PServiceSchedulesTable = ({
             const newDate = (+new Date(newSchedule.dateRaw) / 1000) + 3600 * 6
 
             setModalTimeParams({
-                doctors: getParams().map(el => +el.id),
+                doctors: getScheduleParams().map(el => +el.id),
                 date: newDate
             })
         }
     }
 
 
-
-    // const shortDayWeek = {
-    //     0: 'ВС',
-    //     1: 'ПН',
-    //     2: 'ВТ',
-    //     3: 'СР',
-    //     4: 'ЧТ',
-    //     5: 'ПТ',
-    //     6: 'СБ'
-    // }
-
-    // const shortMonth = {
-    //     0: 'Янв',
-    //     1: 'Фев',
-    //     2: 'Март',
-    //     3: 'Апр',
-    //     4: 'Май',
-    //     5: 'Июн',
-    //     6: 'Июл',
-    //     7: 'Авг',
-    //     8: 'Сен',
-    //     9: 'Окт',
-    //     10: 'Ноя',
-    //     11: 'Дек',
-    // }
-
-
-
-
-    console.log(schedule)
 
     return (
         <div className="w-full mt-[40px] relative bg-white shadow-standart p-[10px] rounded-[10px]">
@@ -223,7 +124,7 @@ const PServiceSchedulesTable = ({
 }
 
 
-const TBody = ({ 
+const TBody = memo(({ 
     slots, 
     timeSchedule, 
     onOpenModal, 
@@ -243,7 +144,7 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold"
-                        onClick={() => onOpenModal(index)}
+                        onClick={el[0] !== 0 ? () => onOpenModal(index) : undefined}
                         key={`${el[0]}_${index}`}
                     >
                         <div
@@ -271,7 +172,7 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold "
-                        onClick={() => onOpenModal(index)}
+                        onClick={el[1] !== 0 ? () => onOpenModal(index) : undefined}
                         key={`${el[1]}_${index}`}
                     >
                         <div
@@ -299,7 +200,7 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold"
-                        onClick={() => onOpenModal(index)}
+                        onClick={el[2] !== 0 ? () => onOpenModal(index) : undefined}
                         key={`${el[2]}_${index}`}
                     >
                         <div
@@ -327,7 +228,7 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold"
-                        onClick={() => onOpenModal(index)}
+                        onClick={el[3] !== 0 ? () => onOpenModal(index) : undefined}
                         key={`${el[3]}_${index}`}
                     >
                         <div
@@ -350,7 +251,7 @@ const TBody = ({
             </tr>
         </tbody>
     )
-}
+})
 
 
 export default memo(PServiceSchedulesTable)
