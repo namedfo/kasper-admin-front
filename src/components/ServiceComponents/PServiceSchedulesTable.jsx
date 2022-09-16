@@ -1,6 +1,8 @@
 import { useEffect, memo, useState, useCallback } from "react"
 //
 import ModalTimeTable from "../ModalTimeTable"
+// hooks
+import { useTypedSelector, useActions } from '../../hooks'
 //
 import config from "../../config"
 import routes from "../../routes"
@@ -8,14 +10,33 @@ import routes from "../../routes"
 
 
 const PServiceSchedulesTable = ({
-    initSchedule,
+    paramsSchedule,
     age,
     specialists,
     timeSchedule,
     setTimeSchedule
 }) => {
-    const [schedule, setSchedule] = useState(null)
-    const [statusTableReq, setStatusTableReq] = useState('idle')
+    // gettes
+    const {
+        // init
+        statusSchedule,
+        schedule,
+
+        // slots
+        initSlots,
+    } = useTypedSelector(state => state.service)
+
+
+    // setters
+    const {
+        // init
+        setSchedule,
+        setStatusSchedule,
+
+        // slots,
+        setInitSlots
+    } = useActions()
+
 
 
     const [modalTimeParams, setModalTimeParams] = useState(null)
@@ -24,8 +45,8 @@ const PServiceSchedulesTable = ({
 
     const getParams = useCallback(() => {
         let params = []
-        if (initSchedule) {
-            initSchedule.forEach(schedule => {
+        if (paramsSchedule) {
+            paramsSchedule.forEach(schedule => {
                 specialists.forEach(specialist => {
                     if (specialist.isCheck && schedule.medecinsID === specialist.id) {
                         if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
@@ -43,45 +64,61 @@ const PServiceSchedulesTable = ({
         }
 
         return params
-    }, [age, initSchedule, specialists])
+    }, [age, paramsSchedule, specialists])
 
 
 
-    const getSchedule = useCallback(async () => {
-        setStatusTableReq('loading')
+    const fetchSchedule = useCallback(async () => {
+        setStatusSchedule('loading')
 
         try {
 
             const res = await config.api_host.post(routes.post_timetable, { doctors: getParams() })
 
-            setSchedule(res.data)
-            setStatusTableReq('success')
+
+            if (res.status === 200) {
+                const convertEvents = Object.values(res.data?.events)
+                const convertSlots = Object.values(Object.values(res.data.slots)[0]).map(slot => Object.values(slot))
+
+  
+                setSchedule({
+                    dates: res.data?.dates,
+                    events: convertEvents,
+                    slots: convertSlots
+                })
+                // for first upload page
+                if (!initSlots?.length) {
+                    setInitSlots(convertSlots)
+                }
+                setStatusSchedule('success')
+            }
 
         } catch (error) {
-            setStatusTableReq('error')
+            setStatusSchedule('error')
         }
-    }, [getParams])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
 
 
     useEffect(() => {
 
         if (timeSchedule === null) {
-            getSchedule()
+            fetchSchedule()
             setTimeSchedule([0, 7])
         }
 
-    }, [getSchedule, setTimeSchedule, timeSchedule])
+    }, [fetchSchedule, setTimeSchedule, timeSchedule])
 
-    if (schedule?.slots && !Array.isArray(schedule?.slots)) {
-        const convertSlots = Object.values(Object.values(schedule.slots)[0]).map(slot => Object.values(slot))
+    // if (schedule?.slots && !Array.isArray(schedule?.slots)) {
+    //     const convertSlots = Object.values(Object.values(schedule.slots)[0]).map(slot => Object.values(slot))
 
 
-        setSchedule(prev => ({
-            ...prev,
-            slots: convertSlots
-        }))
-    }
+    //     setSchedule(prev => ({
+    //         ...prev,
+    //         slots: convertSlots
+    //     }))
+    // }
 
     const onOpenModal = (index) => {
         if (timeSchedule) {
@@ -129,6 +166,7 @@ const PServiceSchedulesTable = ({
 
 
 
+    console.log(schedule)
 
     return (
         <div className="w-full mt-[40px] relative bg-white shadow-standart p-[10px] rounded-[10px]">
@@ -142,12 +180,12 @@ const PServiceSchedulesTable = ({
                     РАСПИСАНИЕ (МЕДИЦИНСКИЙ ЦЕНТР)
                 </span>
             </div>
-            {statusTableReq === 'loading' && (
+            {statusSchedule === 'loading' && (
                 <span>
                     Загрузка...
                 </span>
             )}
-            {statusTableReq === 'success' && (
+            {statusSchedule === 'success' && (
                 <table className="w-full rounded-[10px] border border-[#e0e0e0]">
                     <thead>
                         <tr>
@@ -170,9 +208,10 @@ const PServiceSchedulesTable = ({
                             ))}
                         </tr>
                     </thead>
-                    {Array.isArray(schedule?.slots) && schedule?.slots && (
+                    {schedule?.slots && (
                         <TBody
                             slots={schedule.slots}
+                            initSlots={initSlots}
                             timeSchedule={timeSchedule}
                             onOpenModal={onOpenModal}
                         />
@@ -184,8 +223,15 @@ const PServiceSchedulesTable = ({
 }
 
 
-const TBody = ({ slots, timeSchedule, onOpenModal }) => {
+const TBody = ({ 
+    slots, 
+    timeSchedule, 
+    onOpenModal, 
+    initSlots 
+}) => {
 
+
+    const newInitSlots = initSlots.slice(timeSchedule[0], timeSchedule[1])
 
 
     return (
@@ -212,7 +258,7 @@ const TBody = ({ slots, timeSchedule, onOpenModal }) => {
                                 background: el[0] === 0 ? '#f8cbac' : '#ffe699',
                                 color: el[0] === 0 ? '#bf5c38' : '#7a5c00'
                             }} className="w-[40%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
-                                {el[0]}
+                                {newInitSlots[index][0]}
                             </div>
                         </div>
                     </td>
@@ -223,27 +269,27 @@ const TBody = ({ slots, timeSchedule, onOpenModal }) => {
                     12-15
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
-                     <td
-                     className="cursor-pointer h-[28px] text-center font-bold "
-                     onClick={() => onOpenModal(index)}
-                     key={`${el[1]}_${index}`}
-                 >
-                     <div
-                         className="flex h-full w-full">
-                         <div style={{
-                             background: el[1] === 0 ? '#f8cbac' : '#aad48c',
-                             color: el[1] === 0 ? '#bf5c38' : '#358e11'
-                         }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
-                             {el[1]}
-                         </div>
-                         <div style={{
-                             background: el[1] === 0 ? '#f8cbac' : '#ffe699',
-                             color: el[1] === 0 ? '#bf5c38' : '#7a5c00'
-                         }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
-                             {el[1]}
-                         </div>
-                     </div>
-                 </td>
+                    <td
+                        className="cursor-pointer h-[28px] text-center font-bold "
+                        onClick={() => onOpenModal(index)}
+                        key={`${el[1]}_${index}`}
+                    >
+                        <div
+                            className="flex h-full w-full">
+                            <div style={{
+                                background: el[1] === 0 ? '#f8cbac' : '#aad48c',
+                                color: el[1] === 0 ? '#bf5c38' : '#358e11'
+                            }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                                {el[1]}
+                            </div>
+                            <div style={{
+                                background: el[1] === 0 ? '#f8cbac' : '#ffe699',
+                                color: el[1] === 0 ? '#bf5c38' : '#7a5c00'
+                            }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                                {newInitSlots[index][1]}
+                            </div>
+                        </div>
+                    </td>
                 ))}
             </tr>
             <tr>
@@ -252,26 +298,26 @@ const TBody = ({ slots, timeSchedule, onOpenModal }) => {
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
-                    className="cursor-pointer h-[28px] text-center font-bold"
-                    onClick={() => onOpenModal(index)}
-                    key={`${el[2]}_${index}`}
-                >
-                    <div
-                        className="flex h-full w-full">
-                        <div style={{
-                            background: el[2] === 0 ? '#f8cbac' : '#aad48c',
-                            color: el[2] === 0 ? '#bf5c38' : '#358e11'
-                        }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
-                            {el[2]}
+                        className="cursor-pointer h-[28px] text-center font-bold"
+                        onClick={() => onOpenModal(index)}
+                        key={`${el[2]}_${index}`}
+                    >
+                        <div
+                            className="flex h-full w-full">
+                            <div style={{
+                                background: el[2] === 0 ? '#f8cbac' : '#aad48c',
+                                color: el[2] === 0 ? '#bf5c38' : '#358e11'
+                            }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                                {el[2]}
+                            </div>
+                            <div style={{
+                                background: el[2] === 0 ? '#f8cbac' : '#ffe699',
+                                color: el[2] === 0 ? '#bf5c38' : '#7a5c00'
+                            }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                                {newInitSlots[index][2]}
+                            </div>
                         </div>
-                        <div style={{
-                            background: el[2] === 0 ? '#f8cbac' : '#ffe699',
-                            color: el[2] === 0 ? '#bf5c38' : '#7a5c00'
-                        }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
-                            {el[2]}
-                        </div>
-                    </div>
-                </td>
+                    </td>
                 ))}
             </tr>
             <tr>
@@ -279,27 +325,27 @@ const TBody = ({ slots, timeSchedule, onOpenModal }) => {
                     18-24
                 </td>
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
-                     <td
-                     className="cursor-pointer h-[28px] text-center font-bold"
-                     onClick={() => onOpenModal(index)}
-                     key={`${el[3]}_${index}`}
-                 >
-                     <div
-                         className="flex h-full w-full">
-                         <div style={{
-                             background: el[3] === 0 ? '#f8cbac' : '#aad48c',
-                             color: el[3] === 0 ? '#bf5c38' : '#358e11'
-                         }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
-                             {el[3]}
-                         </div>
-                         <div style={{
-                             background: el[3] === 0 ? '#f8cbac' : '#ffe699',
-                             color: el[3] === 0 ? '#bf5c38' : '#7a5c00'
-                         }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
-                             {el[3]}
-                         </div>
-                     </div>
-                 </td>
+                    <td
+                        className="cursor-pointer h-[28px] text-center font-bold"
+                        onClick={() => onOpenModal(index)}
+                        key={`${el[3]}_${index}`}
+                    >
+                        <div
+                            className="flex h-full w-full">
+                            <div style={{
+                                background: el[3] === 0 ? '#f8cbac' : '#aad48c',
+                                color: el[3] === 0 ? '#bf5c38' : '#358e11'
+                            }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                                {el[3]}
+                            </div>
+                            <div style={{
+                                background: el[3] === 0 ? '#f8cbac' : '#ffe699',
+                                color: el[3] === 0 ? '#bf5c38' : '#7a5c00'
+                            }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                                {newInitSlots[index][3]}
+                            </div>
+                        </div>
+                    </td>
                 ))}
             </tr>
         </tbody>

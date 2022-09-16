@@ -1,6 +1,6 @@
 import { useState, memo } from "react"
 
-const PServiceComponentServices = ({
+const PServiceServices = ({
     services,
     setServices
 }) => {
@@ -9,26 +9,26 @@ const PServiceComponentServices = ({
 
 
     const onChangeIsCheckServices = (isCheck, id) => {
-        setServices(prev => {
-            if (prev) {
-                return prev.map(service => {
-                    if (service.id === id) {
-                        return {
-                            ...service,
-                            isCheck: isCheck
-                        }
+        let newServices = [...services]
+        if (newServices.length) {
+            newServices = newServices.map(service => {
+                if (service.id === id) {
+                    return {
+                        ...service,
+                        isCheck: isCheck
                     }
+                }
 
-                    return service
-                })
-            }
-            return prev
-        })
+                return service
+            })
+            setServices(newServices)
+        }
     }
 
 
     const onChangeAllIsCheckServices = isCheck => {
-        setServices(prev => prev ? prev.map(service => ({ ...service, isCheck: isCheck })) : prev)
+        let newServices = [...services]
+        setServices(newServices.length ? newServices.map(service => ({ ...service, isCheck: isCheck })) : newServices)
     }
 
 
@@ -89,4 +89,4 @@ const PServiceComponentServices = ({
     )
 }
 
-export default memo(PServiceComponentServices)
+export default memo(PServiceServices)

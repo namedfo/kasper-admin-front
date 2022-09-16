@@ -11,6 +11,8 @@ const PServiceSchedulesTitle = ({
     description,
     moreDescription,
     getTimeDuree,
+
+    timeSchedule,
     setTimeSchedule
 }) => {
     const [isMoreDescShow, setIsMoreDescShow] = useState(false)
@@ -20,14 +22,18 @@ const PServiceSchedulesTitle = ({
 
 
     const onChangeTimeSchedule = (operator, value) => {
-        setTimeSchedule(prev => {
-           if (operator === '+') {
-            return [prev[0] + value, prev[1] + value]
-           }
-           if (operator === '-') {
-            return [prev[0] - value, prev[1] - value]
-           }
-        })
+        let prewTimeSchedule = [...timeSchedule]
+        let newTimeSchedule = [...timeSchedule]
+
+        if (operator === '+') {
+            newTimeSchedule = [prewTimeSchedule[0] + value, prewTimeSchedule[1] + value]
+        }
+        if (operator === '-') {
+            newTimeSchedule = [prewTimeSchedule[0] - value, prewTimeSchedule[1] - value]
+        }
+
+        setTimeSchedule(newTimeSchedule)
+
     }
 
 
@@ -71,7 +77,7 @@ const PServiceSchedulesTitle = ({
                         -7
                     </button>
                     <button
-                        
+
                         onClick={() => onChangeTimeSchedule('-', 1)}
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -1

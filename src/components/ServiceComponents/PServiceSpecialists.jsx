@@ -12,26 +12,29 @@ const PServiceSpecialists = ({
 
 
     const onChangeIsCheckSpecialist = (isCheck, id) => {
-        setSpecialists(prev => {
-            if (prev) {
-                return prev.map(specialist => {
-                    if (specialist.id === id) {
-                        return {
-                            ...specialist,
-                            isCheck: isCheck
-                        }
+        let newSpecialists = [...specialists]
+        if (newSpecialists.length) {
+            newSpecialists = newSpecialists.map(specialist => {
+                if (specialist.id === id) {
+                    return {
+                        ...specialist,
+                        isCheck: isCheck
                     }
+                }
 
-                    return specialist
-                })
-            }
-            return prev
-        })
+                return specialist
+            })
+        }
+        setSpecialists(newSpecialists)
     }
 
 
     const onChangeAllIsCheckSpecialists = isCheck => {
-        setSpecialists(prev => prev ? prev.map(specialist => ({ ...specialist, isCheck: isCheck })) : prev)
+        let newSpecialists = [...specialists]
+
+        if (newSpecialists.length) {
+            setSpecialists(newSpecialists.map(specialist => ({ ...specialist, isCheck: isCheck })))
+        }
     }
 
 
@@ -73,7 +76,7 @@ const PServiceSpecialists = ({
                         </button>
                     </div>
                     <div className="grid grid-cols-1 gap-[5px] divide-y mt-[10px]">
-                        {specialists?.length > 0 && specialists.map(specialist => (
+                        {specialists?.length && specialists.map(specialist => (
                             <div key={specialist.id} className="flex pt-[5px] justify-between">
                                 <label htmlFor={`specialist_check_${specialist.id}`} className="flex cursor-pointer items-center">
                                     <input

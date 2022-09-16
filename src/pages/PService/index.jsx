@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useLocation, useParams } from 'react-router'
 // components
 import PServiceAdditionalSchedules from '../../components/ServiceComponents/PServiceAdditionalSchedules'
@@ -7,6 +7,8 @@ import PServiceSchedulesTable from '../../components/ServiceComponents/PServiceS
 import PServiceSchedulesTitle from '../../components/ServiceComponents/PServiceSchedulesTitle'
 import PServiceServices from '../../components/ServiceComponents/PServiceServices'
 import PServiceSpecialists from '../../components/ServiceComponents/PServiceSpecialists'
+// hooks
+import { useTypedSelector, useActions } from '../../hooks'
 //
 import config from '../../config'
 import routes from '../../routes'
@@ -14,14 +16,40 @@ import routes from '../../routes'
 
 
 const PService = () => {
-    const [service, setService] = useState(null)
-    const [status, setStatus] = useState('idle')
+    
+    // getters
+    const { 
+        // init
+        statusService,
+        service, 
 
-    //
-    const [specialists, setSpecialists] = useState([])
-    const [services, setServices] = useState([])
+        // specialists
+        specialists, 
 
-    const [timeSchedule, setTimeSchedule] = useState(null)
+        // services
+        services,
+
+        // schedule table
+        timeSchedule,
+    } = useTypedSelector(state => state.service)
+
+
+    // setters
+    const { 
+        // init
+        setStatusService,
+        setService,
+        
+        // specialists
+        setSpecialists,
+        
+        // services
+        setServices,
+        
+        // schedule table
+        setTimeSchedule,
+    } = useActions()
+
 
 
 
@@ -33,40 +61,51 @@ const PService = () => {
     useEffect(() => {
 
         (async () => {
-            setStatus('loading')
+            setStatusService('loading')
             try {
                 const res = await config.api_host.post(`${routes.get_service_info}${params?.code}`, { age: 18 })
 
-                if (res.status === 200) {
-                    setService(res.data)
 
+                if (res.status === 200) {
+                    // convert object(array) to array
+                    const convertServices = Object.values(res.data.services)
                     const convertMedecins = Object.values(res?.data?.medecins)
+                    const convertSchedule = Object.values(res?.data?.doctors)
+
+
+                    setService({
+                        ...res.data,
+                        services: services,
+                        medecins: convertMedecins,
+                        schedule: convertSchedule
+                    })
+
+                    
                     setSpecialists(convertMedecins?.map(specialist => ({
                         ...specialist,
                         isCheck: true
                     })))
 
-                    const convertServices = Object.values(res.data.services)
                     setServices(convertServices?.map(service => ({
                         ...service,
                         isCheck: false
                     })))
 
-                    setStatus('success')
+                    setStatusService('success')
                 }
             } catch (error) {
-                setStatus('error')
+                setStatusService('error')
             }
         })()
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params?.code])
 
 
     const getTimeDuree = () => {
-        const convertDoctors = Object.values(service.doctors)
 
-        if (convertDoctors) {
-            const durees = convertDoctors?.map(doctor => doctor.duree)
+        if (service?.schedule?.length) {
+            const durees = service.schedule?.map(doctor => doctor.duree)
 
             const minDuree = durees && Math.min(...durees)
             const maxDuree = durees && Math.max(...durees)
@@ -82,7 +121,7 @@ const PService = () => {
 
     return (
         <div className='h-full w-full flex justify-between p-[25px] relative'>
-            {status === 'success' && (
+            {statusService === 'success' && (
                 <>
                     <div className='w-[390px] flex flex-col'>
                         <PServiceSpecialists
@@ -109,13 +148,15 @@ const PService = () => {
                             description={service?.descr}
                             moreDescription={service?.more_descr}
                             getTimeDuree={getTimeDuree}
+
+                            timeSchedule={timeSchedule}
                             setTimeSchedule={setTimeSchedule}
                         />
                         {service.doctors && (
                             <PServiceSchedulesTable
                                 age={age}
                                 specialists={specialists}
-                                initSchedule={Object.values(service.doctors)}
+                                paramsSchedule={service.schedule}
                                 timeSchedule={timeSchedule}
                                 setTimeSchedule={setTimeSchedule}
                             />
@@ -123,7 +164,7 @@ const PService = () => {
                     </div>
                 </>
             )}
-            {status === 'loading' && (
+            {statusService === 'loading' && (
                 <span>
                     Загрузка...
                 </span>
