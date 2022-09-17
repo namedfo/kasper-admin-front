@@ -170,7 +170,7 @@ const ModalTimeTable = ({
                     </div>
                     <table className='modal_time_content_table'>
                         <thead style={{ position: 'relative' }}>
-                            <tr style={{ position: 'fixed', display: 'flex', left: '25px', top: '22px', width: 'calc(100% - 55px)', zIndex: 10 }}>
+                            <tr style={{ position: 'fixed', display: 'flex', left: '25px', top: '20px', width: 'calc(100% - 55px)', zIndex: 10 }}>
                                 <th style={{
                                     minWidth: '47px',
                                     backgroundColor: '#bed3f0',

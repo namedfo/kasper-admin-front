@@ -8,10 +8,8 @@ import { useTypedSelector, useActions } from '../../hooks'
 
 
 const PServiceSchedulesTable = ({
-    fetchSchedule,
     getScheduleParams,
-    timeSchedule,
-    setTimeSchedule
+    timeSchedule
 }) => {
     // gettes
     const {
@@ -34,20 +32,6 @@ const PServiceSchedulesTable = ({
     const [modalTimeIsOpen, setModalTimeIsOpen] = useState(false)
 
 
-
-
-
-
-    useEffect(() => {
-
-        if (timeSchedule === null) {
-            fetchSchedule()
-            setTimeSchedule([0, 7])
-        }
-
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
 
 
@@ -124,7 +108,7 @@ const PServiceSchedulesTable = ({
 }
 
 
-const TBody = memo(({ 
+const TBody = ({ 
     slots, 
     timeSchedule, 
     onOpenModal, 
@@ -132,7 +116,8 @@ const TBody = memo(({
 }) => {
 
 
-    const newInitSlots = initSlots.slice(timeSchedule[0], timeSchedule[1])
+    const newInitSlots = initSlots?.slice(timeSchedule[0], timeSchedule[1]) ?? slots
+
 
 
     return (
@@ -156,8 +141,8 @@ const TBody = memo(({
                                 {el[0]}
                             </div>
                             <div style={{
-                                background: el[0] === 0 ? '#f8cbac' : '#ffe699',
-                                color: el[0] === 0 ? '#bf5c38' : '#7a5c00'
+                                background: newInitSlots[index][0] === 0 ? '#f8cbac' : '#ffe699',
+                                color: newInitSlots[index][0] === 0 ? '#bf5c38' : '#7a5c00'
                             }} className="w-[40%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
                                 {newInitSlots[index][0]}
                             </div>
@@ -184,8 +169,8 @@ const TBody = memo(({
                                 {el[1]}
                             </div>
                             <div style={{
-                                background: el[1] === 0 ? '#f8cbac' : '#ffe699',
-                                color: el[1] === 0 ? '#bf5c38' : '#7a5c00'
+                                background: newInitSlots[index][1] === 0 ? '#f8cbac' : '#ffe699',
+                                color: newInitSlots[index][1] === 0 ? '#bf5c38' : '#7a5c00'
                             }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {newInitSlots[index][1]}
                             </div>
@@ -212,8 +197,8 @@ const TBody = memo(({
                                 {el[2]}
                             </div>
                             <div style={{
-                                background: el[2] === 0 ? '#f8cbac' : '#ffe699',
-                                color: el[2] === 0 ? '#bf5c38' : '#7a5c00'
+                                background: newInitSlots[index][2] === 0 ? '#f8cbac' : '#ffe699',
+                                color: newInitSlots[index][2] === 0 ? '#bf5c38' : '#7a5c00'
                             }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {newInitSlots[index][2]}
                             </div>
@@ -240,8 +225,8 @@ const TBody = memo(({
                                 {el[3]}
                             </div>
                             <div style={{
-                                background: el[3] === 0 ? '#f8cbac' : '#ffe699',
-                                color: el[3] === 0 ? '#bf5c38' : '#7a5c00'
+                                background: newInitSlots[index][3] === 0 ? '#f8cbac' : '#ffe699',
+                                color: newInitSlots[index][3] === 0 ? '#bf5c38' : '#7a5c00'
                             }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {newInitSlots[index][3]}
                             </div>
@@ -251,7 +236,7 @@ const TBody = memo(({
             </tr>
         </tbody>
     )
-})
+}
 
 
-export default memo(PServiceSchedulesTable)
+export default PServiceSchedulesTable

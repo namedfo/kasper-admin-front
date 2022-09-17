@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 // components
 import PServiceAdditionalSchedules from '../../components/ServiceComponents/PServiceAdditionalSchedules'
@@ -12,7 +13,6 @@ import { useTypedSelector, useActions } from '../../hooks'
 //
 import config from '../../config'
 import routes from '../../routes'
-import { useCallback } from 'react'
 
 
 
@@ -23,12 +23,6 @@ const PService = () => {
         // init
         statusService,
         service,
-
-        // specialists
-        specialists,
-
-        // services
-        services,
 
         // schedule table
         statusSchedule,
@@ -62,76 +56,22 @@ const PService = () => {
 
 
 
+
     const params = useParams()
 
     const location = useLocation()
     const linkReturn = new URLSearchParams(location.search)
 
-    useEffect(() => {
-
-        (async () => {
-            setStatusService('loading')
-            try {
-                const res = await config.api_host.post(`${routes.get_service_info}${params?.code}`, { age: 18 })
-
-
-                if (res.status === 200) {
-                    // convert object(array) to array
-                    const convertServices = Object.values(res.data.services)
-                    const convertMedecins = Object.values(res?.data?.medecins)
-                    const convertSchedule = Object.values(res?.data?.doctors)
-
-
-                    setService({
-                        ...res.data,
-                        services: services,
-                        medecins: convertMedecins,
-                        schedule: convertSchedule
-                    })
-
-
-                    setSpecialists(convertMedecins?.map(specialist => ({
-                        ...specialist,
-                        isCheck: true
-                    })))
-
-                    setServices(convertServices?.map(service => ({
-                        ...service,
-                        isCheck: false
-                    })))
-
-                    setStatusService('success')
-                }
-            } catch (error) {
-                setStatusService('error')
-            }
-        })()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params?.code])
-
-
-    const getTimeDuree = () => {
-
-        if (service?.schedule?.length) {
-            const durees = service.schedule?.map(doctor => doctor.duree)
-
-            const minDuree = durees && Math.min(...durees)
-            const maxDuree = durees && Math.max(...durees)
-
-
-            return minDuree === maxDuree ? `${minDuree} минут` : `от ${minDuree} до ${maxDuree} минут`
-        }
-    }
-
     const age = linkReturn.get('age') ?? ''
 
 
-    const getScheduleParams = useCallback(() => {
+    const getScheduleParams = () => {
+
+
         let params = []
-        if (service.schedule) {
-            service.schedule.forEach(schedule => {
-                specialists.forEach(specialist => {
+        if (service?.schedule) {
+            service?.schedule.forEach(schedule => {
+                service?.specialists.forEach(specialist => {
                     if (specialist.isCheck && schedule.medecinsID === specialist.id) {
                         if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
                             params = [
@@ -148,22 +88,22 @@ const PService = () => {
         }
 
         return params
-    }, [age, service?.schedule, specialists])
+    }
 
 
 
-    const fetchSchedule = async () => {
+    const fetchSchedule = async (localScheduleParams) => {
         setStatusSchedule('loading')
 
+        console.log(localScheduleParams)
         try {
 
-            const res = await config.api_host.post(routes.post_timetable, { doctors: getScheduleParams() })
+            const res = await config.api_host.post(routes.post_timetable, { doctors: localScheduleParams })
 
 
             if (res.status === 200) {
                 const convertEvents = Object.values(res.data?.events)
                 const convertSlots = Object.values(Object.values(res.data.slots)[0]).map(slot => Object.values(slot))
-
 
                 setSchedule({
                     dates: res.data?.dates,
@@ -171,11 +111,12 @@ const PService = () => {
                     slots: convertSlots
                 })
 
-                // for first upload page
+                setStatusSchedule('success')
+
+
                 if (!initSlots) {
                     setInitSlots(convertSlots)
                 }
-                setStatusSchedule('success')
             }
 
         } catch (error) {
@@ -183,6 +124,72 @@ const PService = () => {
         }
 
     }
+
+    useEffect(() => {
+        if (service && service?.schedule && service?.specialists) {
+            fetchSchedule(getScheduleParams())
+        }
+        
+    }, [service && service?.schedule && service?.specialists])
+
+
+    useEffect(() => {
+
+        (async () => {
+            setStatusService('loading')
+            try {
+                const res = await config.api_host.post(`${routes.get_service_info}${params?.code}`, { age: 18 })
+
+
+                if (res.status === 200) {
+                    console.log('update')
+                    // convert object(array) to array
+                    const convertServices = Object.values(res.data.services)?.map(service => ({
+                        ...service,
+                        isCheck: false
+                    }))
+                    const convertSpecialists = Object.values(res?.data?.medecins)?.map(specialist => ({
+                        ...specialist,
+                        isCheck: true
+                    }))
+                    const convertSchedule = Object.values(res?.data?.doctors)
+
+
+                    setService({
+                        ...res.data,
+                        services: convertServices,
+                        specialists: convertSpecialists,
+                        schedule: convertSchedule
+                    })
+
+
+                    setStatusService('success')
+                }
+            } catch (error) {
+                setStatusService('error')
+            }
+        })()
+        return () => {
+            console.log('un')
+            setInitSlots(null)
+            setService(null)
+        }
+    }, [])
+
+
+    const getTimeDuree = () => {
+
+        if (service?.schedule?.length) {
+            const durees = service.schedule?.map(doctor => doctor.duree)
+
+            const minDuree = durees && Math.min(...durees)
+            const maxDuree = durees && Math.max(...durees)
+
+
+            return minDuree === maxDuree ? `${minDuree} минут` : `от ${minDuree} до ${maxDuree} минут`
+        }
+    }
+
 
 
     return (
@@ -192,14 +199,15 @@ const PService = () => {
                     <div className='w-[390px] flex flex-col'>
                         <PServiceSpecialists
                             initAge={age}
-                            specialists={specialists}
+                            specialists={service?.specialists}
                             setSpecialists={setSpecialists}
 
                             fetchSchedule={fetchSchedule}
+                            getScheduleParams={getScheduleParams}
                         />
-                        {services?.length > 0 && (
+                        {service?.services?.length > 0 && (
                             <PServiceServices
-                                services={services}
+                                services={service?.services}
                                 setServices={setServices}
                             />
                         )}
@@ -220,13 +228,12 @@ const PService = () => {
                             timeSchedule={timeSchedule}
                             setTimeSchedule={setTimeSchedule}
                         />
-                        {service.doctors && (
+                        {service?.schedule && (
                             <PServiceSchedulesTable
-                            getScheduleParams={getScheduleParams}
-                                fetchSchedule={fetchSchedule}
-                                specialists={specialists}
+                                specialists={service?.specialists}
                                 timeSchedule={timeSchedule}
-                                setTimeSchedule={setTimeSchedule}
+
+                                getScheduleParams={getScheduleParams}
                             />
                         )}
                     </div>

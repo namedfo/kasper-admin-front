@@ -5,8 +5,6 @@ const PServiceSpecialists = ({
     setSpecialists,
     specialists,
     initAge,
-
-    fetchSchedule
 }) => {
     const [age, setAge] = useState(initAge)
     const [isShow, setIsShow] = useState(true)
@@ -28,9 +26,6 @@ const PServiceSpecialists = ({
             })
 
             setSpecialists(newSpecialists)
-
-            // request for new data for a table
-            fetchSchedule()
         }
     }
 
@@ -40,9 +35,6 @@ const PServiceSpecialists = ({
 
         if (newSpecialists.length) {
             setSpecialists(newSpecialists.map(specialist => ({ ...specialist, isCheck: isCheck })))
-            
-            // request for new data for a table
-            fetchSchedule()
         }
     }
 

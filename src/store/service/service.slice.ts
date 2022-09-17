@@ -6,11 +6,6 @@ interface IInitialStateService {
     statusService: 'idle' | 'loading' | 'success' | 'error',
     service: any // need to create type service,
 
-    // specialists
-    specialists: any // need to create type specialist[],
-
-    // services
-    services: any // need to create type service[],
 
     // schedule table
     statusSchedule: 'idle' | 'loading' | 'success' | 'error',
@@ -28,17 +23,12 @@ const initialState: IInitialStateService = {
     statusService: 'idle',
     service: null,
 
-    // specialists
-    specialists: null,
-
-    // services
-    services: null,
 
     // schedule table
     statusSchedule: 'idle',
     schedule: null,
 
-    timeSchedule: null,
+    timeSchedule: [0, 7],
     initSlots: null,
 }
 
@@ -61,13 +51,18 @@ export const serviceSlice = createSlice({
         // specialists
         setSpecialists: (state, action) => ({
             ...state,
-            specialists: action.payload
+            service: {
+                ...state.service,
+                specialists: action.payload
+            }
         }),
-
         // services
         setServices: (state, action) => ({
             ...state,
-            services: action.payload
+            service: {
+                ...state.service,
+                services: action.payload
+            }
         }),
 
         // schedule table
