@@ -23,10 +23,7 @@ const PService = () => {
         // init
         statusService,
         service,
-
-        // schedule table
-        statusSchedule,
-        schedule,
+        age,
 
         initSlots,
         timeSchedule,
@@ -59,10 +56,7 @@ const PService = () => {
 
     const params = useParams()
 
-    const location = useLocation()
-    const linkReturn = new URLSearchParams(location.search)
 
-    const age = linkReturn.get('age') ?? ''
 
 
     const getScheduleParams = () => {
@@ -95,7 +89,7 @@ const PService = () => {
     const fetchSchedule = async (localScheduleParams) => {
         setStatusSchedule('loading')
 
-        console.log(localScheduleParams)
+
         try {
 
             const res = await config.api_host.post(routes.post_timetable, { doctors: localScheduleParams })
@@ -142,7 +136,6 @@ const PService = () => {
 
 
                 if (res.status === 200) {
-                    console.log('update')
                     // convert object(array) to array
                     const convertServices = Object.values(res.data.services)?.map(service => ({
                         ...service,
@@ -156,7 +149,9 @@ const PService = () => {
 
 
                     setService({
-                        ...res.data,
+                        description: res.data.descr,
+                        more_description: res.data.more_descr,
+                        service_name: res.data.serv_name,
                         services: convertServices,
                         specialists: convertSpecialists,
                         schedule: convertSchedule
@@ -170,7 +165,6 @@ const PService = () => {
             }
         })()
         return () => {
-            console.log('un')
             setInitSlots(null)
             setService(null)
         }
@@ -220,9 +214,9 @@ const PService = () => {
                         }}
                     >
                         <PServiceSchedulesTitle
-                            title={service?.serv_name}
-                            description={service?.descr}
-                            moreDescription={service?.more_descr}
+                            title={service?.service_name}
+                            description={service?.description}
+                            moreDescription={service?.more_description}
                             getTimeDuree={getTimeDuree}
 
                             timeSchedule={timeSchedule}

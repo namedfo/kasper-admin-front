@@ -5,6 +5,7 @@ interface IInitialStateService {
     // init
     statusService: 'idle' | 'loading' | 'success' | 'error',
     service: any // need to create type service,
+    age: number,
 
 
     // schedule table
@@ -22,6 +23,7 @@ const initialState: IInitialStateService = {
     // init
     statusService: 'idle',
     service: null,
+    age: 18,
 
 
     // schedule table
@@ -46,6 +48,10 @@ export const serviceSlice = createSlice({
         setService: (state, action) => ({
             ...state,
             service: action.payload
+        }),
+        setAge: (state, action) => ({
+           ...state,
+           age: action.payload
         }),
 
         // specialists

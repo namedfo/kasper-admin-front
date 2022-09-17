@@ -1,8 +1,10 @@
-import { useEffect, memo, useState, useCallback } from "react"
+import { useState } from "react"
+//
+import _uniqBy from "lodash/uniqBy";
 //
 import ModalTimeTable from "../ModalTimeTable"
 // hooks
-import { useTypedSelector, useActions } from '../../hooks'
+import { useTypedSelector } from '../../hooks'
 
 
 
@@ -17,10 +19,15 @@ const PServiceSchedulesTable = ({
         statusSchedule,
         schedule,
 
+        // service
+        service,
+
         // slots
         initSlots,
     } = useTypedSelector(state => state.service)
 
+
+    const [timeReceptions, setTimeReceptions] = useState([])
 
 
     // setters
@@ -33,23 +40,45 @@ const PServiceSchedulesTable = ({
 
 
 
-
-
     const onOpenModal = (index) => {
         if (timeSchedule) {
-            const newSchedule = schedule?.dates?.slice(timeSchedule[0], timeSchedule[1])[index]
+            const newDates = schedule?.dates?.slice(timeSchedule[0], timeSchedule[1])[index]
 
 
             setModalTimeIsOpen(true)
 
-            const newDate = (+new Date(newSchedule.dateRaw) / 1000) + 3600 * 6
+            const newDate = (+new Date(newDates.dateRaw) / 1000) + 3600 * 6
 
             setModalTimeParams({
                 doctors: getScheduleParams().map(el => +el.id),
                 date: newDate
             })
+
+
+
+            setTimeReceptions(() => {
+                const newSchedule = [...service.schedule]
+                const uniqSchedule = _uniqBy(newSchedule, 'doctor_name')
+
+
+                let newUniqSchedule = {}
+                uniqSchedule.forEach(uniqDoctor => {
+                    newUniqSchedule = {
+                        ...newUniqSchedule,
+                        [uniqDoctor.doctor_name]: {
+                            time: uniqDoctor.duree,
+                            slots: uniqDoctor.duree / 5
+                        }
+                    }
+                })
+
+                console.log(newUniqSchedule)
+
+                return newUniqSchedule
+            })
         }
     }
+
 
 
 
@@ -57,6 +86,7 @@ const PServiceSchedulesTable = ({
         <div className="w-full mt-[40px] relative bg-white shadow-standart p-[10px] rounded-[10px]">
             <ModalTimeTable
                 modalIsOpen={modalTimeIsOpen}
+                timeReceptions={timeReceptions}
                 modalTimeParams={modalTimeParams}
                 closeModal={() => setModalTimeIsOpen(false)}
             />
@@ -108,17 +138,26 @@ const PServiceSchedulesTable = ({
 }
 
 
-const TBody = ({ 
-    slots, 
-    timeSchedule, 
-    onOpenModal, 
-    initSlots 
+const TBody = ({
+    slots,
+    timeSchedule,
+    onOpenModal,
+    initSlots
 }) => {
 
 
     const newInitSlots = initSlots?.slice(timeSchedule[0], timeSchedule[1]) ?? slots
 
+    const checkRecordingRights = (slotIndex) => {
+        return slots?.slice(timeSchedule[0], timeSchedule[1]).every(el => el[slotIndex] === 0)
 
+    }
+
+    const onHandleClick = (slotIndex, slotElemIndex) => {
+        console.log(checkRecordingRights(slotElemIndex))
+        onOpenModal(slotIndex)
+
+    }
 
     return (
         <tbody>
@@ -129,7 +168,7 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold"
-                        onClick={el[0] !== 0 ? () => onOpenModal(index) : undefined}
+                        onClick={el[0] !== 0 ? () => onHandleClick(0, index) : undefined}
                         key={`${el[0]}_${index}`}
                     >
                         <div
