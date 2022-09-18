@@ -1,3 +1,5 @@
+import { BsQuestion } from 'react-icons/bs'
+//
 import { useState } from "react"
 
 
@@ -78,27 +80,58 @@ const PServiceSpecialists = ({
                     </div>
                     <div className="grid grid-cols-1 gap-[5px] divide-y mt-[10px]">
                         {specialists?.length && specialists.map(specialist => (
-                            <div key={specialist.id} className="flex pt-[5px] justify-between">
-                                <label htmlFor={`specialist_check_${specialist.id}`} className="flex cursor-pointer items-center">
-                                    <input
-                                        id={`specialist_check_${specialist.id}`}
-                                        checked={specialist.isCheck}
-                                        onChange={(e) => onChangeIsCheckSpecialist(e.target.checked, specialist.id)}
-                                        className="w-[20px] cursor-pointer h-[20px]"
-                                        type="checkbox"
-                                    />
-                                    <span className="text-[14px] leading-none  font-sans font-medium  ml-[10px] text-[#0096e0]">
-                                        {specialist.name}
-                                    </span>
-                                </label>
-                                <span>
-                                    ?
-                                </span>
-                            </div>
+                            <Specialist
+                                key={specialist.id}
+                                specialist={specialist}
+                                onChangeIsCheckSpecialist={onChangeIsCheckSpecialist}
+                            />
                         ))}
                     </div>
                 </>
             )}
+        </div>
+    )
+
+}
+
+
+const Specialist = ({ specialist, onChangeIsCheckSpecialist }) => {
+    const [isHover, setIsHover] = useState(false)
+
+
+
+    return (
+        <div className="flex pt-[5px] justify-between">
+            <label htmlFor={`specialist_check_${specialist.id}`} className="flex cursor-pointer items-center">
+                <input
+                    id={`specialist_check_${specialist.id}`}
+                    checked={specialist.isCheck}
+                    onChange={(e) => onChangeIsCheckSpecialist(e.target.checked, specialist.id)}
+                    className="w-[20px] cursor-pointer h-[20px]"
+                    type="checkbox"
+                />
+                <span className="text-[14px] leading-none  font-sans font-medium  ml-[10px] text-[#0096e0]">
+                    {specialist.name}
+                </span>
+            </label>
+            <div className='relative'>
+                {isHover && (
+                    <div className='absolute break-words whitespace-pre-line h-auto w-[350px] z-10 rounded-[10px] shadow-md top-[-10px] left-[30px] border bg-[white] p-[10px]'>
+                        dssadasd asd sadas dsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasddsasadasd
+                    </div>
+                )}
+                <button 
+                       onMouseEnter={() => setIsHover(true)}
+                       onMouseLeave={() => setIsHover(false)}
+                       style={{
+                        backgroundColor: isHover && 'gray',
+                        color: isHover ? 'white' : '#B3B3B3',
+                       }}
+                    
+                    className='flex rounded-[5px] border items-center justify-center'>
+                    <BsQuestion size={20} />
+                </button>
+            </div>
         </div>
     )
 }
