@@ -1,5 +1,6 @@
 import { useState, memo } from "react"
 import { useParams } from "react-router"
+import _ from 'lodash'
 // 
 import config from "../../config"
 import { useActions, useTypedSelector } from "../../hooks"
@@ -21,12 +22,13 @@ const PServiceServices = ({
         try {
             const res = await config.api_host.post(`${routes.get_service_info}${param?.code}`, {
                 age,
-                services: newServices.map(el => +el.id)
+                services: newServices.filter(el => el.isCheck).map(el => +el.id)
             })
+            console.log(res.data)
             const newSpecialists = service?.specialists.map(specialist => specialist.id)
-
-            const newSchedules = Object.values(res.data?.schedules).map(el => +el.medecinsID)
-
+            console.log(newSpecialists)
+            const newSchedules = _.unionBy(Object.values(res.data?.schedules).map(el => +el.medecinsID))
+            console.log(newSchedules)
 
             setSpecialists(service.specialists.map(specialist => {
                 const arrNotMatches = newSchedules.filter(e => !newSpecialists.includes(e))
