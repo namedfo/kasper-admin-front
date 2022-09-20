@@ -1,15 +1,55 @@
 import { useState, memo } from "react"
+import { useParams } from "react-router"
+// 
+import config from "../../config"
+import { useActions, useTypedSelector } from "../../hooks"
+import routes from "../../routes"
+
 
 const PServiceServices = ({
-    services,
     setServices
 }) => {
+    const { age, service } = useTypedSelector(state=> state.service)
+
+    const { setSpecialists } = useActions()
+    
+    const param = useParams()
+
     const [isShow, setIsShow] = useState(true)
 
+    const fetchService = async(newServices) => {
+        try {
+            const res = await config.api_host.post(`${routes.get_service_info}${param?.code}`, {
+                age,
+                services: newServices.map(el => +el.id)
+            })
+            const newSpecialists = service?.specialists.map(specialist => specialist.id)
+
+            const newSchedules = Object.values(res.data?.schedules).map(el => +el.medecinsID)
 
 
-    const onChangeIsCheckServices = (isCheck, id) => {
-        let newServices = [...services]
+            setSpecialists(service.specialists.map(specialist => {
+                const arrNotMatches = newSchedules.filter(e => !newSpecialists.includes(e))
+                arrNotMatches.forEach(el => {
+                    if (el === specialist.id) {
+                        return {
+                           ...specialist,
+                           isCheck: false
+                        }
+                    }
+                    return specialist
+                })
+                return specialist
+            }))
+        } catch (error) {
+            
+        }
+    }
+
+
+
+    const onChangeIsCheckServices = async(isCheck, id) => {
+        let newServices = [...service?.services]
         if (newServices.length) {
             newServices = newServices.map(service => {
                 if (service.id === id) {
@@ -21,13 +61,17 @@ const PServiceServices = ({
 
                 return service
             })
+            
             setServices(newServices)
         }
+
+
+        await fetchService(newServices)
     }
 
 
     const onChangeAllIsCheckServices = isCheck => {
-        let newServices = [...services]
+        let newServices = [...service?.services]
         setServices(newServices.length ? newServices.map(service => ({ ...service, isCheck: isCheck })) : newServices)
     }
 
@@ -61,7 +105,7 @@ const PServiceServices = ({
                         </button>
                     </div>
                     <div className="grid grid-cols-1 gap-[6px] divide-y mt-[10px]">
-                        {services?.map(service => (
+                        {service?.services?.map(service => (
                             <div key={service.name} className="flex pt-[6px] justify-between">
                                 <label htmlFor={`service_check_${service.id}`} className="flex cursor-pointer items-center w-auto">
                                     <input 

@@ -13,6 +13,7 @@ import { useTypedSelector, useActions } from '../../hooks'
 //
 import config from '../../config'
 import routes from '../../routes'
+import { values } from 'lodash'
 
 
 
@@ -137,10 +138,14 @@ const PService = () => {
 
                 if (res.status === 200) {
                     // convert object(array) to array
-                    const convertServices = Object.values(res.data.services)?.map(service => ({
-                        ...service,
-                        isCheck: false
-                    }))
+                    let convertServices = []
+                    for (const [key, value] of Object.entries(res.data.services)) {
+                        convertServices = [...convertServices, {
+                            id: key,
+                            ...value,
+                            isCheck: false
+                        }]
+                      }
                     const convertSpecialists = Object.values(res?.data?.medecins)?.map(specialist => ({
                         ...specialist,
                         isCheck: true

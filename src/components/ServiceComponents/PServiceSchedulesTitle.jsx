@@ -26,10 +26,22 @@ const PServiceSchedulesTitle = ({
         let newTimeSchedule = [...timeSchedule]
 
         if (operator === '+') {
-            newTimeSchedule = [prewTimeSchedule[0] + value, prewTimeSchedule[1] + value]
+            if (value === 1 && timeSchedule[1] <= 30) {
+                newTimeSchedule = [prewTimeSchedule[0] + value, prewTimeSchedule[1] + value]
+            }
+
+            if (value === 7 && timeSchedule[1] <= 24) {
+                newTimeSchedule = [prewTimeSchedule[0] + value, prewTimeSchedule[1] + value]
+            }
         }
         if (operator === '-') {
-            newTimeSchedule = [prewTimeSchedule[0] - value, prewTimeSchedule[1] - value]
+            if (value === 1 && timeSchedule[0] >= 1) {
+                newTimeSchedule = [prewTimeSchedule[0] - value, prewTimeSchedule[1] - value]
+            } 
+
+            if (value === 7 && timeSchedule[0] >= 6) {
+                newTimeSchedule = [prewTimeSchedule[0] - value, prewTimeSchedule[1] - value]
+            }
         }
 
         setTimeSchedule(newTimeSchedule)
@@ -82,7 +94,9 @@ const PServiceSchedulesTitle = ({
                         className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         -1
                     </button>
-                    <button className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
+                    <button
+                        onClick={() => setTimeSchedule([0, 7])}
+                        className='text-[12px] ml-[5px] leading-4 bg-white rounded-[2px] px-[5px] text-[#777] border border-[#e0e0e0] font-bold cursor-pointer hover:bg-[#f5f5f5]'>
                         СЕГОДНЯ
                     </button>
                     <button

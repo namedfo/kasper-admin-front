@@ -72,7 +72,6 @@ const PServiceSchedulesTable = ({
                     }
                 })
 
-                console.log(newUniqSchedule)
 
                 return newUniqSchedule
             })
