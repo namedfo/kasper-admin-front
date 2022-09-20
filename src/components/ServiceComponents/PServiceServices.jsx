@@ -10,47 +10,52 @@ import routes from "../../routes"
 const PServiceServices = ({
     setServices
 }) => {
-    const { age, service } = useTypedSelector(state=> state.service)
+    const { age, service } = useTypedSelector(state => state.service)
 
     const { setSpecialists } = useActions()
-    
+
     const param = useParams()
 
     const [isShow, setIsShow] = useState(true)
 
-    const fetchService = async(newServices) => {
+    const fetchService = async (newServices) => {
         try {
-            const res = await config.api_host.post(`${routes.get_service_info}${param?.code}`, {
+            const res = await config.api_host.post(`${routes.get_service_info}`, {
                 age,
-                services: newServices.filter(el => el.isCheck).map(el => +el.id)
+                services: newServices.filter(el => el.isCheck).map(el => +el.id),
+                service_code: param?.code
             })
-            console.log(res.data)
+            // console.log(res.data)
             const newSpecialists = service?.specialists.map(specialist => specialist.id)
-            console.log(newSpecialists)
-            const newSchedules = _.unionBy(Object.values(res.data?.schedules).map(el => +el.medecinsID))
-            console.log(newSchedules)
+            // console.log(newSpecialists)
+            const newSchedules = _.uniqBy(Object.values(res.data?.schedules).map(el => +el.medecinsID))
+            // console.log(newSchedules)
 
+            const arrNotMatches = newSchedules.filter(e => newSpecialists.includes(e))
+            // console.log(arrNotMatches)
             setSpecialists(service.specialists.map(specialist => {
-                const arrNotMatches = newSchedules.filter(e => !newSpecialists.includes(e))
-                arrNotMatches.forEach(el => {
-                    if (el === specialist.id) {
-                        return {
-                           ...specialist,
-                           isCheck: false
-                        }
+                
+                let noMatch = arrNotMatches.some(el => el === specialist.id)
+                if (!noMatch) {
+                    return {
+                        ...specialist,
+                        isCheck: false
                     }
-                    return specialist
-                })
-                return specialist
+                } else {
+                    return {
+                        ...specialist,
+                        isCheck: true
+                    }
+                }
             }))
         } catch (error) {
-            
+
         }
     }
 
 
 
-    const onChangeIsCheckServices = async(isCheck, id) => {
+    const onChangeIsCheckServices = async (isCheck, id) => {
         let newServices = [...service?.services]
         if (newServices.length) {
             newServices = newServices.map(service => {
@@ -63,7 +68,7 @@ const PServiceServices = ({
 
                 return service
             })
-            
+
             setServices(newServices)
         }
 
@@ -110,7 +115,7 @@ const PServiceServices = ({
                         {service?.services?.map(service => (
                             <div key={service.name} className="flex pt-[6px] justify-between">
                                 <label htmlFor={`service_check_${service.id}`} className="flex cursor-pointer items-center w-auto">
-                                    <input 
+                                    <input
                                         id={`service_check_${service.id}`}
                                         checked={service.isCheck}
                                         onChange={(e) => onChangeIsCheckServices(e.target.checked, service.id)}

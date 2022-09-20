@@ -133,7 +133,10 @@ const PService = () => {
         (async () => {
             setStatusService('loading')
             try {
-                const res = await config.api_host.post(`${routes.get_service_info}${params?.code}`, { age: 18 })
+                const res = await config.api_host.post(`${routes.get_service_info}`, { 
+                    age: 18,
+                    service_code: params?.code
+                 })
 
 
                 if (res.status === 200) {

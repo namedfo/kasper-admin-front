@@ -79,7 +79,7 @@ const PServiceSpecialists = ({
                         </button>
                     </div>
                     <div className="grid grid-cols-1 gap-[5px] divide-y mt-[10px]">
-                        {specialists?.length && specialists.map(specialist => (
+                        {specialists?.length && specialists?.map(specialist => (
                             <Specialist
                                 key={specialist.id}
                                 specialist={specialist}
