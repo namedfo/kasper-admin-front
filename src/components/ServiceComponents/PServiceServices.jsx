@@ -77,9 +77,11 @@ const PServiceServices = ({
     }
 
 
-    const onChangeAllIsCheckServices = isCheck => {
+    const onChangeAllIsCheckServices = async (isCheck) => {
         let newServices = [...service?.services]
         setServices(newServices.length ? newServices.map(service => ({ ...service, isCheck: isCheck })) : newServices)
+    
+        await fetchService(newServices)
     }
 
 

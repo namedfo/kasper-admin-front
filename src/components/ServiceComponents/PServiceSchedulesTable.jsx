@@ -3,6 +3,7 @@ import { useState } from "react"
 import _uniqBy from "lodash/uniqBy";
 //
 import ModalTimeTable from "../ModalTimeTable"
+import ModalScheduleFilial from './ModalScheduleFilial'
 // hooks
 import { useTypedSelector } from '../../hooks'
 
@@ -35,8 +36,10 @@ const PServiceSchedulesTable = ({
 
 
 
-    const [modalTimeParams, setModalTimeParams] = useState(null)
+    const [modalTimeParams, setModalTimeParams] = useState(null) 
     const [modalTimeIsOpen, setModalTimeIsOpen] = useState(false)
+    
+    const [modalDataFilial, setModalDataFilial] = useState(false)
 
 
 
@@ -58,6 +61,7 @@ const PServiceSchedulesTable = ({
 
             setTimeReceptions(() => {
                 const newSchedule = [...service.schedule]
+                console.log(newSchedule)
                 const uniqSchedule = _uniqBy(newSchedule, 'doctor_name')
 
 
@@ -89,10 +93,14 @@ const PServiceSchedulesTable = ({
                 modalTimeParams={modalTimeParams}
                 closeModal={() => setModalTimeIsOpen(false)}
             />
+            <ModalScheduleFilial
+                modalIsOpen={modalDataFilial}
+                closeModal={() => setModalDataFilial(false)}
+            />
             <div className="absolute cursor-pointer px-[6px] rounded-[5px] font-bold text-[13px] bg-[#6095e4] border border-[#494444] text-white left-0 top-[-20px]">
-                <span>
+                <button onClick={() => setModalDataFilial(true)}>
                     РАСПИСАНИЕ (МЕДИЦИНСКИЙ ЦЕНТР)
-                </span>
+                </button>
             </div>
             {statusSchedule === 'loading' && (
                 <span>
