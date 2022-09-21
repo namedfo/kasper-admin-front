@@ -60,22 +60,38 @@ const PService = () => {
 
 
 
-    const getScheduleParams = () => {
+    const getScheduleParams = (isNotChange = true) => {
 
 
         let params = []
         if (service?.schedule) {
             service?.schedule.forEach(schedule => {
                 service?.specialists.forEach(specialist => {
-                    if (specialist.isCheck && schedule.medecinsID === specialist.id) {
-                        if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
-                            params = [
-                                ...params,
-                                {
-                                    id: schedule.id,
-                                    duration: schedule.duree
-                                }
-                            ]
+                    if (isNotChange) {
+                        console.log('yes')
+                        if (specialist.isCheck && schedule.medecinsID === specialist.id) {
+                            if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
+                                params = [
+                                    ...params,
+                                    {
+                                        id: schedule.id,
+                                        duration: schedule.duree
+                                    }
+                                ]
+                            }
+                        }
+                    } else {
+                        console.log('no')
+                        if (schedule.medecinsID === specialist.id) {
+                            if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
+                                params = [
+                                    ...params,
+                                    {
+                                        id: schedule.id,
+                                        duration: schedule.duree
+                                    }
+                                ]
+                            }
                         }
                     }
                 })

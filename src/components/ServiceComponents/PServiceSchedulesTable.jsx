@@ -36,14 +36,14 @@ const PServiceSchedulesTable = ({
 
 
 
-    const [modalTimeParams, setModalTimeParams] = useState(null) 
+    const [modalTimeParams, setModalTimeParams] = useState(null)
     const [modalTimeIsOpen, setModalTimeIsOpen] = useState(false)
-    
+
     const [modalDataFilial, setModalDataFilial] = useState(false)
 
 
 
-    const onOpenModal = (index) => {
+    const onOpenModal = (isNotChange, index) => {
         if (timeSchedule) {
             const newDates = schedule?.dates?.slice(timeSchedule[0], timeSchedule[1])[index]
 
@@ -53,7 +53,7 @@ const PServiceSchedulesTable = ({
             const newDate = (+new Date(newDates.dateRaw) / 1000) + 3600 * 6
 
             setModalTimeParams({
-                doctors: getScheduleParams().map(el => +el.id),
+                doctors: getScheduleParams(isNotChange).map(el => +el.id),
                 date: newDate
             })
 
@@ -160,9 +160,9 @@ const TBody = ({
 
     }
 
-    const onHandleClick = (slotIndex, slotElemIndex) => {
+    const onHandleClick = (isNotChange, slotIndex, slotElemIndex) => {
         console.log(checkRecordingRights(slotElemIndex))
-        onOpenModal(slotIndex)
+        onOpenModal(isNotChange, slotIndex)
 
     }
 
@@ -175,21 +175,26 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold"
-                        onClick={el[0] !== 0 ? () => onHandleClick(0, index) : undefined}
                         key={`${el[0]}_${index}`}
                     >
                         <div
                             className="flex h-full w-full">
-                            <div style={{
-                                background: el[0] === 0 ? '#f8cbac' : '#aad48c',
-                                color: el[0] === 0 ? '#bf5c38' : '#358e11'
-                            }} className="w-[60%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
+                            <div
+                                onClick={el[0] !== 0 ? () => onHandleClick(true, 0, index) : undefined}
+                                style={{
+                                    background: el[0] === 0 ? '#f8cbac' : '#aad48c',
+                                    color: el[0] === 0 ? '#bf5c38' : '#358e11'
+                                }}
+                                className="w-[60%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center"
+                            >
                                 {el[0]}
                             </div>
-                            <div style={{
-                                background: newInitSlots[index][0] === 0 ? '#f8cbac' : '#ffe699',
-                                color: newInitSlots[index][0] === 0 ? '#bf5c38' : '#7a5c00'
-                            }} className="w-[40%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
+                            <div
+                                onClick={el[0] !== 0 ? () => onHandleClick(false, 0, index) : undefined}
+                                style={{
+                                    background: newInitSlots[index][0] === 0 ? '#f8cbac' : '#ffe699',
+                                    color: newInitSlots[index][0] === 0 ? '#bf5c38' : '#7a5c00'
+                                }} className="w-[40%] hover:shadow-schedule_elem h-full leading-0 flex items-center justify-center">
                                 {newInitSlots[index][0]}
                             </div>
                         </div>
@@ -203,21 +208,26 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold "
-                        onClick={el[1] !== 0 ? () => onOpenModal(index) : undefined}
                         key={`${el[1]}_${index}`}
                     >
                         <div
                             className="flex h-full w-full">
-                            <div style={{
-                                background: el[1] === 0 ? '#f8cbac' : '#aad48c',
-                                color: el[1] === 0 ? '#bf5c38' : '#358e11'
-                            }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            <div
+
+                                onClick={el[1] !== 0 ? () => onHandleClick(true, 1, index) : undefined}
+                                style={{
+                                    background: el[1] === 0 ? '#f8cbac' : '#aad48c',
+                                    color: el[1] === 0 ? '#bf5c38' : '#358e11'
+                                }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {el[1]}
                             </div>
-                            <div style={{
-                                background: newInitSlots[index][1] === 0 ? '#f8cbac' : '#ffe699',
-                                color: newInitSlots[index][1] === 0 ? '#bf5c38' : '#7a5c00'
-                            }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            <div
+
+                                onClick={el[1] !== 0 ? () => onHandleClick(false, 1, index) : undefined}
+                                style={{
+                                    background: newInitSlots[index][1] === 0 ? '#f8cbac' : '#ffe699',
+                                    color: newInitSlots[index][1] === 0 ? '#bf5c38' : '#7a5c00'
+                                }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {newInitSlots[index][1]}
                             </div>
                         </div>
@@ -236,16 +246,21 @@ const TBody = ({
                     >
                         <div
                             className="flex h-full w-full">
-                            <div style={{
-                                background: el[2] === 0 ? '#f8cbac' : '#aad48c',
-                                color: el[2] === 0 ? '#bf5c38' : '#358e11'
-                            }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            <div
+
+                                onClick={el[2] !== 0 ? () => onHandleClick(true, 2, index) : undefined}
+                                style={{
+                                    background: el[2] === 0 ? '#f8cbac' : '#aad48c',
+                                    color: el[2] === 0 ? '#bf5c38' : '#358e11'
+                                }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {el[2]}
                             </div>
-                            <div style={{
-                                background: newInitSlots[index][2] === 0 ? '#f8cbac' : '#ffe699',
-                                color: newInitSlots[index][2] === 0 ? '#bf5c38' : '#7a5c00'
-                            }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            <div
+                                onClick={el[2] !== 0 ? () => onHandleClick(false, 2, index) : undefined}
+                                style={{
+                                    background: newInitSlots[index][2] === 0 ? '#f8cbac' : '#ffe699',
+                                    color: newInitSlots[index][2] === 0 ? '#bf5c38' : '#7a5c00'
+                                }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {newInitSlots[index][2]}
                             </div>
                         </div>
@@ -259,21 +274,25 @@ const TBody = ({
                 {slots.slice(timeSchedule[0], timeSchedule[1])?.map((el, index) => (
                     <td
                         className="cursor-pointer h-[28px] text-center font-bold"
-                        onClick={el[3] !== 0 ? () => onOpenModal(index) : undefined}
                         key={`${el[3]}_${index}`}
                     >
                         <div
                             className="flex h-full w-full">
-                            <div style={{
-                                background: el[3] === 0 ? '#f8cbac' : '#aad48c',
-                                color: el[3] === 0 ? '#bf5c38' : '#358e11'
-                            }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            <div
+
+                                onClick={el[3] !== 0 ? () => onHandleClick(true, 3, index) : undefined}
+                                style={{
+                                    background: el[3] === 0 ? '#f8cbac' : '#aad48c',
+                                    color: el[3] === 0 ? '#bf5c38' : '#358e11'
+                                }} className="w-[60%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {el[3]}
                             </div>
-                            <div style={{
-                                background: newInitSlots[index][3] === 0 ? '#f8cbac' : '#ffe699',
-                                color: newInitSlots[index][3] === 0 ? '#bf5c38' : '#7a5c00'
-                            }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
+                            <div
+                                onClick={el[3] !== 0 ? () => onHandleClick(false, 3, index) : undefined}
+                                style={{
+                                    background: newInitSlots[index][3] === 0 ? '#f8cbac' : '#ffe699',
+                                    color: newInitSlots[index][3] === 0 ? '#bf5c38' : '#7a5c00'
+                                }} className="w-[40%] h-full hover:shadow-schedule_elem  leading-0 flex items-center justify-center">
                                 {newInitSlots[index][3]}
                             </div>
                         </div>
