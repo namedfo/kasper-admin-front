@@ -50,7 +50,7 @@ const PServiceSchedulesTable = ({
 
             setModalTimeIsOpen(true)
 
-            const newDate = (+new Date(newDates.dateRaw) / 1000) + 3600 * 6
+            const newDate = (+new Date(newDates?.dateRaw) / 1000) + 3600 * 6
 
             setModalTimeParams({
                 doctors: getScheduleParams(isNotChange).map(el => +el.id),
