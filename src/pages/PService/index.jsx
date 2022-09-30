@@ -13,7 +13,6 @@ import { useTypedSelector, useActions } from '../../hooks'
 //
 import config from '../../config'
 import routes from '../../routes'
-import { values } from 'lodash'
 
 
 
@@ -49,6 +48,10 @@ const PService = () => {
 
         setInitSlots,
         setTimeSchedule,
+
+
+        // global
+        setPercent
     } = useActions()
 
 
@@ -68,7 +71,6 @@ const PService = () => {
             service?.schedule.forEach(schedule => {
                 service?.specialists.forEach(specialist => {
                     if (isNotChange) {
-                        console.log('yes')
                         if (specialist.isCheck && schedule.medecinsID === specialist.id) {
                             if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
                                 params = [
@@ -81,7 +83,6 @@ const PService = () => {
                             }
                         }
                     } else {
-                        console.log('no')
                         if (schedule.medecinsID === specialist.id) {
                             if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
                                 params = [
@@ -109,25 +110,33 @@ const PService = () => {
 
         try {
 
-            const res = await config.api_host.post(routes.post_timetable, { doctors: localScheduleParams })
+            const res = await config.api_host.post(routes.post_timetable, { doctors: localScheduleParams }, {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 
-
-            if (res.status === 200) {
-                const convertEvents = Object.values(res.data?.events)
-                const convertSlots = Object.values(Object.values(res.data.slots)[0]).map(slot => Object.values(slot))
-
-                setSchedule({
-                    dates: res.data?.dates,
-                    events: convertEvents,
-                    slots: convertSlots
-                })
-
-                setStatusSchedule('success')
-
-
-                if (!initSlots) {
-                    setInitSlots(convertSlots)
+                    setPercent(percentCompleted)
                 }
+            })
+            setPercent(null)
+
+
+
+            const convertEvents = Object.values(res.data?.events)
+            const convertSlots = res?.data?.slots && Object.values(Object.values(res.data.slots)[0]).map(slot => Object.values(slot))
+
+            console.log(convertSlots)
+
+            setSchedule({
+                dates: res.data?.dates,
+                events: convertEvents,
+                slots: convertSlots.length > 0 ? convertSlots : new Array(31).fill([0, 0, 0, 0])
+            })
+
+            setStatusSchedule('success')
+
+
+            if (!initSlots) {
+                setInitSlots(convertSlots)
             }
 
         } catch (error) {
@@ -140,7 +149,7 @@ const PService = () => {
         if (service && service?.schedule && service?.specialists) {
             fetchSchedule(getScheduleParams())
         }
-        
+
     }, [service && service?.schedule && service?.specialists])
 
 
@@ -149,11 +158,23 @@ const PService = () => {
         (async () => {
             setStatusService('loading')
             try {
-                const res = await config.api_host.post(`${routes.get_service_info}`, { 
+                const res = await config.api_host.post(`${routes.get_service_info}`, {
                     age: 18,
                     service_code: params?.code
-                 })
+                }, {
+                    onUploadProgress: (progressEvent) => {
+                        console.log(progressEvent)
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        )
 
+                        setPercent(percentCompleted)
+
+
+                    }
+                })
+
+                setPercent(null)
 
                 if (res.status === 200) {
                     // convert object(array) to array
@@ -164,7 +185,7 @@ const PService = () => {
                             ...value,
                             isCheck: false
                         }]
-                      }
+                    }
                     const convertSpecialists = Object.values(res?.data?.medecins)?.map(specialist => ({
                         ...specialist,
                         isCheck: true

@@ -228,6 +228,7 @@ const TableBody = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors, time
             if (doctor.slots[time].status === 0) {
                 return (
                     <BodyTdStatusZero
+                        indexTd={timeIndex}
                         setSelectedTime={setSelectedTime}
                         setIsOpenModalTimeFree={setIsOpenModalTimeFree}
                         doctorsSlots={doctorsSlots}
@@ -245,6 +246,7 @@ const TableBody = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors, time
             if (doctor.slots[time].status === 1) {
                 return (
                     <BodyTdStatusOne
+                        indexTd={timeIndex}
                         setSelectedTime={setSelectedTime}
                         setIsOpenModalTimeFree={setIsOpenModalTimeFree}
                         doctorsSlots={doctorsSlots}
@@ -262,6 +264,7 @@ const TableBody = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors, time
             if (doctor.slots[time].status === 2) {
                 return (
                     <BodyTdStatusTwo
+                        indexTd={timeIndex}
                         setSelectedTime={setSelectedTime}
                         setIsOpenModalTimeFree={setIsOpenModalTimeFree}
                         doctorsSlots={doctorsSlots}
@@ -279,6 +282,7 @@ const TableBody = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors, time
             if (doctor.slots[time].status === 3) {
                 return (
                     <BodyTdStatusThree
+                        indexTd={timeIndex}
                         setSelectedTime={setSelectedTime}
                         setIsOpenModalTimeFree={setIsOpenModalTimeFree}
                         doctorsSlots={doctorsSlots}
@@ -296,6 +300,7 @@ const TableBody = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors, time
             if (doctor.slots[time].status === 4) {
                 return (
                     <BodyTdStatusFour
+                        indexTd={timeIndex}
                         setSelectedTime={setSelectedTime}
                         setIsOpenModalTimeFree={setIsOpenModalTimeFree}
                         doctorsSlots={doctorsSlots}
@@ -313,6 +318,7 @@ const TableBody = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors, time
             if (doctor.slots[time].status === 5) {
                 return (
                     <BodyTdStatusFive
+                        indexTd={timeIndex}
                         setSelectedTime={setSelectedTime}
                         setIsOpenModalTimeFree={setIsOpenModalTimeFree}
                         doctorsSlots={doctorsSlots}
@@ -407,7 +413,7 @@ const checkFree = (hoverTimes, slots, doctorId, currentTime, callback, setSelect
 
 
 
-const BodyTdStatusZero = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusZero = memo(({ indexTd, setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('#e5e5e5')
 
 
@@ -417,11 +423,14 @@ const BodyTdStatusZero = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctor
         setBg("#e5e5e5")
     }, [currentTime, doctor.id, hoverTimes])
 
+
+    console.log(hoverTimes)
     return (
         <td
             style={{
                 width: `calc(100% / ${doctorsSize})`,
-                backgroundColor: bg
+                backgroundColor: bg,
+                borderBottom: indexTd % doctorsSlots === 0 && '2px solid #FFCCCB'
             }}
             className='modal_time_content_table_td__status_zero'
             onClick={() => checkFree(hoverTimes, doctorsSlots, doctor?.id, currentTime, () => setIsOpenModalTimeFree(true), setSelectedTime)}
@@ -434,7 +443,7 @@ const BodyTdStatusZero = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctor
 })
 
 
-const BodyTdStatusOne = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusOne = memo(({ indexTd, setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
 
     const [bg, setBg] = useState('#e2ffed')
 
@@ -448,7 +457,8 @@ const BodyTdStatusOne = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors
         <td
             style={{
                 backgroundColor: bg,
-                width: `calc(100% / ${doctorsSize})`
+                width: `calc(100% / ${doctorsSize})`,
+                borderBottom: indexTd % doctorsSlots === 0 && '2px solid #FFCCCB'
             }}
             onClick={() => checkFree(hoverTimes, doctorsSlots, doctor?.id, currentTime, () => setIsOpenModalTimeFree(true), setSelectedTime)}
             onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
@@ -467,7 +477,7 @@ const BodyTdStatusOne = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors
 })
 
 
-const BodyTdStatusTwo = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusTwo = memo(({ indexTd, setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('white')
 
 
@@ -483,7 +493,8 @@ const BodyTdStatusTwo = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors
             style={{
                 width: `calc(100% / ${doctorsSize})`,
                 backgroundColor: bg,
-                cursor: 'not-allowed'
+                cursor: 'not-allowed',
+                borderBottom: indexTd % doctorsSlots === 0 && '2px solid #FFCCCB'
 
             }}
             onClick={() => checkFree(hoverTimes, doctorsSlots, doctor?.id, currentTime, () => setIsOpenModalTimeFree(true), setSelectedTime)}
@@ -517,7 +528,7 @@ const BodyTdStatusTwo = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctors
 })
 
 
-const BodyTdStatusThree = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusThree = memo(({ indexTd, setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('white')
     useEffect(() => {
         if (hoverTimes && hoverTimes[doctor?.id] && hoverTimes[doctor?.id][currentTime]) return setBg('#ff97aa')
@@ -529,7 +540,8 @@ const BodyTdStatusThree = memo(({ setSelectedTime, setIsOpenModalTimeFree, docto
             style={{
                 width: `calc(100% / ${doctorsSize})`,
                 backgroundColor: bg,
-                cursor: 'not-allowed'
+                cursor: 'not-allowed',
+                borderBottom: indexTd % doctorsSlots === 0 && '2px solid #FFCCCB'
 
             }}
             onClick={() => checkFree(hoverTimes, doctorsSlots, doctor?.id, currentTime, () => setIsOpenModalTimeFree(true), setSelectedTime)}
@@ -561,7 +573,7 @@ const BodyTdStatusThree = memo(({ setSelectedTime, setIsOpenModalTimeFree, docto
     )
 })
 
-const BodyTdStatusFour = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusFour = memo(({ indexTd, setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('white')
 
 
@@ -575,6 +587,7 @@ const BodyTdStatusFour = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctor
             style={{
                 width: `calc(100% / ${doctorsSize})`,
                 backgroundColor: bg,
+                borderBottom: indexTd % doctorsSlots === 0 && '2px solid #FFCCCB'
             }}
             onClick={() => checkFree(hoverTimes, doctorsSlots, doctor?.id, currentTime, () => setIsOpenModalTimeFree(true), setSelectedTime)}
             onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}
@@ -605,7 +618,7 @@ const BodyTdStatusFour = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctor
     )
 })
 
-const BodyTdStatusFive = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
+const BodyTdStatusFive = memo(({ indexTd, setSelectedTime, setIsOpenModalTimeFree, doctorsSlots, doctor, doctorsSize, hoverTimes, setHoverTimes, timeIndex, currentTime }) => {
     const [bg, setBg] = useState('white')
 
 
@@ -619,7 +632,8 @@ const BodyTdStatusFive = memo(({ setSelectedTime, setIsOpenModalTimeFree, doctor
             style={{
                 width: `calc(100% / ${doctorsSize})`,
                 backgroundColor: bg,
-                cursor: 'not-allowed'
+                cursor: 'not-allowed',
+                borderBottom: indexTd % doctorsSlots === 0 && '2px solid #FFCCCB'
             }}
             onClick={() => checkFree(hoverTimes, doctorsSlots, doctor?.id, currentTime, () => setIsOpenModalTimeFree(true), setSelectedTime)}
             onMouseEnter={() => hoverRows(doctor, timeIndex, setHoverTimes, doctorsSlots)}

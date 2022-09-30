@@ -47,7 +47,7 @@ const PServiceSchedulesTable = ({
         if (timeSchedule) {
             const newDates = schedule?.dates?.slice(timeSchedule[0], timeSchedule[1])[index]
 
-
+            console.log(newDates)
             setModalTimeIsOpen(true)
 
             const newDate = (+new Date(newDates?.dateRaw) / 1000) + 3600 * 6
@@ -61,7 +61,6 @@ const PServiceSchedulesTable = ({
 
             setTimeReceptions(() => {
                 const newSchedule = [...service.schedule]
-                console.log(newSchedule)
                 const uniqSchedule = _uniqBy(newSchedule, 'doctor_name')
 
 
@@ -162,7 +161,7 @@ const TBody = ({
 
     const onHandleClick = (isNotChange, slotIndex, slotElemIndex) => {
         console.log(checkRecordingRights(slotElemIndex))
-        onOpenModal(isNotChange, slotIndex)
+        onOpenModal(isNotChange, slotElemIndex)
 
     }
 
