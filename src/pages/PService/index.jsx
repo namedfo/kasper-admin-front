@@ -1,11 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useLocation, useParams } from 'react-router'
 // components
 import PServiceAdditionalSchedules from '../../components/ServiceComponents/PServiceAdditionalSchedules'
 import PServiceExceptionalEvents from '../../components/ServiceComponents/PServiceExceptionalEvents'
+import PServiceSchedulesTable from '../../components/ServiceComponents/PServiceSchedulesTable'
 import PServiceSchedulesTitle from '../../components/ServiceComponents/PServiceSchedulesTitle'
 import PServiceServices from '../../components/ServiceComponents/PServiceServices'
 import PServiceSpecialists from '../../components/ServiceComponents/PServiceSpecialists'
+// hooks
+import { useTypedSelector, useActions } from '../../hooks'
 //
 import config from '../../config'
 import routes from '../../routes'
@@ -13,61 +17,272 @@ import routes from '../../routes'
 
 
 const PService = () => {
-    const [service, setService] = useState(null)
-    const [status, setStatus] = useState('idle')
+
+    // getters
+    const {
+        // init
+        statusService,
+        service,
+        age,
+
+        initSlots,
+        timeSchedule,
+    } = useTypedSelector(state => state.service)
+
+
+    // setters
+    const {
+        // init
+        setStatusService,
+        setService,
+
+        // specialists
+        setSpecialists,
+
+        // services
+        setServices,
+
+        // schedule table
+        setSchedule,
+        setStatusSchedule,
+
+        setInitSlots,
+        setTimeSchedule,
+
+
+        // global
+        setPercent
+    } = useActions()
+
+
+
+
 
     const params = useParams()
 
+
+
+
+    const getScheduleParams = (isNotChange = true) => {
+
+
+        let params = []
+        if (service?.schedule) {
+            service?.schedule.forEach(schedule => {
+                service?.specialists.forEach(specialist => {
+                    if (isNotChange) {
+                        if (specialist.isCheck && schedule.medecinsID === specialist.id) {
+                            if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
+                                params = [
+                                    ...params,
+                                    {
+                                        id: schedule.id,
+                                        duration: schedule.duree
+                                    }
+                                ]
+                            }
+                        }
+                    } else {
+                        if (schedule.medecinsID === specialist.id) {
+                            if (+schedule.age[0] <= +age && +schedule.age[1] >= +age) {
+                                params = [
+                                    ...params,
+                                    {
+                                        id: schedule.id,
+                                        duration: schedule.duree
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                })
+            })
+        }
+
+        return params
+    }
+
+
+
+    const fetchSchedule = async (localScheduleParams) => {
+        setStatusSchedule('loading')
+
+
+        try {
+
+            const res = await config.api_host.post(routes.post_timetable, { doctors: localScheduleParams }, {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+
+                    setPercent(percentCompleted)
+                }
+            })
+            setPercent(null)
+
+
+
+            const convertEvents = Object.values(res.data?.events)
+            const convertSlots = res?.data?.slots && Object.values(Object.values(res.data.slots)[0]).map(slot => Object.values(slot))
+
+            console.log(convertSlots)
+
+            setSchedule({
+                dates: res.data?.dates,
+                events: convertEvents,
+                slots: convertSlots.length > 0 ? convertSlots : new Array(31).fill([0, 0, 0, 0])
+            })
+
+            setStatusSchedule('success')
+
+
+            if (!initSlots) {
+                setInitSlots(convertSlots)
+            }
+
+        } catch (error) {
+            setStatusSchedule('error')
+        }
+
+    }
+
     useEffect(() => {
-        
+        if (service && service?.schedule && service?.specialists) {
+            fetchSchedule(getScheduleParams())
+        }
+
+    }, [service && service?.schedule && service?.specialists])
+
+
+    useEffect(() => {
+
         (async () => {
-            setStatus('loading')
+            setStatusService('loading')
             try {
-                const res = await config.api_host.post(`${routes.get_service_info}${params?.code}`, {age: 18})
-                
+                const res = await config.api_host.post(`${routes.get_service_info}`, {
+                    age: 18,
+                    service_code: params?.code
+                }, {
+                    onUploadProgress: (progressEvent) => {
+                        console.log(progressEvent)
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        )
+
+                        setPercent(percentCompleted)
+
+
+                    }
+                })
+
+                setPercent(null)
+
                 if (res.status === 200) {
-                    setService(res.data)
-                    setStatus('success')
+                    // convert object(array) to array
+                    let convertServices = []
+                    for (const [key, value] of Object.entries(res.data.services)) {
+                        convertServices = [...convertServices, {
+                            id: key,
+                            ...value,
+                            isCheck: false
+                        }]
+                    }
+                    const convertSpecialists = Object.values(res?.data?.medecins)?.map(specialist => ({
+                        ...specialist,
+                        isCheck: true
+                    }))
+                    const convertSchedule = Object.values(res?.data?.doctors)
+
+
+                    setService({
+                        description: res.data.descr,
+                        more_description: res.data.more_descr,
+                        service_name: res.data.serv_name,
+                        services: convertServices,
+                        specialists: convertSpecialists,
+                        schedule: convertSchedule
+                    })
+
+
+                    setStatusService('success')
                 }
             } catch (error) {
-                setStatus('error')
+                setStatusService('error')
             }
         })()
+        return () => {
+            setInitSlots(null)
+            setService(null)
+        }
+    }, [])
 
-    }, [params?.code])
+
+    const getTimeDuree = () => {
+
+        if (service?.schedule?.length) {
+            const durees = service.schedule?.map(doctor => doctor.duree)
+
+            const minDuree = durees && Math.min(...durees)
+            const maxDuree = durees && Math.max(...durees)
+
+
+            return minDuree === maxDuree ? `${minDuree} минут` : `от ${minDuree} до ${maxDuree} минут`
+        }
+    }
+
 
 
     return (
         <div className='h-full w-full flex justify-between p-[25px] relative'>
-            <div className='w-[390px] flex flex-col'>
-                <PServiceSpecialists />
-                <PServiceServices services={service?.services} />
-                <PServiceExceptionalEvents />
-                <PServiceAdditionalSchedules />
-            </div>
-            <div 
-                style={{
-                    width: 'calc(100% - 420px)'
-                }} 
-                className=''
-            >
-                <PServiceSchedulesTitle
-                    title={service?.serv_name}
-                    description={service?.descr}
-                    moreDescription={service?.more_descr}
-                />
-            </div>
+            {statusService === 'success' && (
+                <>
+                    <div className='w-[390px] flex flex-col'>
+                        <PServiceSpecialists
+                            initAge={age}
+                            specialists={service?.specialists}
+                            setSpecialists={setSpecialists}
 
+                            fetchSchedule={fetchSchedule}
+                            getScheduleParams={getScheduleParams}
+                        />
+                        {service?.services?.length > 0 && (
+                            <PServiceServices
+                                services={service?.services}
+                                setServices={setServices}
+                            />
+                        )}
+                        <PServiceExceptionalEvents />
+                        <PServiceAdditionalSchedules />
+                    </div>
+                    <div
+                        style={{
+                            width: 'calc(100% - 420px)'
+                        }}
+                    >
+                        <PServiceSchedulesTitle
+                            title={service?.service_name}
+                            description={service?.description}
+                            moreDescription={service?.more_description}
+                            getTimeDuree={getTimeDuree}
 
+                            timeSchedule={timeSchedule}
+                            setTimeSchedule={setTimeSchedule}
+                        />
+                        {service?.schedule && (
+                            <PServiceSchedulesTable
+                                specialists={service?.specialists}
+                                timeSchedule={timeSchedule}
 
-            <div className='absolute bottom-[10px] left-[20px]'>
-                <span className='text-[16px] font-semibold'>
-                    ID оператора:
+                                getScheduleParams={getScheduleParams}
+                            />
+                        )}
+                    </div>
+                </>
+            )}
+            {statusService === 'loading' && (
+                <span>
+                    Загрузка...
                 </span>
-                <span className="ml-[10px] leading-4 cursor-pointer hover:bg-[gray] hover:text-white text-[12px] font-bold px-[5px] text-[#555] bg-[#ccc] rounded-[4px]">
-                    ВЫХОД
-                </span>
-            </div>
+            )}
         </div>
     )
 }

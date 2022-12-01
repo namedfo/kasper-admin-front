@@ -72,25 +72,15 @@ const ModalSchedule = ({
                     ]
                 })
 
-                const countSlots = allDoctors.map((doctor) => {
-                    return { count: 1, name: doctor.doctor_name }
-                }).reduce((a, b) => {
-                    a[b.name] = (a[b.name] || 0) + b.count
-                    return a
-                }, {})
-                console.log(countSlots)
+                // const countSlots = allDoctors.map((doctor) => {
+                //     return { count: 1, name: doctor.doctor_name }
+                // }).reduce((a, b) => {
+                //     a[b.name] = (a[b.name] || 0) + b.count
+                //     return a
+                // }, {})
 
                 const uniqDoctors = _uniqBy(allDoctors, 'doctor_name')
-                console.log(uniqDoctors)
-  // const newTimeReception = {
-                            //     code: code,
-                            //     time: newDoctors[0]?.duree,
-                            //     slots: newDoctors[0]?.duree / 5
-                            // }
-                            // if (prev.length === 0) {
-                            //     return [newTimeReception]
-                            // }
-                            // return [...prev, newTimeReception]
+
 
                 let newUniqDoctors = {}
                 uniqDoctors.forEach(uniqDoctor => {

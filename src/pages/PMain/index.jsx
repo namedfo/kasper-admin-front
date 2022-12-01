@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 //
 import useOutside from '../../hooks/useOutside'
+import { useActions } from '../../hooks'
 // components
 import MainServices from '../../components/MainServices'
 import NavbarMain from '../../components/NavbarMain'
@@ -15,6 +16,8 @@ import './PMain.css'
 
 const PMain = () => {
 
+    const { setPercent } = useActions()
+
     const [services, setServices] = useState([])
     const [multiRecords, setMultiRecords] = useState([])
 
@@ -28,19 +31,23 @@ const PMain = () => {
 
     const getServices = async (body = {}) => {
         setServices([])
-        try {
-            await config.api_host.post(routes.get_services_main, body).then(r => {
-                if (r.status === 200) {
-                    let newServices = []
-                    for (let [, value] of Object.entries(r.data)) {
-                        newServices = [...newServices, value]
-                    }
-                    setServices(newServices)
-                }
-            })
-        } catch (e) {
+        
+        await config.api_host.post(routes.get_services_main, body, {
+            onUploadProgress: (progressEvent) => {
+                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setPercent(percentCompleted)
 
-        }
+            }
+        }).then(r => {
+            if (r.status === 200) {
+                let newServices = []
+                for (let [, value] of Object.entries(r.data)) {
+                    newServices = [...newServices, value]
+                }
+                setServices(newServices)
+            }
+        }).finally(() => setPercent(null))
+
     }
 
     const getMultiRecord = async code => {
@@ -79,8 +86,8 @@ const PMain = () => {
                             selectedDoctors = `${count} из ${newDoctors.length}`
                         }
 
-                
-    
+
+
 
 
                         setMultiRecords(prev => {
@@ -210,7 +217,6 @@ const PMain = () => {
 
 
 
-    console.log(popupHintComponent)
 
 
 
@@ -231,6 +237,7 @@ const PMain = () => {
                             handleMultiRecords={handleMultiRecords}
                             handlePopupHint={handlePopupHint}
                             isMultiRecords={isMultiRecords}
+                            searchByAge={searchByAge}
                         />
                     ))}
                     {btnMultiRecords}

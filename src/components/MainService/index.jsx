@@ -1,5 +1,6 @@
 import { BsQuestion } from 'react-icons/bs'
 import { useNavigate } from 'react-router'
+import { useActions } from '../../hooks'
 //
 import './MainService.css'
 
@@ -10,8 +11,12 @@ const MainService = ({
     handleMultiRecords,
     handlePopupHint,
     getService,
-    isMultiRecords
+    isMultiRecords,
+    searchByAge
 }) => {
+
+    const { setAge } = useActions
+
 
     const navigate = useNavigate()
 
@@ -21,6 +26,9 @@ const MainService = ({
             await getService(service.code)
         } else {
             navigate(`/service/${service.code}`)
+            if(searchByAge?.length) {
+                setAge(+searchByAge)
+            }
         }
     }
 

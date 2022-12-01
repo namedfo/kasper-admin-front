@@ -73,7 +73,10 @@ const routes = {
     get_patients_main: process.env.REACT_APP_GET_PATIENTS_MAIN,
     get_service_info: process.env.REACT_APP_GET_SERVICE_INFO,
     post_multislots: process.env.REACT_APP_POST_MULTISLOTS,
-    post_build_time_table: process.env.REACT_APP_POST_BUILD_TIME_TABLE
+    post_build_time_table: process.env.REACT_APP_POST_BUILD_TIME_TABLE,
+
+    // for Servuce
+    post_timetable: process.env.REACT_APP_POST_TIMETABLE
 }
 
 
